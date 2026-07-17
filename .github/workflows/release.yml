@@ -59,8 +59,10 @@ jobs:
 
       - name: Dry run publish
         if: github.event_name == 'workflow_dispatch' && inputs.dry_run
-        run: pnpm --dir packages/astro-components publish --access public --dry-run --no-git-checks
+        working-directory: packages/astro-components
+        run: npx npm@latest publish --access public --dry-run
 
       - name: Publish package
         if: github.event_name != 'workflow_dispatch' || !inputs.dry_run
-        run: pnpm --dir packages/astro-components publish --access public --no-git-checks
+        working-directory: packages/astro-components
+        run: npx npm@latest publish --access public
