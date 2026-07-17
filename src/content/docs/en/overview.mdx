@@ -1,0 +1,57 @@
+---
+title: Overview
+description: Learn what the package includes and when to use it.
+sidebar:
+  order: 1
+---
+
+import { Card, CardGrid, Steps } from '@prosefly/astro-components';
+
+`@prosefly/astro-components` is a small set of Astro components and markdown
+plugins for MDX-heavy documentation. The package is used by Lotus, but it can
+also be installed directly in any Astro project.
+
+## What Is Included
+
+<CardGrid>
+  <Card icon="lucide:message-square-warning" title="Callouts" href="/docs/components/callout/">
+    Highlight notes, tips, warnings, and danger messages inside long-form
+    content.
+  </Card>
+  <Card icon="lucide:panel-top" title="Tabs and accordions" href="/docs/components/tabs/">
+    Present equivalent examples, progressive disclosure, and compact
+    explanations.
+  </Card>
+  <Card icon="lucide:folder-tree" title="File trees" href="/docs/components/file-tree/">
+    Describe project structure with folder and file icons.
+  </Card>
+  <Card icon="lucide:image" title="Markdown transforms" href="/docs/markdown/">
+    Enhance package manager commands and image galleries at build time.
+  </Card>
+</CardGrid>
+
+## Typical Workflow
+
+<Steps>
+
+1. **Install the package.**
+
+   Add `@prosefly/astro-components` to an Astro project.
+
+2. **Import components in MDX.**
+
+   Import only the components a page needs.
+
+3. **Enable optional transforms.**
+
+   Add the markdown entry when you want package manager tabs or image galleries.
+
+4. **Theme with CSS variables.**
+
+   Set `--pl-*` tokens in the site shell so the components match the rest of
+   the design system.
+
+</Steps>
+
+Lotus enables the markdown transforms and icon preloading for you. Direct
+consumers can opt in to each feature separately.

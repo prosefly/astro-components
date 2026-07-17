@@ -1,0 +1,47 @@
+---
+title: File Tree
+description: Render project structure examples.
+sidebar:
+  order: 6
+---
+
+import { FileTree } from '@prosefly/astro-components';
+
+Use `FileTree` to document folders and files in setup guides, migration guides,
+and architecture references.
+
+## Import
+
+```mdx
+import { FileTree } from '@prosefly/astro-components';
+```
+
+## Basic Usage
+
+<FileTree>
+
+  - src
+    - content
+      - docs
+        - en
+          - index.mdx
+          - installation.mdx
+    - content.config.ts
+    - theme.config.ts
+  - astro.config.ts
+  - package.json
+
+</FileTree>
+
+```mdx
+<FileTree>
+
+  - src
+    - content
+      - docs
+        - en
+          - index.mdx
+  - astro.config.ts
+
+</FileTree>
+```

@@ -1,0 +1,38 @@
+---
+title: Cards
+description: Link to related pages or group feature summaries.
+sidebar:
+  order: 3
+---
+
+import { Card, CardGrid } from '@prosefly/astro-components';
+
+Use `CardGrid` and `Card` for scannable groups of links or related concepts.
+
+## Import
+
+```mdx
+import { Card, CardGrid } from '@prosefly/astro-components';
+```
+
+## Linked Cards
+
+<CardGrid>
+  <Card icon="lucide:message-square-warning" title="Callout" href="/docs/components/callout/">
+    Highlight information that needs more attention than body copy.
+  </Card>
+  <Card icon="lucide:panel-top" title="Tabs" href="/docs/components/tabs/">
+    Show equivalent examples in a compact selectable interface.
+  </Card>
+</CardGrid>
+
+````mdx
+<CardGrid>
+  <Card icon="lucide:message-square-warning" title="Callout" href="/docs/components/callout/">
+    Highlight information that needs more attention than body copy.
+  </Card>
+  <Card icon="lucide:panel-top" title="Tabs" href="/docs/components/tabs/">
+    Show equivalent examples in a compact selectable interface.
+  </Card>
+</CardGrid>
+````

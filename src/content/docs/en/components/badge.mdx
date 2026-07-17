@@ -1,0 +1,36 @@
+---
+title: Badge
+description: Add compact status labels and metadata to documentation.
+sidebar:
+  order: 2
+---
+
+import { Badge } from '@prosefly/astro-components';
+
+Use `Badge` for small labels such as status, release channel, feature category,
+or version information.
+
+## Import
+
+```mdx
+import { Badge } from '@prosefly/astro-components';
+```
+
+## Variants
+
+<Badge>Default</Badge> <Badge color="accent">Accent</Badge> <Badge color="success">Success</Badge> <Badge color="warning">Warning</Badge> <Badge color="danger">Danger</Badge>
+
+```mdx
+<Badge>Default</Badge>
+<Badge color="accent">Accent</Badge>
+<Badge color="success">Success</Badge>
+<Badge color="warning">Warning</Badge>
+<Badge color="danger">Danger</Badge>
+```
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `color` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` | `'neutral'` |
+| `variant` | `'solid' \| 'soft' \| 'subtle' \| 'outline'` | `'soft'` |

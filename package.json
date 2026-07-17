@@ -6,7 +6,19 @@
   "packageManager": "pnpm@11.9.0",
   "license": "BSD-3-Clause",
   "scripts": {
-    "build": "pnpm --dir packages/astro-components build",
-    "check": "pnpm --dir packages/astro-components check"
+    "dev": "pnpm run build:pkg && astro dev",
+    "build": "pnpm run build:pkg && astro build",
+    "build:pkg": "pnpm --dir packages/astro-components build",
+    "preview": "astro preview",
+    "check": "pnpm run check:pkg && pnpm run build:pkg && pnpm run check:site",
+    "check:pkg": "pnpm --dir packages/astro-components check",
+    "check:site": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/check": "latest",
+    "@prosefly/astro-components": "workspace:*",
+    "@prosefly/astro-theme-lotus": "^0.1.1",
+    "astro": "^7.0.0",
+    "typescript": "^6.0.3"
   }
 }

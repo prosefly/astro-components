@@ -1,0 +1,56 @@
+---
+title: Callout
+description: Highlight notes, tips, warnings, and danger messages.
+sidebar:
+  order: 1
+---
+
+import { Callout } from '@prosefly/astro-components';
+
+Use `Callout` when a paragraph needs more attention than normal prose but
+should stay inside the reading flow.
+
+## Import
+
+```mdx
+import { Callout } from '@prosefly/astro-components';
+```
+
+## Basic Usage
+
+<Callout type="note" title="Document the default behavior">
+  Notes are a safe default for implementation details, caveats, and extra
+  context.
+</Callout>
+
+```mdx
+<Callout type="note" title="Document the default behavior">
+  Notes are a safe default for implementation details, caveats, and extra
+  context.
+</Callout>
+```
+
+## Variants
+
+<Callout type="note" title="Note">
+  Use notes for neutral context.
+</Callout>
+
+<Callout type="tip" title="Tip">
+  Use tips for recommended workflows and helpful shortcuts.
+</Callout>
+
+<Callout type="warning" title="Warning">
+  Use warnings when a choice can cause broken output or extra setup work.
+</Callout>
+
+<Callout type="danger" title="Danger">
+  Use danger callouts for destructive or security-sensitive steps.
+</Callout>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `title` | `string` | none |
+| `type` | `'note' \| 'tip' \| 'warning' \| 'danger'` | `'note'` |

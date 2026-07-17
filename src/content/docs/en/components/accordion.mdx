@@ -1,0 +1,38 @@
+---
+title: Accordion
+description: Collapse secondary details into expandable sections.
+sidebar:
+  order: 5
+---
+
+import { AccordionItem, Accordions } from '@prosefly/astro-components';
+
+Use accordions for supporting details that should be available without making a
+page feel longer than necessary.
+
+## Import
+
+```mdx
+import { AccordionItem, Accordions } from '@prosefly/astro-components';
+```
+
+## Basic Usage
+
+<Accordions>
+  <AccordionItem title="Can I use these components without Lotus?">
+    Yes. Import them directly from `@prosefly/astro-components` in any Astro or
+    MDX page.
+  </AccordionItem>
+  <AccordionItem title="Does Lotus need extra markdown configuration?">
+    No. Lotus enables the package manager tabs and image gallery transforms by
+    default.
+  </AccordionItem>
+</Accordions>
+
+```mdx
+<Accordions>
+  <AccordionItem title="Can I use these components without Lotus?">
+    Yes. Import them directly from `@prosefly/astro-components`.
+  </AccordionItem>
+</Accordions>
+```

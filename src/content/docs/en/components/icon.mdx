@@ -1,0 +1,48 @@
+---
+title: Icon
+description: Render Iconify icons in Astro and MDX.
+sidebar:
+  order: 7
+---
+
+import { Callout, Icon } from '@prosefly/astro-components';
+
+Use `Icon` for inline visual labels, headings, and small UI affordances in MDX
+content.
+
+## Import
+
+```mdx
+import { Icon } from '@prosefly/astro-components';
+```
+
+## Basic Usage
+
+<p><Icon name="lucide:sparkles" /> Reusable MDX components for Astro documentation.</p>
+
+```mdx
+<p><Icon name="lucide:sparkles" /> Reusable MDX components for Astro documentation.</p>
+```
+
+## Icon Integration
+
+Use `@prosefly/astro-components/icon` when a project wants Iconify preloading
+without Lotus.
+
+```ts title="astro.config.ts"
+import { defineConfig } from 'astro/config';
+import proseflyIcon from '@prosefly/astro-components/icon';
+
+export default defineConfig({
+  integrations: [
+    proseflyIcon({
+      preload: ['lucide:sparkles', 'simple-icons:github'],
+    }),
+  ],
+});
+```
+
+<Callout type="note" title="Lotus default">
+  Lotus registers the icon integration and scans `src/**/*.astro`,
+  `src/**/*.md`, and `src/**/*.mdx` for static icon names.
+</Callout>

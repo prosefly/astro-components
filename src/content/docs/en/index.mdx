@@ -1,0 +1,41 @@
+---
+title: Astro Components
+description: Reusable Astro components and markdown transforms for MDX documentation.
+template: splash
+tableOfContents: false
+hero:
+  title: Astro Components
+  tagline: Compose richer MDX documentation with callouts, cards, tabs, accordions, file trees, icons, steps, badges, and markdown transforms.
+  actions:
+    - text: Get started
+      link: /docs/overview/
+      variant: primary
+      icon: lucide:chevron-right
+    - text: Browse components
+      link: /docs/components/callout/
+      variant: secondary
+sidebar:
+  hidden: true
+---
+
+import { Card, CardGrid } from '@prosefly/astro-components';
+
+## Built For MDX
+
+`@prosefly/astro-components` provides content primitives for Astro
+documentation sites. Use them in MDX pages, or pair them with Lotus for a full
+documentation shell.
+
+<CardGrid>
+  <Card icon="lucide:blocks" title="Content components" href="/docs/components/callout/">
+    Add structured callouts, cards, tabs, accordions, file trees, badges, icons,
+    and steps without rebuilding common documentation UI.
+  </Card>
+  <Card icon="lucide:wand-sparkles" title="Markdown transforms" href="/docs/markdown/">
+    Turn package manager commands into tabs and image-only paragraphs into
+    gallery figures.
+  </Card>
+  <Card icon="lucide:palette" title="Themeable styles" href="/docs/styling/">
+    Adapt components to a site design with `--pl-*` CSS custom properties.
+  </Card>
+</CardGrid>

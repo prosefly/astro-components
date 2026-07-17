@@ -1,0 +1,41 @@
+---
+title: Steps
+description: Format ordered procedures in documentation.
+sidebar:
+  order: 8
+---
+
+import { Steps } from '@prosefly/astro-components';
+
+Use `Steps` for procedures where each item has a title, explanation, and
+optional code.
+
+## Import
+
+```mdx
+import { Steps } from '@prosefly/astro-components';
+```
+
+## Basic Usage
+
+<Steps>
+
+1. **Install the package.**
+
+   ```sh
+   pnpm add @prosefly/astro-components
+   ```
+
+2. **Import the component.**
+
+   ```mdx
+   import { Callout } from '@prosefly/astro-components';
+   ```
+
+3. **Write the page.**
+
+   Compose the imported components with normal Markdown.
+
+</Steps>
+
+Wrap normal ordered list content in `<Steps>` to apply the visual step layout.

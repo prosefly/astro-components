@@ -1,0 +1,55 @@
+---
+title: Tabs
+description: Present parallel examples as selectable panels.
+sidebar:
+  order: 4
+---
+
+import { TabItem, Tabs } from '@prosefly/astro-components';
+
+Use `Tabs` when readers need to switch between equivalent examples, such as
+package managers, frameworks, or output formats.
+
+## Import
+
+```mdx
+import { TabItem, Tabs } from '@prosefly/astro-components';
+```
+
+## Basic Usage
+
+<Tabs>
+  <TabItem label="Preview">
+    Tabs can contain prose, lists, links, and other MDX content.
+  </TabItem>
+  <TabItem label="Code">
+    ```astro
+    <Tabs>
+      <TabItem label="Preview">Preview content</TabItem>
+      <TabItem label="Code">Code content</TabItem>
+    </Tabs>
+    ```
+  </TabItem>
+</Tabs>
+
+## Package Managers
+
+<Tabs copy syncKey="install-command">
+  <TabItem label="pnpm" icon="simple-icons:pnpm">
+    ```sh
+    pnpm add @prosefly/astro-components
+    ```
+  </TabItem>
+  <TabItem label="npm" icon="simple-icons:npm">
+    ```sh
+    npm install @prosefly/astro-components
+    ```
+  </TabItem>
+  <TabItem label="yarn" icon="simple-icons:yarn">
+    ```sh
+    yarn add @prosefly/astro-components
+    ```
+  </TabItem>
+</Tabs>
+
+Use `syncKey` to share the selected tab across groups with matching labels.

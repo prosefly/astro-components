@@ -1,0 +1,60 @@
+---
+title: Installation
+description: Install the package and use the components in an Astro project.
+sidebar:
+  order: 2
+---
+
+import { Callout, Steps } from '@prosefly/astro-components';
+
+Install the package in an Astro project, then import components from the main
+entry in `.astro` or `.mdx` files.
+
+<Steps>
+
+1. **Install the package.**
+
+   ```sh
+   pnpm add @prosefly/astro-components
+   ```
+
+2. **Import a component.**
+
+   ```mdx
+   import { Callout } from '@prosefly/astro-components';
+
+   <Callout type="tip" title="Reusable">
+     Package components use Prosefly CSS custom properties with built-in
+     fallbacks.
+   </Callout>
+   ```
+
+3. **Use optional integrations when needed.**
+
+   Add the icon integration for Iconify preloading, or add the markdown entry
+   for package manager tabs and image galleries.
+
+</Steps>
+
+<Callout type="tip" title="Using Lotus">
+  Lotus already wires the shared markdown transforms and icon preload
+  integration. Most Lotus projects only need to import components in MDX pages.
+</Callout>
+
+## Exports
+
+The main entry exports:
+
+- `AccordionItem` and `Accordions`
+- `Badge`
+- `Callout`
+- `Card` and `CardGrid`
+- `FileTree`
+- `Icon`
+- `Steps`
+- `TabItem` and `Tabs`
+
+The markdown entry exports:
+
+- `rehypeImageGallery`
+- `remarkPackageManagerTabs`

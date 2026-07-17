@@ -1,0 +1,57 @@
+---
+title: Styling
+description: Theme the components with CSS custom properties.
+sidebar:
+  order: 4
+---
+
+import { Badge, Callout } from '@prosefly/astro-components';
+
+The components are designed to inherit from a documentation site while still
+working without a theme. Override `--pl-*` custom properties at the site shell
+or article container level.
+
+```css
+:root {
+  --pl-text-strong: #18181b;
+  --pl-text: #3f3f46;
+  --pl-text-muted: #71717a;
+  --pl-background: #ffffff;
+  --pl-surface: #fafafa;
+  --pl-accent: #059669;
+  --pl-accent-soft: #d1fae5;
+  --pl-accent-contrast: #ffffff;
+  --pl-border-subtle: #e4e4e7;
+  --pl-font-sans: ui-sans-serif, system-ui, sans-serif;
+  --pl-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --pl-radius-sm: 0.25rem;
+  --pl-radius-md: 0.5rem;
+  --pl-radius-lg: 0.75rem;
+  --pl-radius-full: 999px;
+}
+```
+
+## Available Tokens
+
+- `--pl-text-strong`
+- `--pl-text`
+- `--pl-text-muted`
+- `--pl-background`
+- `--pl-surface`
+- `--pl-accent`
+- `--pl-accent-soft`
+- `--pl-accent-contrast`
+- `--pl-border-subtle`
+- `--pl-font-sans`
+- `--pl-font-mono`
+- `--pl-radius-sm`
+- `--pl-radius-md`
+- `--pl-radius-lg`
+- `--pl-radius-full`
+
+<Callout type="tip" title="Scope tokens intentionally">
+  Place overrides on `:root` for a site-wide theme, or on a docs layout wrapper
+  when the components should differ from the rest of the application.
+</Callout>
+
+<Badge color="accent">Themeable</Badge>
