@@ -1,0 +1,12 @@
+{
+  "name": "astro-components",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.9.0",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "build": "pnpm --dir packages/astro-components build",
+    "check": "pnpm --dir packages/astro-components check"
+  }
+}
