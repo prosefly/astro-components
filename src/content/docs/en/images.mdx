@@ -1,0 +1,90 @@
+---
+title: Images
+description: Turn image-only paragraphs into styled figures and galleries.
+sidebar:
+  order: 4
+---
+
+import { Callout, Steps } from '@prosefly/astro-components';
+
+Use `rehypeImageGallery` when authors should write normal Markdown images while
+the site renders polished figures and multi-image galleries.
+
+<Callout type="tip" title="Using prosefly lotus">
+  Lotus enables the image gallery transform automatically. If your site uses
+  `@prosefly/astro-theme-lotus`, the Markdown transform is already active.
+</Callout>
+
+## What Authors Write
+
+A paragraph that contains only one image becomes a styled figure.
+
+```md
+![Dashboard in light mode](/images/dashboard-light.png)
+```
+
+A paragraph that contains multiple images becomes a gallery.
+
+```md
+![Dashboard in light mode](/images/dashboard-light.png)
+![Dashboard in dark mode](/images/dashboard-dark.png)
+```
+
+## Standalone Astro Setup
+
+If you are not using Lotus, add the rehype plugin in `astro.config.ts`.
+
+```ts title="astro.config.ts"
+import { defineConfig } from 'astro/config';
+import { rehypeImageGallery } from '@prosefly/astro-components/markdown';
+
+export default defineConfig({
+  markdown: {
+    rehypePlugins: [rehypeImageGallery],
+  },
+});
+```
+
+Then load the gallery CSS and runtime once in the layout that renders your
+Markdown.
+
+```astro title="src/layouts/DocsLayout.astro"
+---
+import '@prosefly/astro-components/markdown/image-gallery.css';
+---
+
+<slot />
+
+<script>
+  import '@prosefly/astro-components/markdown/image-gallery.js';
+</script>
+```
+
+The JavaScript adds previous and next controls for galleries generated from
+multiple images. Single-image figures only need the CSS.
+
+## Authoring Rules
+
+<Steps>
+
+1. **Keep gallery paragraphs image-only.**
+
+   Do not add prose, links, inline code, or captions to the same paragraph.
+   Mixed content stays as normal Markdown.
+
+2. **Use helpful alt text.**
+
+   The transform preserves each image element. The `alt` text is still the main
+   accessibility description for the image.
+
+3. **Group images intentionally.**
+
+   Put related screenshots in the same paragraph. Add a blank line before the
+   next paragraph when a new gallery should start.
+
+</Steps>
+
+<Callout type="warning" title="Avoid double configuration">
+  Lotus already configures `rehypeImageGallery` and loads the theme styles. Add
+  the plugin and runtime manually only in standalone Astro projects.
+</Callout>

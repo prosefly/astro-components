@@ -1,0 +1,27 @@
+---
+import {
+  BaseLayout,
+  SiteFooter,
+  SiteHeader,
+} from '@prosefly/astro-theme-lotus/layouts';
+import HomeDocRoutes from '../components/home/HomeDocRoutes.astro';
+import HomeFeatureGrid from '../components/home/HomeFeatureGrid.astro';
+import HomeHero from '../components/home/HomeHero.astro';
+import HomeMdxUsage from '../components/home/HomeMdxUsage.astro';
+---
+
+<BaseLayout
+  title="Astro Components"
+  description="Reusable Astro components and markdown transforms for polished MDX documentation."
+>
+  <SiteHeader currentPath="/" surface />
+
+  <main>
+    <HomeHero />
+    <HomeFeatureGrid />
+    <HomeMdxUsage />
+    <HomeDocRoutes />
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

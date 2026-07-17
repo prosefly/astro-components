@@ -1,49 +1,128 @@
 ---
 title: Installation
-description: Install the package and use the components in an Astro project.
+description: Install the package for Lotus or a standalone Astro site.
 sidebar:
   order: 2
 ---
 
+import { Callout, TabItem, Tabs, Steps } from '@prosefly/astro-components';
+
+Install the package where your MDX content is rendered. Lotus users can usually
+start importing components immediately. Standalone Astro users can also enable
+the icon integration, package-manager tabs, and image galleries.
+
+## Install
+
+<Tabs copy syncKey="install-package">
+  <TabItem label="pnpm" icon="simple-icons:pnpm">
+    ```sh
+    pnpm add @prosefly/astro-components
+    ```
+  </TabItem>
+  <TabItem label="npm" icon="simple-icons:npm">
+    ```sh
+    npm install @prosefly/astro-components
+    ```
+  </TabItem>
+  <TabItem label="yarn" icon="simple-icons:yarn">
+    ```sh
+    yarn add @prosefly/astro-components
+    ```
+  </TabItem>
+  <TabItem label="bun" icon="simple-icons:bun">
+    ```sh
+    bun add @prosefly/astro-components
+    ```
+  </TabItem>
+</Tabs>
+
+## Use In MDX
+
+```mdx title="src/content/docs/getting-started.mdx"
 import { Callout, Steps } from '@prosefly/astro-components';
 
-Install the package in an Astro project, then import components from the main
-entry in `.astro` or `.mdx` files.
+<Callout type="tip" title="Keep examples close to the task">
+  Import only the components used by the current page.
+</Callout>
 
 <Steps>
 
-1. **Install the package.**
+1. Install the package.
+2. Import the component.
+3. Write normal Markdown inside the component.
 
-   ```sh
-   pnpm add @prosefly/astro-components
+</Steps>
+```
+
+## Configure Optional Features
+
+<Steps>
+
+1. **Add icon preloading if you use icons outside Lotus.**
+
+   ```ts title="astro.config.ts"
+   import { defineConfig } from 'astro/config';
+   import proseflyIcon from '@prosefly/astro-components/icon';
+
+   export default defineConfig({
+     integrations: [
+       proseflyIcon({
+         preload: ['lucide:sparkles', 'simple-icons:github'],
+       }),
+     ],
+   });
    ```
 
-2. **Import a component.**
+2. **Add markdown transforms if you want automatic tabs or galleries.**
 
-   ```mdx
-   import { Callout } from '@prosefly/astro-components';
+   ```ts title="astro.config.ts"
+   import { defineConfig } from 'astro/config';
+   import {
+     rehypeImageGallery,
+     remarkPackageManagerTabs,
+   } from '@prosefly/astro-components/markdown';
 
-   <Callout type="tip" title="Reusable">
-     Package components use Prosefly CSS custom properties with built-in
-     fallbacks.
-   </Callout>
+   export default defineConfig({
+     markdown: {
+       remarkPlugins: [remarkPackageManagerTabs],
+       rehypePlugins: [rehypeImageGallery],
+     },
+   });
    ```
 
-3. **Use optional integrations when needed.**
+3. **Set theme tokens in the layout.**
 
-   Add the icon integration for Iconify preloading, or add the markdown entry
-   for package manager tabs and image galleries.
+   Components have fallbacks, but a site-level token set keeps them visually
+   aligned with the surrounding docs.
 
 </Steps>
 
-<Callout type="tip" title="Using Lotus">
-  Lotus already wires the shared markdown transforms and icon preload
-  integration. Most Lotus projects only need to import components in MDX pages.
+<Callout type="tip" title="Using prosefly lotus">
+  [`@prosefly/astro-theme-lotus`](https://github.com/prosefly/astro-theme-lotus) already wires the
+  markdown transforms, Iconify preloading, MDX, and docs shell. Install this
+  package directly only when you are using the components outside the Lotus
+  integration.
 </Callout>
 
-## Exports
+For detailed setup, see [Package Manager Tabs](/docs/package-manager-tabs/) and
+[Images](/docs/images/).
 
-The main entry exports:
+## Import Paths
+
+Use the main entry for components:
+
+```mdx
+import { Callout, Card, Tabs } from '@prosefly/astro-components';
+```
+
+Use subpath entries for integrations:
+
+```ts
+import proseflyIcon from '@prosefly/astro-components/icon';
+import { rehypeImageGallery } from '@prosefly/astro-components/markdown';
+```
+
+## Component Exports
 
 - `AccordionItem` and `Accordions`
 - `Badge`
@@ -53,8 +132,3 @@ The main entry exports:
 - `Icon`
 - `Steps`
 - `TabItem` and `Tabs`
-
-The markdown entry exports:
-
-- `rehypeImageGallery`
-- `remarkPackageManagerTabs`

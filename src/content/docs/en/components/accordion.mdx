@@ -1,14 +1,15 @@
 ---
 title: Accordion
-description: Collapse secondary details into expandable sections.
+description: Keep optional details available without lengthening the main path.
 sidebar:
   order: 5
 ---
 
 import { AccordionItem, Accordions } from '@prosefly/astro-components';
 
-Use accordions for supporting details that should be available without making a
-page feel longer than necessary.
+Use accordions for supporting details, troubleshooting notes, FAQs, or advanced
+options. Do not hide required steps in an accordion; readers should be able to
+complete the main task by scanning the visible page.
 
 ## Import
 
@@ -32,7 +33,56 @@ import { AccordionItem, Accordions } from '@prosefly/astro-components';
 ```mdx
 <Accordions>
   <AccordionItem title="Can I use these components without Lotus?">
-    Yes. Import them directly from `@prosefly/astro-components`.
+    Yes. Import them directly from `@prosefly/astro-components` in any Astro or
+    MDX page.
+  </AccordionItem>
+  <AccordionItem title="Does Lotus need extra markdown configuration?">
+    No. Lotus enables the package manager tabs and image gallery transforms by
+    default.
   </AccordionItem>
 </Accordions>
 ```
+
+## Multiple Open Items
+
+By default, opening one item closes the others. Set `multiple` when several
+answers should remain open for comparison.
+
+<Accordions multiple defaultValue={['requirements', 'limits']}>
+  <AccordionItem title="Requirements" value="requirements">
+    Use Astro v7 or newer and enable MDX in the project that renders the docs.
+  </AccordionItem>
+  <AccordionItem title="Limits" value="limits">
+    Accordions are for optional detail. Keep required setup steps visible.
+  </AccordionItem>
+  <AccordionItem title="Disabled item" disabled>
+    Disabled items remain visible but cannot be opened by the interaction
+    script.
+  </AccordionItem>
+</Accordions>
+
+```mdx
+<Accordions multiple defaultValue={['requirements', 'limits']}>
+  <AccordionItem title="Requirements" value="requirements">
+    Use Astro v7 or newer and enable MDX in the project that renders the docs.
+  </AccordionItem>
+  <AccordionItem title="Limits" value="limits">
+    Accordions are for optional detail. Keep required setup steps visible.
+  </AccordionItem>
+  <AccordionItem title="Disabled item" disabled>
+    Disabled items remain visible but cannot be opened by the interaction
+    script.
+  </AccordionItem>
+</Accordions>
+```
+
+## Props
+
+| Component | Prop | Type | Notes |
+| --- | --- | --- | --- |
+| `Accordions` | `multiple` | `boolean` | Allows more than one item to stay open. |
+| `Accordions` | `defaultValue` | `string \| string[]` | Opens matching item values on load. |
+| `AccordionItem` | `title` | `string` | Required summary text. |
+| `AccordionItem` | `value` | `string` | Stable item value, defaults to `id` or `title`. |
+| `AccordionItem` | `defaultOpen` | `boolean` | Opens the item before client behavior runs. |
+| `AccordionItem` | `disabled` | `boolean` | Marks the item as disabled. |

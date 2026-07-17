@@ -1,14 +1,15 @@
 ---
 title: Steps
-description: Format ordered procedures in documentation.
+description: Turn ordered lists into clear procedures.
 sidebar:
   order: 8
 ---
 
 import { Steps } from '@prosefly/astro-components';
 
-Use `Steps` for procedures where each item has a title, explanation, and
-optional code.
+Use `Steps` for procedures where order matters: installation, migration,
+configuration, debugging, or release checklists. Each step should represent one
+reader action or decision.
 
 ## Import
 
@@ -39,3 +40,72 @@ import { Steps } from '@prosefly/astro-components';
 </Steps>
 
 Wrap normal ordered list content in `<Steps>` to apply the visual step layout.
+
+````mdx
+<Steps>
+
+1. **Install the package.**
+
+   ```sh
+   pnpm add @prosefly/astro-components
+   ```
+
+2. **Import the component.**
+
+   ```mdx
+   import { Callout } from '@prosefly/astro-components';
+   ```
+
+3. **Write the page.**
+
+   Compose the imported components with normal Markdown.
+
+</Steps>
+````
+
+## Writing Guidelines
+
+- Start each step with a verb.
+- Keep one action per step.
+- Put commands close to the step that needs them.
+- Use callouts inside a step only for risk or important context.
+
+## Good Fit
+
+<Steps>
+
+1. **Create the content directory.**
+
+   ```sh
+   mkdir -p src/content/docs/en
+   ```
+
+2. **Register the collection.**
+
+   Add `docsLoader()` and `docsSchema()` in `src/content.config.ts`.
+
+3. **Write the first page.**
+
+   Create `src/content/docs/en/index.mdx` and add frontmatter.
+
+</Steps>
+
+````mdx
+<Steps>
+
+1. **Create the content directory.**
+
+   ```sh
+   mkdir -p src/content/docs/en
+   ```
+
+2. **Register the collection.**
+
+   Add `docsLoader()` and `docsSchema()` in `src/content.config.ts`.
+
+3. **Write the first page.**
+
+   Create `src/content/docs/en/index.mdx` and add frontmatter.
+
+</Steps>
+````

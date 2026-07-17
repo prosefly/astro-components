@@ -1,11 +1,11 @@
 ---
 title: Astro Components
-description: Reusable Astro components and markdown transforms for MDX documentation.
+description: Build MDX documentation pages with reusable Astro components.
 template: splash
 tableOfContents: false
 hero:
   title: Astro Components
-  tagline: Compose richer MDX documentation with callouts, cards, tabs, accordions, file trees, icons, steps, badges, and markdown transforms.
+  tagline: Write clearer product and developer documentation with ready-made MDX components, Iconify icons, package-manager tabs, and image galleries.
   actions:
     - text: Get started
       link: /docs/overview/
@@ -18,24 +18,39 @@ sidebar:
   hidden: true
 ---
 
-import { Card, CardGrid } from '@prosefly/astro-components';
+import { Callout, Card, CardGrid } from '@prosefly/astro-components';
 
-## Built For MDX
+## Start With The Reader's Task
 
-`@prosefly/astro-components` provides content primitives for Astro
-documentation sites. Use them in MDX pages, or pair them with Lotus for a full
-documentation shell.
+This package is for Astro projects that publish MDX documentation. It gives
+authors a small set of components for the patterns readers expect in docs:
+installation choices, warnings, linked next steps, project trees, and short
+procedures.
+
+<Callout type="tip" title="Using Lotus?">
+  Lotus already configures the markdown transforms and icon preloading. In most
+  Lotus projects, authors only import the components they need in each MDX
+  page.
+</Callout>
 
 <CardGrid>
-  <Card icon="lucide:blocks" title="Content components" href="/docs/components/callout/">
-    Add structured callouts, cards, tabs, accordions, file trees, badges, icons,
-    and steps without rebuilding common documentation UI.
+  <Card icon="lucide:rocket" title="Add it to Astro" href="/docs/installation/">
+    Install the package, import components in MDX, and optionally enable icons
+    or markdown transforms in `astro.config.ts`.
   </Card>
-  <Card icon="lucide:wand-sparkles" title="Markdown transforms" href="/docs/markdown/">
-    Turn package manager commands into tabs and image-only paragraphs into
-    gallery figures.
+  <Card icon="lucide:blocks" title="Choose a component" href="/docs/overview/">
+    Match each reader need to the right component: callout, tab, accordion,
+    card, step list, file tree, badge, or icon.
   </Card>
-  <Card icon="lucide:palette" title="Themeable styles" href="/docs/styling/">
-    Adapt components to a site design with `--pl-*` CSS custom properties.
+  <Card icon="lucide:terminal-square" title="Show install choices" href="/docs/package-manager-tabs/">
+    Convert package-manager commands into synced tabs without making authors
+    write every variant by hand.
+  </Card>
+  <Card icon="lucide:image" title="Improve screenshots" href="/docs/images/">
+    Turn image-only Markdown paragraphs into figures and galleries.
+  </Card>
+  <Card icon="lucide:palette" title="Match your site" href="/docs/styling/">
+    Use `--pl-*` CSS custom properties to align the components with your docs
+    shell or design system.
   </Card>
 </CardGrid>

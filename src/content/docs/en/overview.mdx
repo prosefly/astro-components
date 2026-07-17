@@ -1,57 +1,88 @@
 ---
 title: Overview
-description: Learn what the package includes and when to use it.
+description: Choose the right component for each documentation problem.
 sidebar:
   order: 1
 ---
 
-import { Card, CardGrid, Steps } from '@prosefly/astro-components';
+import { Callout, Card, CardGrid, Steps } from '@prosefly/astro-components';
 
-`@prosefly/astro-components` is a small set of Astro components and markdown
-plugins for MDX-heavy documentation. The package is used by Lotus, but it can
-also be installed directly in any Astro project.
+Use `@prosefly/astro-components` when your docs have outgrown plain Markdown
+but you still want authors to write normal MDX. The package focuses on common
+documentation jobs rather than application UI: explain risk, compare options,
+show structure, and guide readers through a task.
 
-## What Is Included
+## Choose By Reader Need
 
 <CardGrid>
-  <Card icon="lucide:message-square-warning" title="Callouts" href="/docs/components/callout/">
-    Highlight notes, tips, warnings, and danger messages inside long-form
-    content.
+  <Card icon="lucide:message-square-warning" title="Warn or emphasize" href="/docs/components/callout/">
+    Use `Callout` for notes, tips, warnings, and destructive guidance that
+    should stand apart from the surrounding prose.
   </Card>
-  <Card icon="lucide:panel-top" title="Tabs and accordions" href="/docs/components/tabs/">
-    Present equivalent examples, progressive disclosure, and compact
-    explanations.
+  <Card icon="lucide:panel-top" title="Show equivalent choices" href="/docs/components/tabs/">
+    Use `Tabs` for package managers, frameworks, languages, or other parallel
+    examples where the reader should pick one.
   </Card>
-  <Card icon="lucide:folder-tree" title="File trees" href="/docs/components/file-tree/">
-    Describe project structure with folder and file icons.
+  <Card icon="lucide:list-collapse" title="Keep secondary detail nearby" href="/docs/components/accordion/">
+    Use `Accordions` for optional explanations, FAQs, and background details
+    that should not interrupt the main path.
   </Card>
-  <Card icon="lucide:image" title="Markdown transforms" href="/docs/markdown/">
-    Enhance package manager commands and image galleries at build time.
+  <Card icon="lucide:folder-tree" title="Explain project structure" href="/docs/components/file-tree/">
+    Use `FileTree` when a reader needs to create, find, or understand files and
+    directories.
+  </Card>
+  <Card icon="lucide:route" title="Point readers forward" href="/docs/components/cards/">
+    Use `Card` and `CardGrid` for related guides, feature summaries, and
+    next-step links.
+  </Card>
+  <Card icon="lucide:list-checks" title="Walk through a process" href="/docs/components/steps/">
+    Use `Steps` for installation, migration, and configuration procedures.
+  </Card>
+  <Card icon="lucide:terminal-square" title="Generate install tabs" href="/docs/package-manager-tabs/">
+    Use package-manager tabs when readers should choose between `pnpm`, `npm`,
+    `yarn`, and `bun`.
+  </Card>
+  <Card icon="lucide:image" title="Render image galleries" href="/docs/images/">
+    Use image transforms when authors should write plain Markdown screenshots
+    and get polished figures.
   </Card>
 </CardGrid>
 
-## Typical Workflow
+<Callout type="note" title="Keep pages scannable">
+  Prefer the smallest component that solves the reader's problem. A page with a
+  few well-placed components is usually easier to read than a page where every
+  paragraph is boxed or interactive.
+</Callout>
+
+## Build A Page
 
 <Steps>
 
-1. **Install the package.**
+1. **Start with plain Markdown.**
 
-   Add `@prosefly/astro-components` to an Astro project.
+   Write the explanation first. Add components only where the reader needs a
+   stronger structure than headings, paragraphs, and lists.
 
-2. **Import components in MDX.**
+2. **Import locally.**
 
-   Import only the components a page needs.
+   Import components at the top of the MDX file so the page makes its own
+   dependencies obvious.
 
-3. **Enable optional transforms.**
+   ```mdx
+   import { Callout, Steps } from '@prosefly/astro-components';
+   ```
 
-   Add the markdown entry when you want package manager tabs or image galleries.
+3. **Use transforms for repeated patterns.**
 
-4. **Theme with CSS variables.**
+   In standalone Astro projects, enable the package-manager tab or image
+   transform that matches the content. Lotus enables both automatically.
 
-   Set `--pl-*` tokens in the site shell so the components match the rest of
-   the design system.
+4. **Theme once in the shell.**
+
+   Configure `--pl-*` custom properties in the site layout, not in each MDX
+   page.
 
 </Steps>
 
-Lotus enables the markdown transforms and icon preloading for you. Direct
-consumers can opt in to each feature separately.
+Lotus users usually start at step 2 because the theme already configures the
+markdown transforms, Iconify preload middleware, and shared styles.

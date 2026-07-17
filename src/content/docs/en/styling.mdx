@@ -1,15 +1,20 @@
 ---
 title: Styling
-description: Theme the components with CSS custom properties.
+description: Match components to your site with Prosefly CSS tokens.
 sidebar:
-  order: 4
+  order: 5
 ---
 
 import { Badge, Callout } from '@prosefly/astro-components';
 
-The components are designed to inherit from a documentation site while still
-working without a theme. Override `--pl-*` custom properties at the site shell
-or article container level.
+The components ship with fallback styles, but production documentation should
+set shared tokens in the site shell. This keeps callouts, cards, tabs, badges,
+and file trees aligned with the surrounding typography, colors, and radius.
+
+## Recommended Scope
+
+Set tokens on `:root` for a full documentation site. Set them on a layout
+wrapper if only one section should use the Prosefly visual system.
 
 ```css
 :root {
@@ -31,23 +36,25 @@ or article container level.
 }
 ```
 
-## Available Tokens
+## Token Reference
 
-- `--pl-text-strong`
-- `--pl-text`
-- `--pl-text-muted`
-- `--pl-background`
-- `--pl-surface`
-- `--pl-accent`
-- `--pl-accent-soft`
-- `--pl-accent-contrast`
-- `--pl-border-subtle`
-- `--pl-font-sans`
-- `--pl-font-mono`
-- `--pl-radius-sm`
-- `--pl-radius-md`
-- `--pl-radius-lg`
-- `--pl-radius-full`
+| Token | Used For |
+| --- | --- |
+| `--pl-text-strong` | Headings, card titles, active labels |
+| `--pl-text` | Body text |
+| `--pl-text-muted` | Supporting text, comments, inactive states |
+| `--pl-background` | Page or article background |
+| `--pl-surface` | Tabs, cards, and subtle grouped surfaces |
+| `--pl-accent` | Focus rings, active states, accent icons |
+| `--pl-accent-soft` | Soft accent backgrounds |
+| `--pl-accent-contrast` | Text placed on solid accent backgrounds |
+| `--pl-border-subtle` | Component borders |
+| `--pl-font-sans` | Prose and UI labels |
+| `--pl-font-mono` | File trees and code-adjacent labels |
+| `--pl-radius-sm` | Small controls |
+| `--pl-radius-md` | Buttons, triggers, compact surfaces |
+| `--pl-radius-lg` | Cards, callouts, tabs, file trees |
+| `--pl-radius-full` | Pills and badges |
 
 <Callout type="tip" title="Scope tokens intentionally">
   Place overrides on `:root` for a site-wide theme, or on a docs layout wrapper
@@ -55,3 +62,10 @@ or article container level.
 </Callout>
 
 <Badge color="accent">Themeable</Badge>
+
+## Lotus Projects
+
+Lotus maps its design system to the same component expectations. In a Lotus
+site, start with `src/theme.config.ts` for accent, gray, radius, and color mode
+choices. Use custom CSS only when you need lower-level control than the theme
+configuration provides.

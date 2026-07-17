@@ -7,13 +7,7 @@ export default defineLotusConfig({
   logo: '/prosefly-mark.svg',
   navbar: [
     { label: 'Docs', href: '/docs/' },
-    {
-      label: 'GitHub',
-      href: 'https://github.com/prosefly/astro-components',
-      external: true,
-      variant: 'solid',
-      trailingIcon: 'lucide:external-link',
-    },
+    { label: 'Sponsors', href: '/sponsors/' },
   ],
   socials: [
     {
@@ -49,7 +43,8 @@ export default defineLotusConfig({
       items: [
         'overview',
         'installation',
-        'markdown',
+        'package-manager-tabs',
+        'images',
         'styling',
       ],
     },
@@ -66,7 +61,8 @@ export default defineLotusConfig({
         title: 'Package',
         links: [
           { label: 'Installation', href: '/docs/installation/' },
-          { label: 'Markdown transforms', href: '/docs/markdown/' },
+          { label: 'Package manager tabs', href: '/docs/package-manager-tabs/' },
+          { label: 'Images', href: '/docs/images/' },
           { label: 'Styling', href: '/docs/styling/' },
         ],
       },
@@ -78,6 +74,7 @@ export default defineLotusConfig({
             href: 'https://github.com/prosefly/astro-components',
             external: true,
           },
+          { label: 'Sponsors', href: '/sponsors/' },
         ],
       },
     ],

@@ -1,13 +1,15 @@
 ---
 title: Cards
-description: Link to related pages or group feature summaries.
+description: Group related choices, next steps, or feature summaries.
 sidebar:
   order: 3
 ---
 
 import { Card, CardGrid } from '@prosefly/astro-components';
 
-Use `CardGrid` and `Card` for scannable groups of links or related concepts.
+Use `CardGrid` and `Card` when a reader needs to choose where to go next or
+compare a small set of related concepts. Cards should lead with the outcome,
+not just the feature name.
 
 ## Import
 
@@ -15,24 +17,57 @@ Use `CardGrid` and `Card` for scannable groups of links or related concepts.
 import { Card, CardGrid } from '@prosefly/astro-components';
 ```
 
-## Linked Cards
+## Related Guides
 
 <CardGrid>
   <Card icon="lucide:message-square-warning" title="Callout" href="/docs/components/callout/">
-    Highlight information that needs more attention than body copy.
+    Warn readers about risk, defaults, or setup requirements.
   </Card>
   <Card icon="lucide:panel-top" title="Tabs" href="/docs/components/tabs/">
-    Show equivalent examples in a compact selectable interface.
+    Let readers pick their package manager, framework, or language.
   </Card>
 </CardGrid>
 
 ````mdx
 <CardGrid>
   <Card icon="lucide:message-square-warning" title="Callout" href="/docs/components/callout/">
-    Highlight information that needs more attention than body copy.
+    Warn readers about risk, defaults, or setup requirements.
   </Card>
   <Card icon="lucide:panel-top" title="Tabs" href="/docs/components/tabs/">
-    Show equivalent examples in a compact selectable interface.
+    Let readers pick their package manager, framework, or language.
   </Card>
 </CardGrid>
 ````
+
+## Static Cards
+
+Omit `href` when a card summarizes information without acting as a link.
+
+<CardGrid>
+  <Card icon="lucide:scan-text" title="Scannable">
+    The title carries the main idea, and the body adds one short explanation.
+  </Card>
+  <Card icon="lucide:mouse-pointer-click" title="Actionable">
+    Add `href` only when the entire card should navigate somewhere.
+  </Card>
+</CardGrid>
+
+```mdx
+<CardGrid>
+  <Card icon="lucide:scan-text" title="Scannable">
+    The title carries the main idea, and the body adds one short explanation.
+  </Card>
+  <Card icon="lucide:mouse-pointer-click" title="Actionable">
+    Add `href` only when the entire card should navigate somewhere.
+  </Card>
+</CardGrid>
+```
+
+## Props
+
+| Component | Prop | Type | Notes |
+| --- | --- | --- | --- |
+| `Card` | `title` | `string` | Optional heading. |
+| `Card` | `href` | `string` | Makes the card an anchor. |
+| `Card` | `external` | `boolean` | Opens the link in a new tab with `rel="noreferrer"`. |
+| `Card` | `icon` | `string` | Iconify name such as `lucide:blocks`. |

@@ -1,0 +1,249 @@
+---
+import { Badge, Callout, FileTree, Icon, TabItem, Tabs } from '@prosefly/astro-components';
+import { PageSection } from '@prosefly/astro-theme-lotus/layouts';
+
+const installCommand = 'pnpm add @prosefly/astro-components';
+---
+
+<PageSection
+  class="home-hero overflow-hidden border-b border-(--lotus-border-subtle)"
+  padding="lg"
+  size="xl"
+>
+  <div class="relative z-10 grid min-w-0 gap-12 lg:grid-cols-[minmax(0,0.95fr)_minmax(25rem,1.05fr)] lg:items-center">
+    <div class="min-w-0 max-w-3xl">
+      <p class="mb-7 flex flex-wrap items-center gap-3 font-mono text-xs text-(--lotus-text-muted)">
+        <span>Astro</span>
+        <span class="border-l border-(--lotus-border-muted) pl-3">MDX</span>
+        <span class="border-l border-(--lotus-border-muted) pl-3">Documentation UI</span>
+      </p>
+
+      <h1 class="home-title max-w-3xl font-semibold text-(--lotus-text-strong)">
+        Reusable components for polished MDX docs.
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg leading-8 text-(--lotus-text) sm:text-xl sm:leading-9">
+        Add callouts, cards, tabs, accordions, file trees, icons, steps, badges,
+        and markdown transforms to Astro content without rebuilding common
+        documentation UI.
+      </p>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a class="home-button home-button--primary" href="/docs/overview/">
+          Get started <Icon name="lucide:arrow-right" />
+        </a>
+        <a class="home-button home-button--secondary" href="/docs/components/callout/">
+          Browse components
+        </a>
+      </div>
+
+      <div class="home-command mt-6 flex max-w-full items-center gap-3 rounded-(--lotus-radius-lg) border border-(--lotus-border-subtle) bg-(--lotus-background)/90 px-4 py-3 shadow-sm backdrop-blur sm:max-w-xl">
+        <span class="select-none text-sm text-(--lotus-accent)">$</span>
+        <code class="min-w-0 flex-1 overflow-x-auto whitespace-nowrap text-sm text-(--lotus-text-strong)">{installCommand}</code>
+        <button
+          class="home-copy lotus-focus-ring inline-flex size-8 shrink-0 items-center justify-center rounded-(--lotus-radius-md) text-(--lotus-text-muted) transition-colors hover:bg-(--lotus-surface) hover:text-(--lotus-text-strong)"
+          type="button"
+          data-copy-install
+          aria-label="Copy install command"
+        >
+          <span data-copy-icon><Icon name="lucide:copy" /></span>
+          <span data-copy-success hidden><Icon name="lucide:check" /></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="component-preview min-w-0 overflow-hidden border border-(--lotus-border-subtle) bg-(--lotus-background) p-5 shadow-2xl shadow-black/10 sm:p-7">
+      <div class="mb-5 flex flex-wrap items-center justify-between gap-2 border-b border-(--lotus-border-subtle) pb-4">
+        <span class="text-sm font-semibold text-(--lotus-text-strong)">docs/install.mdx</span>
+        <Badge color="accent" variant="subtle">rendered MDX</Badge>
+      </div>
+
+      <Callout type="tip" title="MDX-friendly primitives">
+        Import only the pieces a page needs and keep examples readable.
+      </Callout>
+
+      <Tabs copy defaultValue="pnpm">
+        <TabItem label="pnpm" value="pnpm" icon="simple-icons:pnpm">
+          <pre><code>{installCommand}</code></pre>
+        </TabItem>
+        <TabItem label="npm" value="npm" icon="simple-icons:npm">
+          <pre><code>npm install @prosefly/astro-components</code></pre>
+        </TabItem>
+        <TabItem label="yarn" value="yarn" icon="simple-icons:yarn">
+          <pre><code>yarn add @prosefly/astro-components</code></pre>
+        </TabItem>
+      </Tabs>
+
+      <FileTree>
+        <ul>
+          <li>
+            src
+            <ul>
+              <li>
+                content
+                <ul>
+                  <li>
+                    docs
+                    <ul>
+                      <li><strong>installation.mdx</strong></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li>theme.config.ts</li>
+            </ul>
+          </li>
+          <li>astro.config.ts</li>
+        </ul>
+      </FileTree>
+    </div>
+  </div>
+</PageSection>
+
+<script>
+  const installCommand = 'pnpm add @prosefly/astro-components';
+
+  function initInstallCopy() {
+    document.querySelectorAll('[data-copy-install]').forEach((button) => {
+      if (!(button instanceof HTMLButtonElement) || button.dataset.ready === 'true') return;
+      button.dataset.ready = 'true';
+
+      button.addEventListener('click', async () => {
+        await navigator.clipboard.writeText(installCommand);
+        button.setAttribute('aria-label', 'Install command copied');
+        button.querySelector('[data-copy-icon]')?.setAttribute('hidden', '');
+        button.querySelector('[data-copy-success]')?.removeAttribute('hidden');
+        window.setTimeout(() => {
+          button.setAttribute('aria-label', 'Copy install command');
+          button.querySelector('[data-copy-icon]')?.removeAttribute('hidden');
+          button.querySelector('[data-copy-success]')?.setAttribute('hidden', '');
+        }, 1800);
+      });
+    });
+  }
+
+  initInstallCopy();
+  document.addEventListener('astro:page-load', initInstallCopy);
+</script>
+
+<style>
+  .home-hero {
+    background:
+      linear-gradient(180deg, color-mix(in oklab, var(--lotus-accent-soft) 18%, var(--lotus-background)) 0%, var(--lotus-background) 78%);
+    position: relative;
+  }
+
+  .home-hero::before {
+    background-image:
+      linear-gradient(to right, color-mix(in oklab, var(--lotus-border-subtle) 55%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklab, var(--lotus-border-subtle) 55%, transparent) 1px, transparent 1px);
+    background-size: 4rem 4rem;
+    content: '';
+    inset: 0;
+    mask-image: linear-gradient(to bottom, black, transparent 78%);
+    opacity: 0.34;
+    pointer-events: none;
+    position: absolute;
+  }
+
+  .home-title {
+    font-size: clamp(2.75rem, 6vw, 4.75rem);
+    letter-spacing: 0;
+    line-height: 1;
+  }
+
+  .home-button {
+    align-items: center;
+    border-radius: var(--lotus-radius-md);
+    display: inline-flex;
+    font-size: 0.875rem;
+    font-weight: 600;
+    gap: 0.5rem;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0.75rem 1.125rem;
+    transition:
+      opacity 160ms ease,
+      background-color 160ms ease,
+      border-color 160ms ease;
+  }
+
+  .home-button:focus-visible {
+    outline: 2px solid var(--lotus-accent);
+    outline-offset: 3px;
+  }
+
+  .home-button--primary {
+    background: var(--lotus-accent);
+    color: var(--lotus-accent-contrast);
+  }
+
+  .home-button--primary:hover {
+    opacity: 0.9;
+  }
+
+  .home-button--secondary {
+    background: var(--lotus-background);
+    border: 1px solid var(--lotus-border-muted);
+    color: var(--lotus-text-strong);
+  }
+
+  .home-button--secondary:hover {
+    border-color: var(--lotus-accent);
+  }
+
+  .home-button :global(.pl-icon),
+  .home-copy :global(.pl-icon) {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .home-copy [data-copy-success] {
+    align-items: center;
+    color: oklch(0.57 0.16 155);
+    display: inline-flex;
+  }
+
+  .home-copy [data-copy-success][hidden] {
+    display: none;
+  }
+
+  .component-preview {
+    border-radius: min(var(--lotus-radius-lg), 1rem);
+  }
+
+  .component-preview :global(.pl-callout),
+  .component-preview :global(.pl-tabs),
+  .component-preview :global(.pl-file-tree) {
+    margin-block: 1rem;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .component-preview :global(.pl-file-tree) {
+    margin-bottom: 0;
+  }
+
+  .component-preview :global(pre) {
+    border: 0;
+    box-sizing: border-box;
+    margin: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  .component-preview :global(.pl-tabs__panel code) {
+    display: block;
+    min-width: max-content;
+  }
+
+  @media (max-width: 639px) {
+    .home-title {
+      font-size: clamp(2.5rem, 12vw, 3.35rem);
+    }
+
+    .home-command {
+      padding-inline: 0.75rem;
+    }
+  }
+</style>

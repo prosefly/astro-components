@@ -1,14 +1,15 @@
 ---
 title: Icon
-description: Render Iconify icons in Astro and MDX.
+description: Render Iconify icons in Astro and MDX content.
 sidebar:
   order: 7
 ---
 
 import { Callout, Icon } from '@prosefly/astro-components';
 
-Use `Icon` for inline visual labels, headings, and small UI affordances in MDX
-content.
+Use `Icon` for small visual cues in content: card icons, inline labels, and
+status descriptions. Use the `prefix:name` format from Iconify, such as
+`lucide:sparkles` or `simple-icons:github`.
 
 ## Import
 
@@ -16,12 +17,23 @@ content.
 import { Icon } from '@prosefly/astro-components';
 ```
 
-## Basic Usage
+## Inline Icons
 
 <p><Icon name="lucide:sparkles" /> Reusable MDX components for Astro documentation.</p>
 
 ```mdx
 <p><Icon name="lucide:sparkles" /> Reusable MDX components for Astro documentation.</p>
+```
+
+## Accessible Icons
+
+Decorative icons are hidden from assistive technology by default. Add `title`
+when the icon itself carries meaning.
+
+<p><Icon name="lucide:triangle-alert" title="Warning" /> Check the setup before continuing.</p>
+
+```mdx
+<p><Icon name="lucide:triangle-alert" title="Warning" /> Check the setup before continuing.</p>
 ```
 
 ## Icon Integration
@@ -46,3 +58,14 @@ export default defineConfig({
   Lotus registers the icon integration and scans `src/**/*.astro`,
   `src/**/*.md`, and `src/**/*.mdx` for static icon names.
 </Callout>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `name` | `string` | required |
+| `title` | `string` | none |
+| `size` | `number \| string` | none |
+| `width` | `number \| string` | `size ?? '1em'` |
+| `height` | `number \| string` | `size ?? '1em'` |
+| `apiBase` | `string` | `https://api.iconify.design` |

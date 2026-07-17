@@ -1,0 +1,139 @@
+---
+import { Icon } from '@prosefly/astro-components';
+import { PageSection } from '@prosefly/astro-theme-lotus/layouts';
+
+const routes = [
+  {
+    href: '/docs/installation/',
+    icon: 'lucide:package-plus',
+    title: 'Install the package',
+    description: 'Astro setup and package manager commands',
+  },
+  {
+    href: '/docs/markdown/',
+    icon: 'lucide:sparkles',
+    title: 'Enable markdown transforms',
+    description: 'Package-manager tabs and image galleries',
+  },
+  {
+    href: '/docs/styling/',
+    icon: 'lucide:swatch-book',
+    title: 'Theme with tokens',
+    description: 'Map components to a design system',
+  },
+  {
+    href: '/docs/components/cards/',
+    icon: 'lucide:blocks',
+    title: 'Browse component examples',
+    description: 'Cards, callouts, tabs, file trees, and more',
+  },
+];
+---
+
+<PageSection padding="lg" size="xl">
+  <div class="grid gap-10 lg:grid-cols-[minmax(0,0.72fr)_minmax(30rem,1fr)] lg:items-center">
+    <div>
+      <p class="section-label">Start where you need</p>
+      <h2 class="section-heading mt-3">Explore the docs by workflow.</h2>
+      <p class="mt-5 max-w-xl text-base leading-7 text-(--lotus-text-muted)">
+        Jump into installation, markdown automation, theming, or component
+        examples depending on the part of the docs stack you are wiring.
+      </p>
+    </div>
+
+    <div class="route-grid grid border-y border-(--lotus-border-subtle) sm:grid-cols-2">
+      {routes.map((route) => (
+        <a class="lotus-focus-ring" href={route.href}>
+          <Icon name={route.icon} />
+          <span>{route.title}</span>
+          <small>{route.description}</small>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <div class="mt-12 flex flex-wrap justify-end gap-5 border-t border-(--lotus-border-subtle) pt-8">
+    <a class="text-link lotus-focus-ring" href="/docs/overview/">
+      Open the docs <Icon name="lucide:arrow-up-right" />
+    </a>
+    <a class="text-link lotus-focus-ring" href="https://github.com/prosefly/astro-components" rel="noreferrer" target="_blank">
+      View source <Icon name="simple-icons:github" />
+    </a>
+  </div>
+</PageSection>
+
+<style>
+  .section-label {
+    color: var(--lotus-text-muted);
+    font-family: var(--lotus-font-mono);
+    font-size: 0.8125rem;
+  }
+
+  .section-heading {
+    color: var(--lotus-text-strong);
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.08;
+    max-width: 46rem;
+  }
+
+  .text-link {
+    align-items: center;
+    border-radius: var(--lotus-radius-sm);
+    color: var(--lotus-accent);
+    display: inline-flex;
+    font-size: 0.875rem;
+    font-weight: 600;
+    gap: 0.5rem;
+  }
+
+  .text-link :global(.pl-icon),
+  .route-grid :global(.pl-icon) {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .route-grid a {
+    align-items: start;
+    color: var(--lotus-text);
+    display: grid;
+    gap: 0.45rem;
+    min-width: 0;
+    padding: 1.25rem;
+  }
+
+  .route-grid a:nth-child(2n) {
+    border-left: 1px solid var(--lotus-border-subtle);
+  }
+
+  .route-grid a:nth-child(n + 3) {
+    border-top: 1px solid var(--lotus-border-subtle);
+  }
+
+  .route-grid a:hover {
+    color: var(--lotus-accent);
+  }
+
+  .route-grid span {
+    color: var(--lotus-text-strong);
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .route-grid small {
+    color: var(--lotus-text-muted);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 639px) {
+    .route-grid a:nth-child(2n) {
+      border-left: 0;
+    }
+
+    .route-grid a:nth-child(n + 2) {
+      border-top: 1px solid var(--lotus-border-subtle);
+    }
+  }
+</style>

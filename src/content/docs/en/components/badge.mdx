@@ -1,14 +1,15 @@
 ---
 title: Badge
-description: Add compact status labels and metadata to documentation.
+description: Add compact status labels without interrupting prose.
 sidebar:
   order: 2
 ---
 
 import { Badge } from '@prosefly/astro-components';
 
-Use `Badge` for small labels such as status, release channel, feature category,
-or version information.
+Use `Badge` for short metadata: release status, compatibility, risk level,
+feature category, or version information. Badges work best beside headings,
+inside cards, or in short reference tables.
 
 ## Import
 
@@ -16,17 +17,33 @@ or version information.
 import { Badge } from '@prosefly/astro-components';
 ```
 
-## Variants
+## Common Labels
 
-<Badge>Default</Badge> <Badge color="accent">Accent</Badge> <Badge color="success">Success</Badge> <Badge color="warning">Warning</Badge> <Badge color="danger">Danger</Badge>
+<Badge>Default</Badge> <Badge color="accent">New</Badge> <Badge color="success">Stable</Badge> <Badge color="warning">Beta</Badge> <Badge color="danger">Breaking</Badge>
 
 ```mdx
 <Badge>Default</Badge>
-<Badge color="accent">Accent</Badge>
-<Badge color="success">Success</Badge>
-<Badge color="warning">Warning</Badge>
-<Badge color="danger">Danger</Badge>
+<Badge color="accent">New</Badge>
+<Badge color="success">Stable</Badge>
+<Badge color="warning">Beta</Badge>
+<Badge color="danger">Breaking</Badge>
 ```
+
+## Visual Weight
+
+Use `variant` to control emphasis.
+
+<Badge color="accent" variant="solid">Solid</Badge> <Badge color="accent" variant="soft">Soft</Badge> <Badge color="accent" variant="subtle">Subtle</Badge> <Badge color="accent" variant="outline">Outline</Badge>
+
+```mdx
+<Badge color="accent" variant="solid">Solid</Badge>
+<Badge color="accent" variant="soft">Soft</Badge>
+<Badge color="accent" variant="subtle">Subtle</Badge>
+<Badge color="accent" variant="outline">Outline</Badge>
+```
+
+Prefer `soft` or `subtle` in long-form docs. Reserve `solid` for labels that
+must stand out immediately.
 
 ## Props
 

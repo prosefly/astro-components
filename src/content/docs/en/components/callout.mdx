@@ -1,14 +1,15 @@
 ---
 title: Callout
-description: Highlight notes, tips, warnings, and danger messages.
+description: Highlight information readers should not miss.
 sidebar:
   order: 1
 ---
 
 import { Callout } from '@prosefly/astro-components';
 
-Use `Callout` when a paragraph needs more attention than normal prose but
-should stay inside the reading flow.
+Use `Callout` when a reader needs to notice something before continuing:
+requirements, safe defaults, limits, destructive actions, or shortcuts. Keep
+callouts short enough to scan without breaking the page flow.
 
 ## Import
 
@@ -16,7 +17,7 @@ should stay inside the reading flow.
 import { Callout } from '@prosefly/astro-components';
 ```
 
-## Basic Usage
+## Write A Useful Callout
 
 <Callout type="note" title="Document the default behavior">
   Notes are a safe default for implementation details, caveats, and extra
@@ -30,23 +31,71 @@ import { Callout } from '@prosefly/astro-components';
 </Callout>
 ```
 
-## Variants
+## Choose The Right Type
 
 <Callout type="note" title="Note">
-  Use notes for neutral context.
+  Use `note` for neutral context, defaults, and implementation details.
 </Callout>
 
 <Callout type="tip" title="Tip">
-  Use tips for recommended workflows and helpful shortcuts.
+  Use `tip` for recommended workflows, shortcuts, and better ways to complete
+  the same task.
 </Callout>
 
 <Callout type="warning" title="Warning">
-  Use warnings when a choice can cause broken output or extra setup work.
+  Use `warning` when a choice can cause broken output, confusing behavior, or
+  extra setup work.
 </Callout>
 
 <Callout type="danger" title="Danger">
-  Use danger callouts for destructive or security-sensitive steps.
+  Use `danger` for destructive commands, security-sensitive steps, and
+  irreversible changes.
 </Callout>
+
+```mdx
+<Callout type="note" title="Note">
+  Use `note` for neutral context, defaults, and implementation details.
+</Callout>
+
+<Callout type="tip" title="Tip">
+  Use `tip` for recommended workflows, shortcuts, and better ways to complete
+  the same task.
+</Callout>
+
+<Callout type="warning" title="Warning">
+  Use `warning` when a choice can cause broken output, confusing behavior, or
+  extra setup work.
+</Callout>
+
+<Callout type="danger" title="Danger">
+  Use `danger` for destructive commands, security-sensitive steps, and
+  irreversible changes.
+</Callout>
+```
+
+## With Rich Content
+
+<Callout type="tip" title="Put the action first">
+  Give the reader the command or decision before the explanation.
+
+  ```sh
+  pnpm add @prosefly/astro-components
+  ```
+
+  Add caveats only after the action is clear.
+</Callout>
+
+````mdx
+<Callout type="tip" title="Put the action first">
+  Give the reader the command or decision before the explanation.
+
+  ```sh
+  pnpm add @prosefly/astro-components
+  ```
+
+  Add caveats only after the action is clear.
+</Callout>
+````
 
 ## Props
 

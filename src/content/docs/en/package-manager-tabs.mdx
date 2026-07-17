@@ -1,0 +1,110 @@
+---
+title: Package Manager Tabs
+description: Convert package-manager commands into synced MDX tabs.
+sidebar:
+  order: 3
+---
+
+import { Callout, Steps } from '@prosefly/astro-components';
+
+Use `remarkPackageManagerTabs` when authors should write one familiar command
+and let the docs render equivalent commands for other package managers.
+
+<Callout type="tip" title="Using prosefly lotus">
+  Lotus enables package manager tabs automatically. If your site uses
+  `@prosefly/astro-theme-lotus`, do not add this plugin yourself.
+</Callout>
+
+## What Authors Write
+
+Write a supported command in a shell code block:
+
+```sh
+npm install @prosefly/astro-components
+```
+
+The transform renders tabs for `pnpm`, `npm`, `yarn`, and `bun`. The generated
+commands keep the same package names and normalize install syntax for each
+tool.
+
+## Supported Node Commands
+
+- `npm install`
+- `npm install <packages>`
+- `npm run <script>`
+- `npm create <initializer>`
+- `npx <command>`
+- `npm dlx <command>`
+
+Examples:
+
+```sh
+npm run build
+```
+
+```sh
+npx astro add mdx
+```
+
+## Supported Python Commands
+
+Python install commands render as `pip`, `uv`, `poetry`, and `pdm` tabs.
+
+```sh
+pip install prosefly
+```
+
+Supported forms include:
+
+- `pip install <packages>`
+- `python -m pip install <packages>`
+- `python3 -m pip install <packages>`
+- `uv pip install <packages>`
+- `uv add <packages>`
+- `poetry add <packages>`
+- `pdm add <packages>`
+
+## Standalone Astro Setup
+
+If you are not using Lotus, add the remark plugin in `astro.config.ts`.
+
+```ts title="astro.config.ts"
+import { defineConfig } from 'astro/config';
+import { remarkPackageManagerTabs } from '@prosefly/astro-components/markdown';
+
+export default defineConfig({
+  markdown: {
+    remarkPlugins: [remarkPackageManagerTabs],
+  },
+});
+```
+
+The plugin injects the required `Tabs` and `TabItem` imports when it transforms a
+code block, so authors do not need to import those components manually.
+
+## Authoring Rules
+
+<Steps>
+
+1. **Use a shell code fence.**
+
+   The plugin transforms `sh`, `shell`, `bash`, `zsh`, `terminal`, and
+   `console` blocks. It also handles code fences without a language.
+
+2. **Keep each transformed block consistent.**
+
+   A block can contain multiple commands, but they must belong to the same
+   package-manager family. Do not mix Node and Python commands in the same code
+   block.
+
+3. **Leave custom commands alone.**
+
+   Unsupported commands remain normal code blocks. Use manual `Tabs` when the
+   alternatives need custom wording.
+
+</Steps>
+
+<Callout type="warning" title="Avoid double configuration">
+  Lotus already configures this plugin. Adding it again can duplicate imports
+  or produce nested tab output.
+</Callout>

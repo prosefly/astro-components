@@ -1,14 +1,15 @@
 ---
 title: File Tree
-description: Render project structure examples.
+description: Show files and directories readers need to create or inspect.
 sidebar:
   order: 6
 ---
 
 import { FileTree } from '@prosefly/astro-components';
 
-Use `FileTree` to document folders and files in setup guides, migration guides,
-and architecture references.
+Use `FileTree` when the shape of a project matters: installation guides,
+configuration walkthroughs, migration notes, package exports, or examples where
+readers need to place files in the right directory.
 
 ## Import
 
@@ -41,7 +42,246 @@ import { FileTree } from '@prosefly/astro-components';
       - docs
         - en
           - index.mdx
+          - installation.mdx
+    - content.config.ts
+    - theme.config.ts
   - astro.config.ts
+  - package.json
 
 </FileTree>
 ```
+
+## Directories
+
+An item becomes a directory when it has nested children. Use a trailing `/` to
+mark an empty directory.
+
+<FileTree>
+
+- src
+  - components
+    - Callout.astro
+    - Tabs.astro
+  - content/
+- public/
+
+</FileTree>
+
+```mdx
+<FileTree>
+
+- src
+  - components
+    - Callout.astro
+    - Tabs.astro
+  - content/
+- public/
+
+</FileTree>
+```
+
+Directories render as disclosure controls, so readers can collapse and expand
+parts of the tree.
+
+## Comments
+
+Write comments after the file or directory name when the reader needs to know
+why the entry exists.
+
+<FileTree>
+
+- src
+  - content
+    - docs contains MDX documentation entries
+  - content.config.ts registers the Lotus docs collection
+- astro.config.ts registers the Lotus integration
+
+</FileTree>
+
+```mdx
+<FileTree>
+
+- src
+  - content
+    - docs contains MDX documentation entries
+  - content.config.ts registers the Lotus docs collection
+- astro.config.ts registers the Lotus integration
+
+</FileTree>
+```
+
+Comments can use inline Markdown.
+
+<FileTree>
+
+- astro.config.ts registers the **Astro integration**
+- src
+  - content contains the `docs` collection
+    - docs generated from `themeConfig.sidebars`
+
+</FileTree>
+
+```mdx
+<FileTree>
+
+- astro.config.ts registers the **Astro integration**
+- src
+  - content contains the `docs` collection
+    - docs generated from `themeConfig.sidebars`
+
+</FileTree>
+```
+
+## Highlight Entries
+
+Make a file or directory name bold to highlight the item a reader should notice.
+The highlight applies to the icon and name. Comments remain outside the
+highlighted area.
+
+<FileTree>
+
+- packages
+  - astro-components
+    - src
+      - mdx
+        - **FileTree.astro**
+        - rehype-file-tree.ts
+        - Tabs.astro
+  - astro-theme-lotus
+
+</FileTree>
+
+```mdx
+<FileTree>
+
+- packages
+  - astro-components
+    - src
+      - mdx
+        - **FileTree.astro**
+        - rehype-file-tree.ts
+        - Tabs.astro
+  - astro-theme-lotus
+
+</FileTree>
+```
+
+You can also highlight a name that uses inline code formatting.
+
+<FileTree>
+
+- src
+  - **`content.config.ts`** registers the docs collection
+  - theme.config.ts configures navigation
+
+</FileTree>
+
+```mdx
+<FileTree>
+
+- src
+  - **`content.config.ts`** registers the docs collection
+  - theme.config.ts configures navigation
+
+</FileTree>
+```
+
+## Placeholders
+
+Use `...` or `…` when a tree intentionally omits files.
+
+<FileTree>
+
+- src
+  - components
+    - Callout.astro
+    - Steps.astro
+    - …
+  - content
+    - docs
+      - overview.mdx
+      - …
+
+</FileTree>
+
+```mdx
+<FileTree>
+
+- src
+  - components
+    - Callout.astro
+    - Steps.astro
+    - …
+  - content
+    - docs
+      - overview.mdx
+      - …
+
+</FileTree>
+```
+
+## Special Names
+
+Wrap file names in backticks when they contain spaces, leading underscores, or
+characters that Markdown may treat as formatting.
+
+<FileTree>
+
+- `__init__.py`
+- `README copy.md`
+- **`theme.config.ts`** highlighted with code formatting
+- docs
+  - `getting started.mdx`
+  - `faq?.mdx`
+
+</FileTree>
+
+```mdx
+<FileTree>
+
+- `__init__.py`
+- `README copy.md`
+- **`theme.config.ts`** highlighted with code formatting
+- docs
+  - `getting started.mdx`
+  - `faq?.mdx`
+
+</FileTree>
+```
+
+## File Icons
+
+File icons are selected from the file name or extension.
+
+<FileTree>
+
+- component.astro code file
+- config.yaml config file
+- tokens.css stylesheet
+- logo.svg image asset
+- notes.md text content
+- archive.zip generic file
+
+</FileTree>
+
+```mdx
+<FileTree>
+
+- component.astro code file
+- config.yaml config file
+- tokens.css stylesheet
+- logo.svg image asset
+- notes.md text content
+- archive.zip generic file
+
+</FileTree>
+```
+
+## Syntax Rules
+
+- Wrap a single unordered Markdown list in `<FileTree>`.
+- Keep a blank line after `<FileTree>` and before `</FileTree>`.
+- Use nested list items for child files.
+- Use a trailing `/` to mark an empty directory.
+- Make a name bold to highlight the important entry.
+- Use `...` or `…` for intentional omissions.

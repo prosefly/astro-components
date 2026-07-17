@@ -1,0 +1,71 @@
+---
+import { Card, CardGrid } from '@prosefly/astro-components';
+import { PageSection } from '@prosefly/astro-theme-lotus/layouts';
+
+const featureLinks = [
+  {
+    href: '/docs/components/callout/',
+    icon: 'lucide:message-square-warning',
+    title: 'Content components',
+    body: 'Callouts, cards, steps, badges, icons, and file trees for recurring documentation patterns.',
+  },
+  {
+    href: '/docs/components/tabs/',
+    icon: 'lucide:panel-top',
+    title: 'Interactive examples',
+    body: 'Tabs and accordions keep package-manager, framework, and optional-detail examples compact.',
+  },
+  {
+    href: '/docs/markdown/',
+    icon: 'lucide:wand-sparkles',
+    title: 'Markdown transforms',
+    body: 'Generate package-manager tabs and image galleries from normal Markdown at build time.',
+  },
+  {
+    href: '/docs/styling/',
+    icon: 'lucide:palette',
+    title: 'Theme tokens',
+    body: 'Map components to Lotus or to your own shell with the shared --pl-* custom properties.',
+  },
+];
+---
+
+<PageSection class="border-b border-(--lotus-border-subtle)" padding="lg" size="xl">
+  <div class="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(24rem,0.75fr)] lg:items-end lg:justify-between">
+    <div>
+      <p class="section-label">What you get</p>
+      <h2 class="section-heading mt-3">Content UI that stays inside the reading flow.</h2>
+    </div>
+    <p class="max-w-xl text-base leading-7 text-(--lotus-text-muted) lg:justify-self-end">
+      The package focuses on documentation patterns that repeat across setup
+      guides, API references, migration notes, and tutorials.
+    </p>
+  </div>
+
+  <div class="mt-12">
+    <CardGrid>
+      {featureLinks.map((feature) => (
+        <Card icon={feature.icon} title={feature.title} href={feature.href}>
+          {feature.body}
+        </Card>
+      ))}
+    </CardGrid>
+  </div>
+</PageSection>
+
+<style>
+  .section-label {
+    color: var(--lotus-text-muted);
+    font-family: var(--lotus-font-mono);
+    font-size: 0.8125rem;
+  }
+
+  .section-heading {
+    color: var(--lotus-text-strong);
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.08;
+    max-width: 46rem;
+  }
+</style>

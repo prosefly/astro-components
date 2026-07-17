@@ -1,14 +1,15 @@
 ---
 title: Tabs
-description: Present parallel examples as selectable panels.
+description: Let readers choose between equivalent examples.
 sidebar:
   order: 4
 ---
 
 import { TabItem, Tabs } from '@prosefly/astro-components';
 
-Use `Tabs` when readers need to switch between equivalent examples, such as
-package managers, frameworks, or output formats.
+Use `Tabs` when each panel solves the same task for a different audience:
+package manager, framework, language, operating system, or output format. Do
+not use tabs for unrelated content; readers may miss hidden information.
 
 ## Import
 
@@ -32,7 +33,23 @@ import { TabItem, Tabs } from '@prosefly/astro-components';
   </TabItem>
 </Tabs>
 
-## Package Managers
+````mdx
+<Tabs>
+  <TabItem label="Preview">
+    Tabs can contain prose, lists, links, and other MDX content.
+  </TabItem>
+  <TabItem label="Code">
+    ```astro
+    <Tabs>
+      <TabItem label="Preview">Preview content</TabItem>
+      <TabItem label="Code">Code content</TabItem>
+    </Tabs>
+    ```
+  </TabItem>
+</Tabs>
+````
+
+## Commands With Copy
 
 <Tabs copy syncKey="install-command">
   <TabItem label="pnpm" icon="simple-icons:pnpm">
@@ -52,4 +69,95 @@ import { TabItem, Tabs } from '@prosefly/astro-components';
   </TabItem>
 </Tabs>
 
-Use `syncKey` to share the selected tab across groups with matching labels.
+Set `copy` when every panel contains a code block and readers are likely to
+copy the active command.
+
+````mdx
+<Tabs copy syncKey="install-command">
+  <TabItem label="pnpm" icon="simple-icons:pnpm">
+    ```sh
+    pnpm add @prosefly/astro-components
+    ```
+  </TabItem>
+  <TabItem label="npm" icon="simple-icons:npm">
+    ```sh
+    npm install @prosefly/astro-components
+    ```
+  </TabItem>
+  <TabItem label="yarn" icon="simple-icons:yarn">
+    ```sh
+    yarn add @prosefly/astro-components
+    ```
+  </TabItem>
+</Tabs>
+````
+
+## Synced Groups
+
+Use `syncKey` when the same choices appear more than once on a page. Selecting
+`pnpm` in one group will select `pnpm` in the other group.
+
+<Tabs syncKey="workflow-command">
+  <TabItem label="pnpm" icon="simple-icons:pnpm">
+    ```sh
+    pnpm dev
+    ```
+  </TabItem>
+  <TabItem label="npm" icon="simple-icons:npm">
+    ```sh
+    npm run dev
+    ```
+  </TabItem>
+</Tabs>
+
+<Tabs syncKey="workflow-command">
+  <TabItem label="pnpm" icon="simple-icons:pnpm">
+    ```sh
+    pnpm build
+    ```
+  </TabItem>
+  <TabItem label="npm" icon="simple-icons:npm">
+    ```sh
+    npm run build
+    ```
+  </TabItem>
+</Tabs>
+
+````mdx
+<Tabs syncKey="workflow-command">
+  <TabItem label="pnpm" icon="simple-icons:pnpm">
+    ```sh
+    pnpm dev
+    ```
+  </TabItem>
+  <TabItem label="npm" icon="simple-icons:npm">
+    ```sh
+    npm run dev
+    ```
+  </TabItem>
+</Tabs>
+
+<Tabs syncKey="workflow-command">
+  <TabItem label="pnpm" icon="simple-icons:pnpm">
+    ```sh
+    pnpm build
+    ```
+  </TabItem>
+  <TabItem label="npm" icon="simple-icons:npm">
+    ```sh
+    npm run build
+    ```
+  </TabItem>
+</Tabs>
+````
+
+## Props
+
+| Component | Prop | Type | Notes |
+| --- | --- | --- | --- |
+| `Tabs` | `copy` | `boolean \| string` | Shows a copy button for the active panel. |
+| `Tabs` | `defaultValue` | `string` | Selects a tab by `label` or `value`. |
+| `Tabs` | `syncKey` | `string` | Shares selection across groups with matching labels. |
+| `TabItem` | `label` | `string` | Required visible tab label. |
+| `TabItem` | `value` | `string` | Stable internal value. |
+| `TabItem` | `icon` | `string` | Iconify icon shown in the active tab indicator. |

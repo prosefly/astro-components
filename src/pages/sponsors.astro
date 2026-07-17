@@ -1,0 +1,40 @@
+---
+import {
+  BaseLayout,
+  SiteFooter,
+  SiteHeader,
+} from '@prosefly/astro-theme-lotus/layouts';
+import MaintainerSponsors from '../components/sponsors/MaintainerSponsors.astro';
+import ProseflySponsors from '../components/sponsors/ProseflySponsors.astro';
+import SponsorsHero from '../components/sponsors/SponsorsHero.astro';
+import {
+  getMaintainerSponsors,
+  getPastSponsors,
+  groupCurrentSponsors,
+} from '../lib/sponsors';
+
+const maintainerSponsors = await getMaintainerSponsors();
+const currentMaintainerSponsorGroups = groupCurrentSponsors(maintainerSponsors);
+const currentMaintainerSponsors = currentMaintainerSponsorGroups.flatMap((group) => group.sponsors);
+const pastMaintainerSponsors = getPastSponsors(maintainerSponsors);
+---
+
+<BaseLayout
+  title="Sponsors"
+  description="Support Astro Components, Prosefly, and the maintainer behind these open-source Astro tools."
+  head={[{ tag: 'meta', attrs: { name: 'generator', content: 'Astro Components by Prosefly' } }]}
+>
+  <SiteHeader currentPath="/sponsors/" surface />
+  <main>
+    <SponsorsHero
+      currentMaintainerSponsorCount={currentMaintainerSponsors.length}
+      pastMaintainerSponsorCount={pastMaintainerSponsors.length}
+    />
+    <ProseflySponsors />
+    <MaintainerSponsors
+      currentSponsorGroups={currentMaintainerSponsorGroups}
+      pastSponsors={pastMaintainerSponsors}
+    />
+  </main>
+  <SiteFooter />
+</BaseLayout>
