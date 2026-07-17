@@ -8,11 +8,31 @@ import HomeDocRoutes from '../components/home/HomeDocRoutes.astro';
 import HomeFeatureGrid from '../components/home/HomeFeatureGrid.astro';
 import HomeHero from '../components/home/HomeHero.astro';
 import HomeMdxUsage from '../components/home/HomeMdxUsage.astro';
+
+const socialDescription = 'Reusable Astro components and markdown transforms for polished MDX documentation.';
+const socialImage = '/og.png';
+const socialImageAlt = 'Astro Components social preview showing Prosefly branding and MDX component examples.';
+const socialHead = [
+  { tag: 'meta', attrs: { property: 'og:type', content: 'website' } },
+  { tag: 'meta', attrs: { property: 'og:site_name', content: 'Prosefly' } },
+  { tag: 'meta', attrs: { property: 'og:title', content: 'Astro Components' } },
+  { tag: 'meta', attrs: { property: 'og:description', content: socialDescription } },
+  { tag: 'meta', attrs: { property: 'og:image', content: socialImage } },
+  { tag: 'meta', attrs: { property: 'og:image:width', content: 1200 } },
+  { tag: 'meta', attrs: { property: 'og:image:height', content: 630 } },
+  { tag: 'meta', attrs: { property: 'og:image:alt', content: socialImageAlt } },
+  { tag: 'meta', attrs: { name: 'twitter:card', content: 'summary_large_image' } },
+  { tag: 'meta', attrs: { name: 'twitter:title', content: 'Astro Components' } },
+  { tag: 'meta', attrs: { name: 'twitter:description', content: socialDescription } },
+  { tag: 'meta', attrs: { name: 'twitter:image', content: socialImage } },
+  { tag: 'meta', attrs: { name: 'twitter:image:alt', content: socialImageAlt } },
+];
 ---
 
 <BaseLayout
   title="Astro Components"
-  description="Reusable Astro components and markdown transforms for polished MDX documentation."
+  description={socialDescription}
+  head={socialHead}
 >
   <SiteHeader currentPath="/" surface />
 

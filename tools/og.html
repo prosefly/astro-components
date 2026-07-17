@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1200, initial-scale=1" />
+    <title>Astro Components OG Preview</title>
+    <style>
+      :root {
+        --text: #0f172a;
+        --muted: #526173;
+        --subtle: #778697;
+        --border: #d0dce5;
+        --surface: #ffffff;
+        --green: #059669;
+        --green-dark: #14532d;
+        --green-soft: #dcf8e9;
+        --purple-soft: #e7eaff;
+        --amber-soft: #fff3cd;
+        --code: #101827;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 630px;
+        margin: 0;
+        overflow: hidden;
+        width: 1200px;
+      }
+
+      body {
+        background:
+          linear-gradient(120deg, transparent 0 63%, rgb(220 248 233 / 72%) 63% 100%),
+          linear-gradient(to right, rgb(218 226 235 / 52%) 1px, transparent 1px),
+          linear-gradient(to bottom, rgb(218 226 235 / 52%) 1px, transparent 1px),
+          linear-gradient(180deg, #fbfcfd 0%, #edf8f2 100%);
+        background-size: auto, 48px 48px, 48px 48px, auto;
+        color: var(--text);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+        font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+        position: relative;
+      }
+
+      .frame {
+        border: 2px solid rgb(168 213 189 / 88%);
+        border-radius: 32px;
+        inset: 34px;
+        position: absolute;
+      }
+
+      .brand {
+        align-items: center;
+        display: flex;
+        gap: 16px;
+        left: 76px;
+        position: absolute;
+        top: 70px;
+      }
+
+      .brand img {
+        background: white;
+        height: 54px;
+        padding: 8px;
+        width: 54px;
+      }
+
+      .brand strong {
+        color: var(--green-dark);
+        font-size: 29px;
+        font-weight: 650;
+        letter-spacing: 0;
+      }
+
+      .brand span {
+        color: var(--subtle);
+        font-size: 15px;
+        margin-left: 18px;
+      }
+
+      .copy {
+        left: 76px;
+        position: absolute;
+        top: 170px;
+        width: 505px;
+      }
+
+      h1 {
+        font-size: 72px;
+        font-weight: 670;
+        letter-spacing: 0;
+        line-height: 1.04;
+        margin: 0;
+      }
+
+      h1 span {
+        color: var(--green);
+        display: block;
+      }
+
+      .tagline {
+        color: var(--muted);
+        font-size: 25px;
+        line-height: 1.42;
+        margin: 22px 0 0;
+      }
+
+      .command {
+        align-items: center;
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        box-shadow: 0 12px 30px rgb(15 23 42 / 5%);
+        color: #172033;
+        display: flex;
+        font-family: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 16px;
+        gap: 16px;
+        height: 52px;
+        margin-top: 24px;
+        padding: 0 18px;
+        width: 454px;
+      }
+
+      .command b {
+        color: var(--green);
+        font-weight: 500;
+      }
+
+      .chips {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+      }
+
+      .chip {
+        border: 1px solid rgb(176 193 207 / 72%);
+        border-radius: 999px;
+        font-size: 16px;
+        line-height: 34px;
+        padding: 0 14px;
+      }
+
+      .chip.green {
+        background: var(--green-soft);
+        color: var(--green-dark);
+      }
+
+      .chip.purple {
+        background: var(--purple-soft);
+        color: #4338ca;
+      }
+
+      .chip.amber {
+        background: var(--amber-soft);
+        color: #754400;
+      }
+
+      .preview {
+        background: white;
+        border: 1px solid rgb(190 210 202 / 90%);
+        border-radius: 28px;
+        box-shadow: 0 28px 80px rgb(15 23 42 / 18%);
+        height: 502px;
+        left: 575px;
+        overflow: hidden;
+        position: absolute;
+        top: 72px;
+        width: 550px;
+      }
+
+      .preview-bar {
+        align-items: center;
+        background: #fbfcfc;
+        border-bottom: 1px solid #eef2f5;
+        color: #78879a;
+        display: flex;
+        font-family: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 15px;
+        gap: 14px;
+        height: 58px;
+        padding: 0 24px;
+      }
+
+      .dot {
+        border-radius: 999px;
+        display: inline-block;
+        height: 10px;
+        width: 10px;
+      }
+
+      .dot.red {
+        background: #ffe7e7;
+        border: 1px solid #f3c7c7;
+      }
+
+      .dot.yellow {
+        background: #fff0bf;
+        border: 1px solid #ead48a;
+      }
+
+      .dot.green {
+        background: #d7f5e5;
+        border: 1px solid #a8dfc2;
+      }
+
+      .badge {
+        background: var(--green-soft);
+        border: 1px solid #a8dfc2;
+        border-radius: 999px;
+        color: var(--green-dark);
+        font-family: ui-sans-serif, system-ui, sans-serif;
+        font-size: 14px;
+        margin-left: auto;
+        padding: 4px 12px;
+      }
+
+      .preview-main {
+        padding: 26px 34px 28px;
+      }
+
+      .preview h2 {
+        font-size: 29px;
+        font-weight: 650;
+        letter-spacing: 0;
+        line-height: 1.15;
+        margin: 0;
+      }
+
+      .preview .lede {
+        color: var(--muted);
+        font-size: 19px;
+        line-height: 1.45;
+        margin: 6px 0 0;
+      }
+
+      .callout {
+        align-items: start;
+        background: var(--green-soft);
+        border: 1px solid #9fdcbd;
+        border-radius: 14px;
+        display: grid;
+        gap: 18px;
+        grid-template-columns: 26px 1fr;
+        margin-top: 22px;
+        padding: 17px 18px;
+      }
+
+      .callout-icon {
+        background: var(--green);
+        border-radius: 999px;
+        height: 24px;
+        margin-top: 3px;
+        width: 24px;
+      }
+
+      .callout strong {
+        color: var(--green-dark);
+        display: block;
+        font-size: 18px;
+        font-weight: 650;
+      }
+
+      .callout p {
+        color: #295942;
+        font-size: 15px;
+        line-height: 1.45;
+        margin: 5px 0 0;
+      }
+
+      .tabs {
+        background: #f4f7fb;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        margin-top: 18px;
+        overflow: hidden;
+      }
+
+      .tab-list {
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        gap: 14px;
+        height: 38px;
+        padding: 0 12px;
+      }
+
+      .tab {
+        color: var(--subtle);
+        font-size: 14px;
+        padding: 4px 10px;
+      }
+
+      .tab.active {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+      }
+
+      .code {
+        background: var(--code);
+        border-radius: 10px;
+        color: #e7f5ef;
+        font-family: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 16px;
+        margin: 14px 18px 16px;
+        padding: 17px;
+      }
+
+      .bottom {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: 230px 1fr;
+        margin-top: 20px;
+      }
+
+      .tree {
+        background: #fcfdfd;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        height: 100px;
+        padding: 14px 18px;
+      }
+
+      .tree-row {
+        align-items: center;
+        color: var(--muted);
+        display: flex;
+        font-family: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 14px;
+        gap: 9px;
+        height: 24px;
+      }
+
+      .tree-row:nth-child(2) {
+        padding-left: 18px;
+      }
+
+      .tree-row:nth-child(3) {
+        padding-left: 36px;
+      }
+
+      .tree-row:nth-child(4) {
+        color: var(--text);
+        padding-left: 54px;
+      }
+
+      .file-icon,
+      .folder-icon {
+        border-radius: 3px;
+        flex: 0 0 auto;
+        height: 12px;
+        width: 15px;
+      }
+
+      .folder-icon {
+        background: #dff4ea;
+        border: 1px solid #b0dcc6;
+      }
+
+      .file-icon {
+        background: #f1f5f9;
+        border: 1px solid #d8e1eb;
+        width: 12px;
+      }
+
+      .mini-cards {
+        display: grid;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .mini-card {
+        align-items: center;
+        background: #fcfdfd;
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        display: grid;
+        gap: 0 14px;
+        grid-template-columns: 26px 1fr;
+        min-height: 48px;
+        padding: 9px 14px;
+      }
+
+      .mini-card i {
+        border-radius: 8px;
+        display: block;
+        height: 24px;
+        width: 24px;
+      }
+
+      .mini-card strong {
+        color: var(--text);
+        display: block;
+        font-size: 16px;
+        font-weight: 650;
+        line-height: 1.1;
+      }
+
+      .mini-card span {
+        color: var(--muted);
+        display: block;
+        font-size: 14px;
+        line-height: 1.25;
+        margin-top: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="frame"></div>
+
+    <div class="brand">
+      <img src="../public/prosefly-mark.svg" alt="" />
+      <strong>Prosefly</strong>
+    </div>
+
+    <section class="copy">
+      <h1>Astro <span>Components</span></h1>
+      <p class="tagline">Reusable Astro components and markdown transforms for polished MDX documentation.</p>
+      <div class="command"><b>$</b><span>pnpm add @prosefly/astro-components</span></div>
+      <div class="chips">
+        <span class="chip green">Astro</span>
+        <span class="chip purple">MDX</span>
+        <span class="chip amber">Package tabs</span>
+      </div>
+    </section>
+
+    <aside class="preview">
+      <div class="preview-bar">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span>docs/install.mdx</span>
+        <span class="badge">rendered components</span>
+      </div>
+      <div class="preview-main">
+        <h2>Install in Astro MDX</h2>
+        <p class="lede">Use components directly in documentation pages.</p>
+
+        <div class="callout">
+          <span class="callout-icon"></span>
+          <div>
+            <strong>MDX-friendly primitives</strong>
+            <p>Callouts, tabs, cards, file trees, badges, and icons.</p>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <div class="tab-list">
+            <span class="tab active">pnpm</span>
+            <span class="tab">npm</span>
+            <span class="tab">yarn</span>
+          </div>
+          <div class="code">pnpm add @prosefly/astro-components</div>
+        </div>
+
+        <div class="bottom">
+          <div class="tree">
+            <div class="tree-row"><span class="folder-icon"></span>src</div>
+            <div class="tree-row"><span class="folder-icon"></span>content</div>
+            <div class="tree-row"><span class="folder-icon"></span>docs</div>
+            <div class="tree-row"><span class="file-icon"></span>install.mdx</div>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card">
+              <i style="background: var(--green-soft)"></i>
+              <div><strong>Callout</strong><span>Highlight critical context.</span></div>
+            </div>
+            <div class="mini-card">
+              <i style="background: var(--purple-soft)"></i>
+              <div><strong>Package tabs</strong><span>Synced install commands.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </body>
+</html>
