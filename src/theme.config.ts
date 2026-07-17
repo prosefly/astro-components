@@ -67,6 +67,16 @@ export default defineLotusConfig({
         ],
       },
       {
+        title: 'Projects',
+        links: [
+          {
+            label: 'Lotus',
+            href: 'https://astro-theme-lotus.prosefly.dev',
+            external: true,
+          },
+        ],
+      },
+      {
         title: 'Community',
         links: [
           {
