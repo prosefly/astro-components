@@ -30,11 +30,11 @@ const hasTitle = Boolean(title);
 
 <style>
   .pl-callout {
-    --pl-callout-color: var(--pl-accent, #4f46e5);
-    --pl-callout-ink: var(--pl-accent, #4f46e5);
+    --pl-callout-color: var(--pl-callout-note-color, oklch(0.62 0.16 255));
+    --pl-callout-ink: var(--pl-callout-note-ink, oklch(0.46 0.14 255));
     --pl-callout-bg: var(
-      --pl-accent-soft,
-      color-mix(in oklab, var(--pl-accent, #4f46e5) 8%, var(--pl-background, #ffffff))
+      --pl-callout-note-bg,
+      color-mix(in oklab, var(--pl-callout-color) 10%, var(--pl-background, #ffffff))
     );
 
     display: grid;
@@ -49,21 +49,30 @@ const hasTitle = Boolean(title);
   }
 
   .pl-callout[data-type='tip'] {
-    --pl-callout-color: oklch(0.64 0.16 155);
-    --pl-callout-ink: oklch(0.45 0.13 155);
-    --pl-callout-bg: color-mix(in oklab, oklch(0.64 0.16 155) 10%, var(--pl-background, #ffffff));
+    --pl-callout-color: var(--pl-callout-tip-color, oklch(0.64 0.16 155));
+    --pl-callout-ink: var(--pl-callout-tip-ink, oklch(0.45 0.13 155));
+    --pl-callout-bg: var(
+      --pl-callout-tip-bg,
+      color-mix(in oklab, var(--pl-callout-color) 10%, var(--pl-background, #ffffff))
+    );
   }
 
   .pl-callout[data-type='warning'] {
-    --pl-callout-color: oklch(0.74 0.16 80);
-    --pl-callout-ink: oklch(0.5 0.12 80);
-    --pl-callout-bg: color-mix(in oklab, oklch(0.74 0.16 80) 12%, var(--pl-background, #ffffff));
+    --pl-callout-color: var(--pl-callout-warning-color, oklch(0.74 0.16 80));
+    --pl-callout-ink: var(--pl-callout-warning-ink, oklch(0.5 0.12 80));
+    --pl-callout-bg: var(
+      --pl-callout-warning-bg,
+      color-mix(in oklab, var(--pl-callout-color) 12%, var(--pl-background, #ffffff))
+    );
   }
 
   .pl-callout[data-type='danger'] {
-    --pl-callout-color: oklch(0.62 0.2 25);
-    --pl-callout-ink: oklch(0.52 0.16 25);
-    --pl-callout-bg: color-mix(in oklab, oklch(0.62 0.2 25) 10%, var(--pl-background, #ffffff));
+    --pl-callout-color: var(--pl-callout-danger-color, oklch(0.62 0.2 25));
+    --pl-callout-ink: var(--pl-callout-danger-ink, oklch(0.52 0.16 25));
+    --pl-callout-bg: var(
+      --pl-callout-danger-bg,
+      color-mix(in oklab, var(--pl-callout-color) 10%, var(--pl-background, #ffffff))
+    );
   }
 
   .pl-callout[data-has-title='false'] {
