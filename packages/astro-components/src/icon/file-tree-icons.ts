@@ -1,6 +1,9 @@
-import type { FileTreeEntry } from './rehype-file-tree';
-
 export type FileTreeIconSet = 'lucide' | 'vscode-icons';
+
+interface FileTreeIconEntry {
+  isDirectory: boolean;
+  nameText: string;
+}
 
 interface FileTreeIcon {
   closed?: string;
@@ -127,7 +130,7 @@ export function normalizeFileTreeIconSet(iconSet: string | undefined): FileTreeI
   return iconSet === 'vscode-icons' ? 'vscode-icons' : 'lucide';
 }
 
-export function getFileTreeIcon(entry: FileTreeEntry, iconSet: FileTreeIconSet): FileTreeIcon {
+export function getFileTreeIcon(entry: FileTreeIconEntry, iconSet: FileTreeIconSet): FileTreeIcon {
   if (iconSet === 'lucide') {
     return entry.isDirectory ? lucideIcons.directory : lucideIcons.file;
   }

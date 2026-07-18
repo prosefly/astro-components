@@ -4,7 +4,7 @@ import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { AstroIntegration } from 'astro';
 import type { Plugin } from 'vite';
-import { fileTreeComponentIconNames } from '../mdx/file-tree-icons';
+import { fileTreeComponentIconNames } from './file-tree-icons.js';
 
 export interface IconIntegrationOptions {
   apiBase?: string;
