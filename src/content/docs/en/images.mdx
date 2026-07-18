@@ -10,9 +10,11 @@ import { Callout, Steps } from '@prosefly/astro-components';
 Use `rehypeImageGallery` when authors should write normal Markdown images while
 the site renders polished figures and multi-image galleries.
 
-<Callout type="tip" title="Using prosefly lotus">
-  Lotus enables the image gallery transform automatically. If your site uses
-  `@prosefly/astro-theme-lotus`, the Markdown transform is already active.
+<Callout type="tip" title="Using Lotus">
+  [Lotus](https://astro-theme-lotus.prosefly.dev/) enables the image gallery
+  transform automatically. If your site uses
+  [`@prosefly/astro-theme-lotus`](https://astro-theme-lotus.prosefly.dev/), the
+  Markdown transform is already active.
 </Callout>
 
 ## What Authors Write
@@ -32,7 +34,8 @@ A paragraph that contains multiple images becomes a gallery.
 
 ## Standalone Astro Setup
 
-If you are not using Lotus, add the rehype plugin in `astro.config.ts`.
+If you are not using [Lotus](https://astro-theme-lotus.prosefly.dev/), add the
+rehype plugin in `astro.config.ts`.
 
 ```ts title="astro.config.ts"
 import { defineConfig } from 'astro/config';
@@ -85,6 +88,7 @@ multiple images. Single-image figures only need the CSS.
 </Steps>
 
 <Callout type="warning" title="Avoid double configuration">
-  Lotus already configures `rehypeImageGallery` and loads the theme styles. Add
-  the plugin and runtime manually only in standalone Astro projects.
+  [Lotus](https://astro-theme-lotus.prosefly.dev/) already configures
+  `rehypeImageGallery` and loads the theme styles. Add the plugin and runtime
+  manually only in standalone Astro projects.
 </Callout>

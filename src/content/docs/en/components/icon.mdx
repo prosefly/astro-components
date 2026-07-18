@@ -2,7 +2,7 @@
 title: Icon
 description: Render Iconify icons in Astro and MDX content.
 sidebar:
-  order: 7
+  order: 8
 ---
 
 import { Callout, Icon } from '@prosefly/astro-components';
@@ -39,7 +39,7 @@ when the icon itself carries meaning.
 ## Icon Integration
 
 Use `@prosefly/astro-components/icon` when a project wants Iconify preloading
-without Lotus.
+without [Lotus](https://astro-theme-lotus.prosefly.dev/).
 
 ```ts title="astro.config.ts"
 import { defineConfig } from 'astro/config';
@@ -54,9 +54,24 @@ export default defineConfig({
 });
 ```
 
+The integration always includes icons used internally by the package components.
+It also scans `src/**/*.astro`, `src/**/*.md`, and `src/**/*.mdx` for static
+`name` and `icon` prop values by default. Add dynamic icon names to `preload`,
+because the scanner only sees literal strings.
+
+| Option | Type | Default |
+| --- | --- | --- |
+| `preload` | `string[]` | `[]` |
+| `scan` | `boolean` | `true` |
+| `apiBase` | `string` | `https://api.iconify.design` |
+
+Set `scan: false` when a site should preload only the icons listed in
+`preload`, or set `apiBase` to use an internal Iconify-compatible endpoint.
+
 <Callout type="note" title="Lotus default">
-  Lotus registers the icon integration and scans `src/**/*.astro`,
-  `src/**/*.md`, and `src/**/*.mdx` for static icon names.
+  [Lotus](https://astro-theme-lotus.prosefly.dev/) registers the icon
+  integration and scans `src/**/*.astro`, `src/**/*.md`, and `src/**/*.mdx` for
+  static icon names.
 </Callout>
 
 ## Props

@@ -43,6 +43,7 @@ wrapper if only one section should use the Prosefly visual system.
   --pl-danger-ink: #b91c1c;
   --pl-danger-contrast: #ffffff;
   --pl-border-subtle: #e4e4e7;
+  --pl-border-muted: #d4d4d8;
   --pl-font-sans: ui-sans-serif, system-ui, sans-serif;
   --pl-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
   --pl-radius-sm: 0.25rem;
@@ -70,12 +71,43 @@ wrapper if only one section should use the Prosefly visual system.
 | `--pl-{info\|success\|warning\|danger}-contrast` | Text placed on solid semantic backgrounds |
 | `--pl-callout-{note\|tip\|warning\|danger}-{color\|ink\|bg}` | Type-specific callout overrides |
 | `--pl-border-subtle` | Component borders |
+| `--pl-border-muted` | Active tabs and hover borders |
 | `--pl-font-sans` | Prose and UI labels |
 | `--pl-font-mono` | File trees and code-adjacent labels |
 | `--pl-radius-sm` | Small controls |
 | `--pl-radius-md` | Buttons, triggers, compact surfaces |
 | `--pl-radius-lg` | Cards, callouts, tabs, file trees |
 | `--pl-radius-full` | Pills and badges |
+
+## Component Tokens
+
+Use component tokens when a site needs layout-level tuning beyond the shared
+palette.
+
+| Token | Used For |
+| --- | --- |
+| `--pl-card-padding` | Card inner spacing |
+| `--pl-card-layout-gap` | Space between card icon and body |
+| `--pl-card-body-gap` | Space between card title and content |
+| `--pl-card-icon-size` | Card icon container size |
+| `--pl-card-icon-glyph-size` | Icon size inside card icon containers |
+| `--pl-card-title-size` | Card title font size |
+| `--pl-card-title-line-height` | Card title line height |
+| `--pl-card-content-size` | Card body font size |
+| `--pl-card-content-line-height` | Card body line height |
+| `--pl-card-content-gap` | Space between multiple body children |
+| `--pl-card-grid-gap` | Space between cards in a `CardGrid` |
+| `--pl-card-grid-margin` | Vertical margin around a `CardGrid` |
+| `--pl-file-tree-border` | File tree outer border |
+| `--pl-file-tree-line` | File tree connector lines |
+| `--pl-image-gallery-preview-width` | Visible preview width for the next gallery image |
+| `--pl-image-gallery-ratio` | Fallback gallery item aspect ratio before images are measured |
+| `--pl-steps-bullet-size` | Step marker size |
+| `--pl-steps-bullet-margin` | Gap below a step marker before the connector line starts |
+| `--pl-steps-line` | Step connector line color |
+| `--pl-steps-marker-background` | Step marker background |
+| `--pl-steps-marker-foreground` | Step marker text color |
+| `--pl-steps-start` | Counter starting offset for step numbering |
 
 <Callout type="tip" title="Scope tokens intentionally">
   Place overrides on `:root` for a site-wide theme, or on a docs layout wrapper
@@ -86,7 +118,8 @@ wrapper if only one section should use the Prosefly visual system.
 
 ## Lotus Projects
 
-Lotus maps its design system to the same component expectations. In a Lotus
+[Lotus](https://astro-theme-lotus.prosefly.dev/) maps its design system to the
+same component expectations. In a [Lotus](https://astro-theme-lotus.prosefly.dev/)
 site, start with `src/theme.config.ts` for accent, gray, radius, and color mode
 choices. Use custom CSS only when you need lower-level control than the theme
 configuration provides.

@@ -10,9 +10,11 @@ import { Callout, Steps } from '@prosefly/astro-components';
 Use `remarkPackageManagerTabs` when authors should write one familiar command
 and let the docs render equivalent commands for other package managers.
 
-<Callout type="tip" title="Using prosefly lotus">
-  Lotus enables package manager tabs automatically. If your site uses
-  `@prosefly/astro-theme-lotus`, do not add this plugin yourself.
+<Callout type="tip" title="Using Lotus">
+  [Lotus](https://astro-theme-lotus.prosefly.dev/) enables package manager tabs
+  automatically. If your site uses
+  [`@prosefly/astro-theme-lotus`](https://astro-theme-lotus.prosefly.dev/), do
+  not add this plugin yourself.
 </Callout>
 
 ## What Authors Write
@@ -31,10 +33,16 @@ tool.
 
 - `npm install`
 - `npm install <packages>`
+- `npm i <packages>`
+- `npm add <packages>`
 - `npm run <script>`
 - `npm create <initializer>`
 - `npx <command>`
 - `npm dlx <command>`
+
+Install commands preserve package names and normalize dev-dependency flags for
+each package manager. For example, `npm install --save-dev typescript` becomes
+the matching `pnpm add -D`, `yarn add -D`, and `bun add -d` command.
 
 Examples:
 
@@ -66,7 +74,8 @@ Supported forms include:
 
 ## Standalone Astro Setup
 
-If you are not using Lotus, add the remark plugin in `astro.config.ts`.
+If you are not using [Lotus](https://astro-theme-lotus.prosefly.dev/), add the
+remark plugin in `astro.config.ts`.
 
 ```ts title="astro.config.ts"
 import { defineConfig } from 'astro/config';
@@ -91,13 +100,18 @@ code block, so authors do not need to import those components manually.
    The plugin transforms `sh`, `shell`, `bash`, `zsh`, `terminal`, and
    `console` blocks. It also handles code fences without a language.
 
-2. **Keep each transformed block consistent.**
+2. **Keep prompts simple.**
+
+   Lines may start with `$ `, and the prompt is preserved in each generated
+   command. Other prompt formats remain normal code blocks.
+
+3. **Keep each transformed block consistent.**
 
    A block can contain multiple commands, but they must belong to the same
    package-manager family. Do not mix Node and Python commands in the same code
    block.
 
-3. **Leave custom commands alone.**
+4. **Leave custom commands alone.**
 
    Unsupported commands remain normal code blocks. Use manual `Tabs` when the
    alternatives need custom wording.
@@ -105,6 +119,6 @@ code block, so authors do not need to import those components manually.
 </Steps>
 
 <Callout type="warning" title="Avoid double configuration">
-  Lotus already configures this plugin. Adding it again can duplicate imports
-  or produce nested tab output.
+  [Lotus](https://astro-theme-lotus.prosefly.dev/) already configures this
+  plugin. Adding it again can duplicate imports or produce nested tab output.
 </Callout>

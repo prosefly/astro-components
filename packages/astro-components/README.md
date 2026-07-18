@@ -2,6 +2,18 @@
 
 Reusable Astro components for MDX content.
 
+## Install
+
+Install the package in an Astro v7 project:
+
+```sh
+pnpm add @prosefly/astro-components
+```
+
+If your site renders `.mdx` pages, make sure MDX is configured in Astro first.
+[Lotus](https://astro-theme-lotus.prosefly.dev/) projects already include MDX,
+the markdown transforms, icon preloading, and the docs shell.
+
 ```astro
 ---
 import { Callout } from '@prosefly/astro-components';
@@ -11,6 +23,9 @@ import { Callout } from '@prosefly/astro-components';
   Package components use Prosefly CSS custom properties with built-in fallbacks.
 </Callout>
 ```
+
+Full documentation is available at
+[astro-components.prosefly.dev](https://astro-components.prosefly.dev).
 
 ## Exports
 
@@ -33,7 +48,7 @@ The markdown entry exports:
 ## Icon Integration
 
 Use the `@prosefly/astro-components/icon` integration when a project wants
-Iconify preloading without the full Lotus theme:
+Iconify preloading without the full [Lotus](https://astro-theme-lotus.prosefly.dev/) theme:
 
 ```ts
 import { defineConfig } from 'astro/config';
@@ -70,8 +85,8 @@ export default defineConfig({
 
 `remarkPackageManagerTabs` recognizes common `npm` commands and can generate
 tabs for Node and Python package managers. `rehypeImageGallery` turns paragraphs
-that contain only images into gallery figures. Lotus enables both transforms by
-default.
+that contain only images into gallery figures. [Lotus](https://astro-theme-lotus.prosefly.dev/)
+enables both transforms by default.
 
 Import the image gallery runtime once in the page shell to load styles and
 enable previous and next controls for galleries produced by

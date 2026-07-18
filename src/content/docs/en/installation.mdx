@@ -7,9 +7,10 @@ sidebar:
 
 import { Callout, TabItem, Tabs, Steps } from '@prosefly/astro-components';
 
-Install the package where your MDX content is rendered. Lotus users can usually
-start importing components immediately. Standalone Astro users can also enable
-the icon integration, package-manager tabs, and image galleries.
+Install the package where your MDX content is rendered.
+[Lotus](https://astro-theme-lotus.prosefly.dev/) users can usually start
+importing components immediately. Standalone Astro users can also enable the
+icon integration, package-manager tabs, and image galleries.
 
 ## Install
 
@@ -38,6 +39,19 @@ the icon integration, package-manager tabs, and image galleries.
 
 ## Use In MDX
 
+Standalone Astro projects need MDX configured before they can render component
+imports inside `.mdx` files. If the project already renders MDX pages, or if it
+uses [Lotus](https://astro-theme-lotus.prosefly.dev/), skip this setup.
+
+```ts title="astro.config.ts"
+import mdx from '@astrojs/mdx';
+import { defineConfig } from 'astro/config';
+
+export default defineConfig({
+  integrations: [mdx()],
+});
+```
+
 ```mdx title="src/content/docs/getting-started.mdx"
 import { Callout, Steps } from '@prosefly/astro-components';
 
@@ -58,7 +72,7 @@ import { Callout, Steps } from '@prosefly/astro-components';
 
 <Steps>
 
-1. **Add icon preloading if you use icons outside Lotus.**
+1. **Add icon preloading if you use icons outside [Lotus](https://astro-theme-lotus.prosefly.dev/).**
 
    ```ts title="astro.config.ts"
    import { defineConfig } from 'astro/config';
@@ -97,11 +111,11 @@ import { Callout, Steps } from '@prosefly/astro-components';
 
 </Steps>
 
-<Callout type="tip" title="Using prosefly lotus">
-  [`@prosefly/astro-theme-lotus`](https://github.com/prosefly/astro-theme-lotus) already wires the
+<Callout type="tip" title="Using Lotus">
+  [`@prosefly/astro-theme-lotus`](https://astro-theme-lotus.prosefly.dev/) already wires the
   markdown transforms, Iconify preloading, MDX, and docs shell. Install this
-  package directly only when you are using the components outside the Lotus
-  integration.
+  package directly only when you are using the components outside the
+  [Lotus](https://astro-theme-lotus.prosefly.dev/) integration.
 </Callout>
 
 For detailed setup, see [Package Manager Tabs](/docs/package-manager-tabs/) and
