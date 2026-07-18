@@ -1,13 +1,20 @@
 ---
 import FileTreeItem from './FileTreeItem.astro';
+import { normalizeFileTreeIconSet, type FileTreeIconSet } from './file-tree-icons';
 import { parseFileTree } from './rehype-file-tree';
 
+interface Props {
+  iconSet?: FileTreeIconSet;
+}
+
+const { iconSet: rawIconSet = 'lucide' } = Astro.props;
+const iconSet = normalizeFileTreeIconSet(rawIconSet);
 const fileTreeHtml = await Astro.slots.render('default');
 const entries = parseFileTree(fileTreeHtml);
 ---
 
-<ul class="pl-file-tree" role="list">
-  {entries.map((entry) => <FileTreeItem entry={entry} />)}
+<ul class="pl-file-tree" data-icon-set={iconSet} role="list">
+  {entries.map((entry) => <FileTreeItem entry={entry} iconSet={iconSet} />)}
 </ul>
 
 <style is:global>
@@ -140,6 +147,7 @@ const entries = parseFileTree(fileTreeHtml);
   .pl-file-tree__icon .pl-icon,
   .pl-file-tree__icon-closed .pl-icon,
   .pl-file-tree__icon-open .pl-icon,
+  .pl-file-tree__icon-theme .pl-icon,
   .pl-file-tree__chevron .pl-icon {
     display: block;
     height: 1rem;
@@ -155,23 +163,45 @@ const entries = parseFileTree(fileTreeHtml);
     display: inline-flex;
   }
 
+  .pl-file-tree__icon-theme--dark {
+    display: none;
+  }
+
+  :root[data-theme='dark'] .pl-file-tree__icon-theme--light {
+    display: none;
+  }
+
+  :root[data-theme='dark'] .pl-file-tree__icon-theme--dark {
+    display: block;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:is([data-theme='system'], :not([data-theme])) .pl-file-tree__icon-theme--light {
+      display: none;
+    }
+
+    :root:is([data-theme='system'], :not([data-theme])) .pl-file-tree__icon-theme--dark {
+      display: block;
+    }
+  }
+
   .pl-file-tree__icon[data-kind='directory'] {
     color: color-mix(in oklab, var(--pl-accent, #4f46e5) 82%, var(--pl-text, #344054));
   }
 
-  .pl-file-tree__icon[data-kind='code'] {
+  .pl-file-tree[data-icon-set='lucide'] .pl-file-tree__icon[data-kind='code'] {
     color: oklch(0.58 0.18 250);
   }
 
-  .pl-file-tree__icon[data-kind='config'] {
+  .pl-file-tree[data-icon-set='lucide'] .pl-file-tree__icon[data-kind='config'] {
     color: oklch(0.56 0.14 155);
   }
 
-  .pl-file-tree__icon[data-kind='style'] {
+  .pl-file-tree[data-icon-set='lucide'] .pl-file-tree__icon[data-kind='style'] {
     color: oklch(0.58 0.19 320);
   }
 
-  .pl-file-tree__icon[data-kind='image'] {
+  .pl-file-tree[data-icon-set='lucide'] .pl-file-tree__icon[data-kind='image'] {
     color: oklch(0.58 0.16 80);
   }
 

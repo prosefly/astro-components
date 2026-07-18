@@ -4,6 +4,7 @@ import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { AstroIntegration } from 'astro';
 import type { Plugin } from 'vite';
+import { fileTreeComponentIconNames } from '../mdx/file-tree-icons';
 
 export interface IconIntegrationOptions {
   apiBase?: string;
@@ -22,14 +23,11 @@ interface IconPreloadConfig {
 const componentIconNames = [
   'lucide:badge-alert',
   'lucide:check',
-  'lucide:chevron-right',
   'lucide:copy',
-  'lucide:file',
-  'lucide:folder',
-  'lucide:folder-open',
   'lucide:info',
   'lucide:lightbulb',
   'lucide:triangle-alert',
+  ...fileTreeComponentIconNames,
 ] as const;
 
 function addIconName(iconNames: Set<string>, icon?: string): void {

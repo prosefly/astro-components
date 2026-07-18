@@ -1,13 +1,16 @@
 ---
 import Icon from './Icon.astro';
 import FileTreeItem from './FileTreeItem.astro';
+import { getFileTreeIcon, type FileTreeIconSet } from './file-tree-icons';
 import type { FileTreeEntry } from './rehype-file-tree';
 
 interface Props {
   entry: FileTreeEntry;
+  iconSet: FileTreeIconSet;
 }
 
-const { entry } = Astro.props;
+const { entry, iconSet } = Astro.props;
+const icon = getFileTreeIcon(entry, iconSet);
 const placeholderEntry: FileTreeEntry = {
   children: [],
   commentHtml: '',
@@ -48,10 +51,10 @@ const children = entry.children.length > 0 ? entry.children : [placeholderEntry]
               {!entry.isPlaceholder && (
                 <span aria-hidden="true" class="pl-file-tree__icon" data-kind={entry.kind}>
                   <span class="pl-file-tree__icon-closed">
-                    <Icon name="lucide:folder" />
+                    <Icon name={icon.closed ?? icon.name} />
                   </span>
                   <span class="pl-file-tree__icon-open">
-                    <Icon name="lucide:folder-open" />
+                    <Icon name={icon.open ?? icon.name} />
                   </span>
                 </span>
               )}
@@ -68,7 +71,7 @@ const children = entry.children.length > 0 ? entry.children : [placeholderEntry]
           </span>
         </summary>
         <ul class="pl-file-tree__list" role="list">
-          {children.map((child) => <FileTreeItem entry={child} />)}
+          {children.map((child) => <FileTreeItem entry={child} iconSet={iconSet} />)}
         </ul>
       </details>
     ) : (
@@ -81,7 +84,18 @@ const children = entry.children.length > 0 ? entry.children : [placeholderEntry]
         >
           {!entry.isPlaceholder && (
             <span aria-hidden="true" class="pl-file-tree__icon" data-kind={entry.kind}>
-              <Icon name="lucide:file" />
+              {icon.light && icon.dark ? (
+                <>
+                  <span class="pl-file-tree__icon-theme pl-file-tree__icon-theme--light">
+                    <Icon name={icon.light} />
+                  </span>
+                  <span class="pl-file-tree__icon-theme pl-file-tree__icon-theme--dark">
+                    <Icon name={icon.dark} />
+                  </span>
+                </>
+              ) : (
+                <Icon name={icon.name} />
+              )}
             </span>
           )}
           <span class="pl-file-tree__name" set:html={entry.nameHtml} />

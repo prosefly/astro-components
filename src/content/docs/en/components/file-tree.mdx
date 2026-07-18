@@ -277,6 +277,105 @@ File icons are selected from the file name or extension.
 </FileTree>
 ```
 
+Use `iconSet="vscode-icons"` when a tree benefits from richer file-type icons.
+Folders keep the default Lucide icons, while file icons use the VS Code icon
+set. Astro and MDX icons switch between light and dark variants with the active
+theme.
+
+<FileTree iconSet="vscode-icons">
+
+- src
+  - components
+    - FileTree.astro
+    - Tabs.tsx
+    - client.ts
+    - behavior.js
+    - Widget.vue
+    - Banner.svelte
+  - content
+    - docs
+      - file-tree.mdx
+      - overview.md
+  - styles
+    - tokens.css
+    - theme.scss
+    - legacy.sass
+    - variables.less
+  - data
+    - app.json
+    - config.yaml
+    - settings.toml
+  - assets
+    - logo.svg
+    - dashboard.png
+- public
+  - index.html
+  - feed.xml
+- astro.config.ts
+- vite.config.ts
+- vitest.config.ts
+- tailwind.config.ts
+- eslint.config.js
+- prettier.config.js
+- Dockerfile
+- .gitignore
+- package.json
+- tsconfig.json
+- archive.zip
+
+</FileTree>
+
+```mdx
+<FileTree iconSet="vscode-icons">
+
+- src
+  - components
+    - FileTree.astro
+    - Tabs.tsx
+    - client.ts
+    - behavior.js
+    - Widget.vue
+    - Banner.svelte
+  - content
+    - docs
+      - file-tree.mdx
+      - overview.md
+  - styles
+    - tokens.css
+    - theme.scss
+    - legacy.sass
+    - variables.less
+  - data
+    - app.json
+    - config.yaml
+    - settings.toml
+  - assets
+    - logo.svg
+    - dashboard.png
+- public
+  - index.html
+  - feed.xml
+- astro.config.ts
+- vite.config.ts
+- vitest.config.ts
+- tailwind.config.ts
+- eslint.config.js
+- prettier.config.js
+- Dockerfile
+- .gitignore
+- package.json
+- tsconfig.json
+- archive.zip
+
+</FileTree>
+```
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `iconSet` | `'lucide' \| 'vscode-icons'` | `'lucide'` |
+
 ## Syntax Rules
 
 - Wrap a single unordered Markdown list in `<FileTree>`.
