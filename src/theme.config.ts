@@ -46,6 +46,7 @@ export default defineLotusConfig({
         'package-manager-tabs',
         'images',
         'styling',
+        'changelog',
       ],
     },
     {
