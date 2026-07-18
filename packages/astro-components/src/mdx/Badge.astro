@@ -1,6 +1,6 @@
 ---
 type BadgeVariant = 'solid' | 'soft' | 'subtle' | 'outline';
-type BadgeColor = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
+type BadgeColor = 'neutral' | 'accent' | 'info' | 'success' | 'warning' | 'danger';
 
 interface Props {
   variant?: BadgeVariant;
@@ -66,50 +66,62 @@ const {
     );
   }
 
-  .pl-badge[data-color='success'] {
-    --pl-badge-color: oklch(0.45 0.13 155);
-    --pl-badge-solid: oklch(0.55 0.14 155);
-    --pl-badge-soft: color-mix(
-      in oklab,
-      oklch(0.64 0.16 155) 12%,
-      var(--pl-background, #ffffff)
+  .pl-badge[data-color='info'] {
+    --pl-badge-color: var(--pl-info-ink, oklch(0.46 0.14 255));
+    --pl-badge-solid: var(--pl-info, oklch(0.62 0.16 255));
+    --pl-badge-soft: var(
+      --pl-info-soft,
+      color-mix(in oklab, var(--pl-info, oklch(0.62 0.16 255)) 12%, var(--pl-background, #ffffff))
     );
-    --pl-badge-contrast: #ffffff;
+    --pl-badge-contrast: var(--pl-info-contrast, #ffffff);
     --pl-badge-border: color-mix(
       in oklab,
-      oklch(0.64 0.16 155) 30%,
+      var(--pl-info, oklch(0.62 0.16 255)) 30%,
+      transparent
+    );
+  }
+
+  .pl-badge[data-color='success'] {
+    --pl-badge-color: var(--pl-success-ink, oklch(0.45 0.13 155));
+    --pl-badge-solid: var(--pl-success, oklch(0.64 0.16 155));
+    --pl-badge-soft: var(
+      --pl-success-soft,
+      color-mix(in oklab, var(--pl-success, oklch(0.64 0.16 155)) 12%, var(--pl-background, #ffffff))
+    );
+    --pl-badge-contrast: var(--pl-success-contrast, #ffffff);
+    --pl-badge-border: color-mix(
+      in oklab,
+      var(--pl-success, oklch(0.64 0.16 155)) 30%,
       transparent
     );
   }
 
   .pl-badge[data-color='warning'] {
-    --pl-badge-color: oklch(0.5 0.12 80);
-    --pl-badge-solid: oklch(0.76 0.16 80);
-    --pl-badge-soft: color-mix(
-      in oklab,
-      oklch(0.74 0.16 80) 14%,
-      var(--pl-background, #ffffff)
+    --pl-badge-color: var(--pl-warning-ink, oklch(0.5 0.12 80));
+    --pl-badge-solid: var(--pl-warning, oklch(0.74 0.16 80));
+    --pl-badge-soft: var(
+      --pl-warning-soft,
+      color-mix(in oklab, var(--pl-warning, oklch(0.74 0.16 80)) 14%, var(--pl-background, #ffffff))
     );
-    --pl-badge-contrast: oklch(0.18 0.04 80);
+    --pl-badge-contrast: var(--pl-warning-contrast, oklch(0.18 0.04 80));
     --pl-badge-border: color-mix(
       in oklab,
-      oklch(0.74 0.16 80) 34%,
+      var(--pl-warning, oklch(0.74 0.16 80)) 34%,
       transparent
     );
   }
 
   .pl-badge[data-color='danger'] {
-    --pl-badge-color: oklch(0.52 0.18 25);
-    --pl-badge-solid: oklch(0.58 0.2 25);
-    --pl-badge-soft: color-mix(
-      in oklab,
-      oklch(0.62 0.2 25) 12%,
-      var(--pl-background, #ffffff)
+    --pl-badge-color: var(--pl-danger-ink, oklch(0.52 0.16 25));
+    --pl-badge-solid: var(--pl-danger, oklch(0.62 0.2 25));
+    --pl-badge-soft: var(
+      --pl-danger-soft,
+      color-mix(in oklab, var(--pl-danger, oklch(0.62 0.2 25)) 12%, var(--pl-background, #ffffff))
     );
-    --pl-badge-contrast: #ffffff;
+    --pl-badge-contrast: var(--pl-danger-contrast, #ffffff);
     --pl-badge-border: color-mix(
       in oklab,
-      oklch(0.62 0.2 25) 30%,
+      var(--pl-danger, oklch(0.62 0.2 25)) 30%,
       transparent
     );
   }

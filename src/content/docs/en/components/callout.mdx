@@ -106,21 +106,18 @@ import { Callout } from '@prosefly/astro-components';
 
 ## CSS Variables
 
-Each callout type uses fixed semantic defaults. Override the type-specific
-tokens when a site needs a different information, success, warning, or danger
-palette.
+Each callout type maps to the shared semantic palette first: `note` uses
+`--pl-info-*`, `tip` uses `--pl-success-*`, `warning` uses `--pl-warning-*`,
+and `danger` uses `--pl-danger-*`. Override the type-specific callout tokens
+only when callouts need to differ from badges and other components.
 
 | Token | Used For |
 | --- | --- |
-| `--pl-callout-note-color` | Note border mixing and fallback background |
-| `--pl-callout-note-ink` | Note icon and title |
-| `--pl-callout-note-bg` | Note background |
-| `--pl-callout-tip-color` | Tip border mixing and fallback background |
-| `--pl-callout-tip-ink` | Tip icon and title |
-| `--pl-callout-tip-bg` | Tip background |
-| `--pl-callout-warning-color` | Warning border mixing and fallback background |
-| `--pl-callout-warning-ink` | Warning icon and title |
-| `--pl-callout-warning-bg` | Warning background |
-| `--pl-callout-danger-color` | Danger border mixing and fallback background |
-| `--pl-callout-danger-ink` | Danger icon and title |
-| `--pl-callout-danger-bg` | Danger background |
+| `--pl-info`, `--pl-info-ink`, `--pl-info-soft` | Default note palette |
+| `--pl-success`, `--pl-success-ink`, `--pl-success-soft` | Default tip palette |
+| `--pl-warning`, `--pl-warning-ink`, `--pl-warning-soft` | Default warning palette |
+| `--pl-danger`, `--pl-danger-ink`, `--pl-danger-soft` | Default danger palette |
+| `--pl-callout-note-{color\|ink\|bg}` | Note-only overrides |
+| `--pl-callout-tip-{color\|ink\|bg}` | Tip-only overrides |
+| `--pl-callout-warning-{color\|ink\|bg}` | Warning-only overrides |
+| `--pl-callout-danger-{color\|ink\|bg}` | Danger-only overrides |

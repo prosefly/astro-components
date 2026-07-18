@@ -30,11 +30,11 @@ const hasTitle = Boolean(title);
 
 <style>
   .pl-callout {
-    --pl-callout-color: var(--pl-callout-note-color, oklch(0.62 0.16 255));
-    --pl-callout-ink: var(--pl-callout-note-ink, oklch(0.46 0.14 255));
+    --pl-callout-color: var(--pl-callout-note-color, var(--pl-info, oklch(0.62 0.16 255)));
+    --pl-callout-ink: var(--pl-callout-note-ink, var(--pl-info-ink, oklch(0.46 0.14 255)));
     --pl-callout-bg: var(
       --pl-callout-note-bg,
-      color-mix(in oklab, var(--pl-callout-color) 10%, var(--pl-background, #ffffff))
+      var(--pl-info-soft, color-mix(in oklab, var(--pl-callout-color) 10%, var(--pl-background, #ffffff)))
     );
 
     display: grid;
@@ -49,29 +49,29 @@ const hasTitle = Boolean(title);
   }
 
   .pl-callout[data-type='tip'] {
-    --pl-callout-color: var(--pl-callout-tip-color, oklch(0.64 0.16 155));
-    --pl-callout-ink: var(--pl-callout-tip-ink, oklch(0.45 0.13 155));
+    --pl-callout-color: var(--pl-callout-tip-color, var(--pl-success, oklch(0.64 0.16 155)));
+    --pl-callout-ink: var(--pl-callout-tip-ink, var(--pl-success-ink, oklch(0.45 0.13 155)));
     --pl-callout-bg: var(
       --pl-callout-tip-bg,
-      color-mix(in oklab, var(--pl-callout-color) 10%, var(--pl-background, #ffffff))
+      var(--pl-success-soft, color-mix(in oklab, var(--pl-callout-color) 10%, var(--pl-background, #ffffff)))
     );
   }
 
   .pl-callout[data-type='warning'] {
-    --pl-callout-color: var(--pl-callout-warning-color, oklch(0.74 0.16 80));
-    --pl-callout-ink: var(--pl-callout-warning-ink, oklch(0.5 0.12 80));
+    --pl-callout-color: var(--pl-callout-warning-color, var(--pl-warning, oklch(0.74 0.16 80)));
+    --pl-callout-ink: var(--pl-callout-warning-ink, var(--pl-warning-ink, oklch(0.5 0.12 80)));
     --pl-callout-bg: var(
       --pl-callout-warning-bg,
-      color-mix(in oklab, var(--pl-callout-color) 12%, var(--pl-background, #ffffff))
+      var(--pl-warning-soft, color-mix(in oklab, var(--pl-callout-color) 12%, var(--pl-background, #ffffff)))
     );
   }
 
   .pl-callout[data-type='danger'] {
-    --pl-callout-color: var(--pl-callout-danger-color, oklch(0.62 0.2 25));
-    --pl-callout-ink: var(--pl-callout-danger-ink, oklch(0.52 0.16 25));
+    --pl-callout-color: var(--pl-callout-danger-color, var(--pl-danger, oklch(0.62 0.2 25)));
+    --pl-callout-ink: var(--pl-callout-danger-ink, var(--pl-danger-ink, oklch(0.52 0.16 25)));
     --pl-callout-bg: var(
       --pl-callout-danger-bg,
-      color-mix(in oklab, var(--pl-callout-color) 10%, var(--pl-background, #ffffff))
+      var(--pl-danger-soft, color-mix(in oklab, var(--pl-callout-color) 10%, var(--pl-background, #ffffff)))
     );
   }
 

@@ -99,6 +99,10 @@ Consumers can theme the components with `--pl-*` custom properties:
 - `--pl-accent`
 - `--pl-accent-soft`
 - `--pl-accent-contrast`
+- `--pl-{info|success|warning|danger}`
+- `--pl-{info|success|warning|danger}-soft`
+- `--pl-{info|success|warning|danger}-ink`
+- `--pl-{info|success|warning|danger}-contrast`
 - `--pl-callout-{note|tip|warning|danger}-{color|ink|bg}`
 - `--pl-border-subtle`
 - `--pl-font-sans`

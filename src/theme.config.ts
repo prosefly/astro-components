@@ -26,7 +26,6 @@ export default defineLotusConfig({
   source: {
     github: 'prosefly/astro-components',
     branch: 'main',
-    contentRoot: 'src/content',
   },
   editLink: true,
   locales: {
