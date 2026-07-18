@@ -5,6 +5,7 @@ export default defineLotusConfig({
   description: 'Reusable Astro components for MDX content.',
   favicon: '/prosefly-mark.svg',
   logo: '/prosefly-mark.svg',
+  docsBase: '/docs/',
   navbar: [
     { label: 'Docs', href: '/docs/' },
     { label: 'Sponsors', href: '/sponsors/' },
