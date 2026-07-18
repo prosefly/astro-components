@@ -21,7 +21,7 @@ jobs:
     name: Publish @prosefly/astro-components
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       id-token: write
 
     steps:
@@ -65,3 +65,13 @@ jobs:
         if: github.event_name != 'workflow_dispatch' || !inputs.dry_run
         working-directory: packages/astro-components
         run: npx npm@latest publish --access public
+
+      - name: Create GitHub release
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --generate-notes \
+            --title "$GITHUB_REF_NAME" \
+            --verify-tag
