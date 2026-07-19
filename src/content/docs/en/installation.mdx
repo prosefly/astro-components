@@ -87,19 +87,23 @@ import { Callout, Steps } from '@prosefly/astro-components';
    });
    ```
 
-2. **Add markdown transforms if you want automatic tabs or galleries.**
+2. **Add markdown transforms if you want callout directives, also known as admonitions, automatic tabs, or galleries.**
 
    ```ts title="astro.config.ts"
    import { defineConfig } from 'astro/config';
    import {
      rehypeImageGallery,
+     remarkCalloutDirectives,
      remarkPackageManagerTabs,
+     unified,
    } from '@prosefly/astro-components/markdown';
 
    export default defineConfig({
      markdown: {
-       remarkPlugins: [remarkPackageManagerTabs],
-       rehypePlugins: [rehypeImageGallery],
+       processor: unified({
+         remarkPlugins: [remarkCalloutDirectives, remarkPackageManagerTabs],
+         rehypePlugins: [rehypeImageGallery],
+       }),
      },
    });
    ```
@@ -118,8 +122,8 @@ import { Callout, Steps } from '@prosefly/astro-components';
   [Lotus](https://astro-theme-lotus.prosefly.dev/) integration.
 </Callout>
 
-For detailed setup, see [Package Manager Tabs](/docs/package-manager-tabs/) and
-[Images](/docs/images/).
+For detailed setup, see [Callout](/docs/components/callout/),
+[Package Manager Tabs](/docs/package-manager-tabs/), and [Images](/docs/images/).
 
 ## Import Paths
 
@@ -133,7 +137,11 @@ Use subpath entries for integrations:
 
 ```ts
 import proseflyIcon from '@prosefly/astro-components/icon';
-import { rehypeImageGallery } from '@prosefly/astro-components/markdown';
+import {
+  rehypeImageGallery,
+  remarkCalloutDirectives,
+  unified,
+} from '@prosefly/astro-components/markdown';
 ```
 
 ## Component Exports

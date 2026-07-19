@@ -11,6 +11,9 @@ Use `Callout` when a reader needs to notice something before continuing:
 requirements, safe defaults, limits, destructive actions, or shortcuts. Keep
 callouts short enough to scan without breaking the page flow.
 
+Callouts are also known as admonitions in many documentation systems. This
+package uses `Callout` for the component and API names.
+
 ## Import
 
 ```mdx
@@ -96,6 +99,39 @@ import { Callout } from '@prosefly/astro-components';
   Add caveats only after the action is clear.
 </Callout>
 ````
+
+## Markdown Directives
+
+Enable `remarkCalloutDirectives` when authors should write callouts, also known
+as admonitions, without importing the component in every MDX file.
+
+```ts title="astro.config.ts"
+import { defineConfig } from 'astro/config';
+import {
+  remarkCalloutDirectives,
+  unified,
+} from '@prosefly/astro-components/markdown';
+
+export default defineConfig({
+  markdown: {
+    processor: unified({
+      remarkPlugins: [remarkCalloutDirectives],
+    }),
+  },
+});
+```
+
+:::tip[Directive syntax]
+Use `note`, `tip`, `warning`, or `danger`. The `caution` directive is accepted
+as a `warning` alias for Starlight compatibility.
+:::
+
+```md
+:::tip[Directive syntax]
+Use `note`, `tip`, `warning`, or `danger`. The `caution` directive is accepted
+as a `warning` alias for Starlight compatibility.
+:::
+```
 
 ## Props
 
