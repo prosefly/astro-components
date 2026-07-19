@@ -16,7 +16,7 @@ const { title, type = 'note' } = Astro.props;
 const hasTitle = Boolean(title);
 ---
 
-<aside class="pl-callout" data-has-title={hasTitle ? 'true' : 'false'} data-type={type}>
+<div class="pl-callout" data-has-title={hasTitle ? 'true' : 'false'} data-type={type} role="note">
   <span class="pl-callout__icon" aria-hidden="true">
     <Icon name={iconNames[type]} />
   </span>
@@ -26,7 +26,7 @@ const hasTitle = Boolean(title);
       <slot />
     </div>
   </div>
-</aside>
+</div>
 
 <style>
   .pl-callout {
