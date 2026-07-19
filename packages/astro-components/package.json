@@ -1,6 +1,6 @@
 {
   "name": "@prosefly/astro-components",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "type": "module",
   "license": "BSD-3-Clause",
   "types": "./dist/index.d.ts",

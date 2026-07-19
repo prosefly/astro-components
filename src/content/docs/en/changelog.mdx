@@ -11,34 +11,38 @@ This changelog covers user-facing changes to `@prosefly/astro-components`,
 including components, markdown transforms, integration behavior, styling tokens,
 and documentation.
 
+## 0.3.0
+
+<Badge color="accent" variant="subtle">Released July 19, 2026</Badge>
+
+- Added `remarkCalloutDirectives` for writing callouts, also known as
+  admonitions, with Markdown directive syntax.
+- Changed `Card` titles to render as non-heading text so cards do not affect
+  page heading hierarchy.
+- Exposed callouts as `role="note"` instead of complementary landmarks.
+- Added unit tests for the markdown transforms.
+- Updated markdown setup examples to use Astro's `unified()` processor API.
+
 ## 0.2.1
 
 <Badge color="accent" variant="subtle">Released July 18, 2026</Badge>
 
-- Fixed the `@prosefly/astro-components/icon` ESM entry, changed `Card` titles
-  to non-heading text, and exposed callouts as notes instead of complementary
-  landmarks, and added callout Markdown directives.
+- Fixed the `@prosefly/astro-components/icon` ESM entry by moving the FileTree
+  icon helper into the icon module and using explicit `.js` imports.
 
 ## 0.2.0
 
 <Badge color="accent" variant="subtle">Released July 18, 2026</Badge>
 
-### Added
-
 - `FileTree` now supports `iconSet="vscode-icons"` for richer file-type icons.
 - Semantic badge colors for `info`, `success`, `warning`, and `danger`.
 - Shared semantic CSS tokens for status-oriented components.
-
-### Changed
-
 - Callout colors now use the shared semantic token palette, with type-specific
   callout override tokens still available.
 
 ## 0.1.0
 
 <Badge color="accent" variant="subtle">Released July 17, 2026</Badge>
-
-### Added
 
 - MDX components for callouts, cards, tabs, accordions, file trees, steps,
   badges, and icons.
