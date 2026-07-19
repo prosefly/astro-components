@@ -8,7 +8,8 @@
     "build": "node ./scripts/build.mjs",
     "check": "tsc -p ./tsconfig.build.json --noEmit",
     "prepack": "npm run build",
-    "prepublishOnly": "npm run check && npm run build"
+    "prepublishOnly": "npm run check && npm run build",
+    "test": "pnpm run build && node --test test/*.test.mjs"
   },
   "repository": {
     "type": "git",

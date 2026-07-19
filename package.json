@@ -12,7 +12,8 @@
     "preview": "astro preview",
     "check": "pnpm run check:pkg && pnpm run build:pkg && pnpm run check:site",
     "check:pkg": "pnpm --dir packages/astro-components check",
-    "check:site": "astro check"
+    "check:site": "astro check",
+    "test": "pnpm --dir packages/astro-components test"
   },
   "dependencies": {
     "@astrojs/check": "latest",
