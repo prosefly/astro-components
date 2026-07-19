@@ -39,11 +39,16 @@ rehype plugin in `astro.config.ts`.
 
 ```ts title="astro.config.ts"
 import { defineConfig } from 'astro/config';
-import { rehypeImageGallery } from '@prosefly/astro-components/markdown';
+import {
+  rehypeImageGallery,
+  unified,
+} from '@prosefly/astro-components/markdown';
 
 export default defineConfig({
   markdown: {
-    rehypePlugins: [rehypeImageGallery],
+    processor: unified({
+      rehypePlugins: [rehypeImageGallery],
+    }),
   },
 });
 ```

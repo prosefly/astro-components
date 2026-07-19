@@ -79,11 +79,16 @@ remark plugin in `astro.config.ts`.
 
 ```ts title="astro.config.ts"
 import { defineConfig } from 'astro/config';
-import { remarkPackageManagerTabs } from '@prosefly/astro-components/markdown';
+import {
+  remarkPackageManagerTabs,
+  unified,
+} from '@prosefly/astro-components/markdown';
 
 export default defineConfig({
   markdown: {
-    remarkPlugins: [remarkPackageManagerTabs],
+    processor: unified({
+      remarkPlugins: [remarkPackageManagerTabs],
+    }),
   },
 });
 ```
