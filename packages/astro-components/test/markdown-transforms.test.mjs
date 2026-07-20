@@ -161,10 +161,10 @@ test('rehypeImageGallery converts image-only paragraphs to accessible gallery fi
 
   const figure = root.children[0];
   assert.equal(figure.tagName, 'figure');
-  assert.deepEqual(figure.properties.className, ['pl-image-gallery']);
+  assert.deepEqual(figure.properties.className, ['pf-image-gallery']);
   assert.equal(figure.properties.dataImageCount, '2');
   assert.equal(figure.children[0].tagName, 'button');
   assert.equal(figure.children[0].properties.ariaLabel, 'Previous image');
-  assert.equal(figure.children[1].properties.dataPlImageGalleryTrack, '');
+  assert.equal(figure.children[1].properties.dataPfImageGalleryTrack, '');
   assert.equal(figure.children[2].properties.ariaLabel, 'Next image');
 });

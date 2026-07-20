@@ -67,12 +67,12 @@ function processStepsTree() {
     rootElement.properties.role = 'list';
     rootElement.properties.className = appendClassName(
       rootElement.properties.className,
-      'pl-steps'
+      'pf-steps'
     );
 
     const start = getNumericStart(rootElement.properties.start);
     if (Number.isFinite(start)) {
-      const styles = [`--pl-steps-start: ${start - 1}`];
+      const styles = [`--pf-steps-start: ${start - 1}`];
       if (rootElement.properties.style) {
         styles.push(String(rootElement.properties.style));
       }

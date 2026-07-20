@@ -18,7 +18,7 @@ const {
 ---
 
 <span
-  class:list={['pl-badge', className]}
+  class:list={['pf-badge', className]}
   data-color={color}
   data-variant={variant}
   {...attrs}
@@ -27,20 +27,20 @@ const {
 </span>
 
 <style>
-  .pl-badge {
-    --pl-badge-color: var(--pl-text-strong, var(--pl-text, #182230));
-    --pl-badge-solid: var(--pl-text-strong, var(--pl-text, #182230));
-    --pl-badge-soft: var(--pl-surface, #f4f6f8);
-    --pl-badge-contrast: var(--pl-background, #ffffff);
-    --pl-badge-border: color-mix(
+  .pf-badge {
+    --pf-badge-color: var(--pf-text-strong, var(--pf-text, #182230));
+    --pf-badge-solid: var(--pf-text-strong, var(--pf-text, #182230));
+    --pf-badge-soft: var(--pf-surface, #f4f6f8);
+    --pf-badge-contrast: var(--pf-background, #ffffff);
+    --pf-badge-border: color-mix(
       in oklab,
-      var(--pl-text-muted, #667085) 24%,
+      var(--pf-text-muted, #667085) 24%,
       transparent
     );
 
     align-items: center;
     border: 1px solid transparent;
-    border-radius: var(--pl-radius-full, var(--pl-radius-md, 999px));
+    border-radius: var(--pf-radius-full, var(--pf-radius-md, 999px));
     display: inline-flex;
     font-size: 0.75rem;
     font-weight: 600;
@@ -51,102 +51,102 @@ const {
     white-space: nowrap;
   }
 
-  .pl-badge[data-color='accent'] {
-    --pl-badge-color: var(--pl-accent, #4f46e5);
-    --pl-badge-solid: var(--pl-accent, #4f46e5);
-    --pl-badge-soft: var(
-      --pl-accent-soft,
-      color-mix(in oklab, var(--pl-accent, #4f46e5) 12%, var(--pl-background, #ffffff))
+  .pf-badge[data-color='accent'] {
+    --pf-badge-color: var(--pf-accent, #4f46e5);
+    --pf-badge-solid: var(--pf-accent, #4f46e5);
+    --pf-badge-soft: var(
+      --pf-accent-soft,
+      color-mix(in oklab, var(--pf-accent, #4f46e5) 12%, var(--pf-background, #ffffff))
     );
-    --pl-badge-contrast: var(--pl-accent-contrast, #ffffff);
-    --pl-badge-border: color-mix(
+    --pf-badge-contrast: var(--pf-accent-contrast, #ffffff);
+    --pf-badge-border: color-mix(
       in oklab,
-      var(--pl-accent, #4f46e5) 28%,
+      var(--pf-accent, #4f46e5) 28%,
       transparent
     );
   }
 
-  .pl-badge[data-color='info'] {
-    --pl-badge-color: var(--pl-info-ink, oklch(0.46 0.14 255));
-    --pl-badge-solid: var(--pl-info, oklch(0.62 0.16 255));
-    --pl-badge-soft: var(
-      --pl-info-soft,
-      color-mix(in oklab, var(--pl-info, oklch(0.62 0.16 255)) 12%, var(--pl-background, #ffffff))
+  .pf-badge[data-color='info'] {
+    --pf-badge-color: var(--pf-info-ink, oklch(0.46 0.14 255));
+    --pf-badge-solid: var(--pf-info, oklch(0.62 0.16 255));
+    --pf-badge-soft: var(
+      --pf-info-soft,
+      color-mix(in oklab, var(--pf-info, oklch(0.62 0.16 255)) 12%, var(--pf-background, #ffffff))
     );
-    --pl-badge-contrast: var(--pl-info-contrast, #ffffff);
-    --pl-badge-border: color-mix(
+    --pf-badge-contrast: var(--pf-info-contrast, #ffffff);
+    --pf-badge-border: color-mix(
       in oklab,
-      var(--pl-info, oklch(0.62 0.16 255)) 30%,
+      var(--pf-info, oklch(0.62 0.16 255)) 30%,
       transparent
     );
   }
 
-  .pl-badge[data-color='success'] {
-    --pl-badge-color: var(--pl-success-ink, oklch(0.45 0.13 155));
-    --pl-badge-solid: var(--pl-success, oklch(0.64 0.16 155));
-    --pl-badge-soft: var(
-      --pl-success-soft,
-      color-mix(in oklab, var(--pl-success, oklch(0.64 0.16 155)) 12%, var(--pl-background, #ffffff))
+  .pf-badge[data-color='success'] {
+    --pf-badge-color: var(--pf-success-ink, oklch(0.45 0.13 155));
+    --pf-badge-solid: var(--pf-success, oklch(0.64 0.16 155));
+    --pf-badge-soft: var(
+      --pf-success-soft,
+      color-mix(in oklab, var(--pf-success, oklch(0.64 0.16 155)) 12%, var(--pf-background, #ffffff))
     );
-    --pl-badge-contrast: var(--pl-success-contrast, #ffffff);
-    --pl-badge-border: color-mix(
+    --pf-badge-contrast: var(--pf-success-contrast, #ffffff);
+    --pf-badge-border: color-mix(
       in oklab,
-      var(--pl-success, oklch(0.64 0.16 155)) 30%,
+      var(--pf-success, oklch(0.64 0.16 155)) 30%,
       transparent
     );
   }
 
-  .pl-badge[data-color='warning'] {
-    --pl-badge-color: var(--pl-warning-ink, oklch(0.5 0.12 80));
-    --pl-badge-solid: var(--pl-warning, oklch(0.74 0.16 80));
-    --pl-badge-soft: var(
-      --pl-warning-soft,
-      color-mix(in oklab, var(--pl-warning, oklch(0.74 0.16 80)) 14%, var(--pl-background, #ffffff))
+  .pf-badge[data-color='warning'] {
+    --pf-badge-color: var(--pf-warning-ink, oklch(0.5 0.12 80));
+    --pf-badge-solid: var(--pf-warning, oklch(0.74 0.16 80));
+    --pf-badge-soft: var(
+      --pf-warning-soft,
+      color-mix(in oklab, var(--pf-warning, oklch(0.74 0.16 80)) 14%, var(--pf-background, #ffffff))
     );
-    --pl-badge-contrast: var(--pl-warning-contrast, oklch(0.18 0.04 80));
-    --pl-badge-border: color-mix(
+    --pf-badge-contrast: var(--pf-warning-contrast, oklch(0.18 0.04 80));
+    --pf-badge-border: color-mix(
       in oklab,
-      var(--pl-warning, oklch(0.74 0.16 80)) 34%,
+      var(--pf-warning, oklch(0.74 0.16 80)) 34%,
       transparent
     );
   }
 
-  .pl-badge[data-color='danger'] {
-    --pl-badge-color: var(--pl-danger-ink, oklch(0.52 0.16 25));
-    --pl-badge-solid: var(--pl-danger, oklch(0.62 0.2 25));
-    --pl-badge-soft: var(
-      --pl-danger-soft,
-      color-mix(in oklab, var(--pl-danger, oklch(0.62 0.2 25)) 12%, var(--pl-background, #ffffff))
+  .pf-badge[data-color='danger'] {
+    --pf-badge-color: var(--pf-danger-ink, oklch(0.52 0.16 25));
+    --pf-badge-solid: var(--pf-danger, oklch(0.62 0.2 25));
+    --pf-badge-soft: var(
+      --pf-danger-soft,
+      color-mix(in oklab, var(--pf-danger, oklch(0.62 0.2 25)) 12%, var(--pf-background, #ffffff))
     );
-    --pl-badge-contrast: var(--pl-danger-contrast, #ffffff);
-    --pl-badge-border: color-mix(
+    --pf-badge-contrast: var(--pf-danger-contrast, #ffffff);
+    --pf-badge-border: color-mix(
       in oklab,
-      var(--pl-danger, oklch(0.62 0.2 25)) 30%,
+      var(--pf-danger, oklch(0.62 0.2 25)) 30%,
       transparent
     );
   }
 
-  .pl-badge[data-variant='solid'] {
-    background: var(--pl-badge-solid);
-    border-color: var(--pl-badge-solid);
-    color: var(--pl-badge-contrast);
+  .pf-badge[data-variant='solid'] {
+    background: var(--pf-badge-solid);
+    border-color: var(--pf-badge-solid);
+    color: var(--pf-badge-contrast);
   }
 
-  .pl-badge[data-variant='soft'] {
-    background: var(--pl-badge-soft);
-    color: var(--pl-badge-color);
+  .pf-badge[data-variant='soft'] {
+    background: var(--pf-badge-soft);
+    color: var(--pf-badge-color);
   }
 
-  .pl-badge[data-variant='subtle'] {
-    background: var(--pl-badge-soft);
-    border-color: var(--pl-badge-border);
-    color: var(--pl-badge-color);
+  .pf-badge[data-variant='subtle'] {
+    background: var(--pf-badge-soft);
+    border-color: var(--pf-badge-border);
+    color: var(--pf-badge-color);
   }
 
-  .pl-badge[data-variant='outline'] {
+  .pf-badge[data-variant='outline'] {
     background: transparent;
-    border-color: var(--pl-badge-border);
-    color: var(--pl-badge-color);
+    border-color: var(--pf-badge-border);
+    color: var(--pf-badge-color);
   }
 
 </style>

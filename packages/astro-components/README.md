@@ -104,25 +104,25 @@ import '@prosefly/astro-components/markdown/image-gallery.css';
 
 ## Styling
 
-Consumers can theme the components with `--pl-*` custom properties:
+Consumers can theme the components with `--pf-*` custom properties:
 
-- `--pl-text-strong`
-- `--pl-text`
-- `--pl-text-muted`
-- `--pl-background`
-- `--pl-surface`
-- `--pl-accent`
-- `--pl-accent-soft`
-- `--pl-accent-contrast`
-- `--pl-{info|success|warning|danger}`
-- `--pl-{info|success|warning|danger}-soft`
-- `--pl-{info|success|warning|danger}-ink`
-- `--pl-{info|success|warning|danger}-contrast`
-- `--pl-callout-{note|tip|warning|danger}-{color|ink|bg}`
-- `--pl-border-subtle`
-- `--pl-font-sans`
-- `--pl-font-mono`
-- `--pl-radius-sm`
-- `--pl-radius-md`
-- `--pl-radius-lg`
-- `--pl-radius-full`
+- `--pf-text-strong`
+- `--pf-text`
+- `--pf-text-muted`
+- `--pf-background`
+- `--pf-surface`
+- `--pf-accent`
+- `--pf-accent-soft`
+- `--pf-accent-contrast`
+- `--pf-{info|success|warning|danger}`
+- `--pf-{info|success|warning|danger}-soft`
+- `--pf-{info|success|warning|danger}-ink`
+- `--pf-{info|success|warning|danger}-contrast`
+- `--pf-callout-{note|tip|warning|danger}-{color|ink|bg}`
+- `--pf-border-subtle`
+- `--pf-font-sans`
+- `--pf-font-mono`
+- `--pf-radius-sm`
+- `--pf-radius-md`
+- `--pf-radius-lg`
+- `--pf-radius-full`

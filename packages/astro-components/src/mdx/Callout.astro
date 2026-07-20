@@ -16,72 +16,72 @@ const { title, type = 'note' } = Astro.props;
 const hasTitle = Boolean(title);
 ---
 
-<div class="pl-callout" data-has-title={hasTitle ? 'true' : 'false'} data-type={type} role="note">
-  <span class="pl-callout__icon" aria-hidden="true">
+<div class="pf-callout" data-has-title={hasTitle ? 'true' : 'false'} data-type={type} role="note">
+  <span class="pf-callout__icon" aria-hidden="true">
     <Icon name={iconNames[type]} />
   </span>
-  <div class="pl-callout__content">
-    {hasTitle && <p class="pl-callout__title">{title}</p>}
-    <div class="pl-callout__slot">
+  <div class="pf-callout__content">
+    {hasTitle && <p class="pf-callout__title">{title}</p>}
+    <div class="pf-callout__slot">
       <slot />
     </div>
   </div>
 </div>
 
 <style>
-  .pl-callout {
-    --pl-callout-color: var(--pl-callout-note-color, var(--pl-info, oklch(0.62 0.16 255)));
-    --pl-callout-ink: var(--pl-callout-note-ink, var(--pl-info-ink, oklch(0.46 0.14 255)));
-    --pl-callout-bg: var(
-      --pl-callout-note-bg,
-      var(--pl-info-soft, color-mix(in oklab, var(--pl-callout-color) 10%, var(--pl-background, #ffffff)))
+  .pf-callout {
+    --pf-callout-color: var(--pf-callout-note-color, var(--pf-info, oklch(0.62 0.16 255)));
+    --pf-callout-ink: var(--pf-callout-note-ink, var(--pf-info-ink, oklch(0.46 0.14 255)));
+    --pf-callout-bg: var(
+      --pf-callout-note-bg,
+      var(--pf-info-soft, color-mix(in oklab, var(--pf-callout-color) 10%, var(--pf-background, #ffffff)))
     );
 
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     gap: 0.875rem;
     margin-block: 1.5rem;
-    border: 1px solid color-mix(in oklab, var(--pl-callout-color) 24%, var(--pl-surface, #f4f6f8));
-    border-radius: min(var(--pl-radius-lg, 0.75rem), 1rem);
-    background: var(--pl-callout-bg);
-    color: var(--pl-text, #182230);
+    border: 1px solid color-mix(in oklab, var(--pf-callout-color) 24%, var(--pf-surface, #f4f6f8));
+    border-radius: min(var(--pf-radius-lg, 0.75rem), 1rem);
+    background: var(--pf-callout-bg);
+    color: var(--pf-text, #182230);
     padding: 1rem 1.25rem;
   }
 
-  .pl-callout[data-type='tip'] {
-    --pl-callout-color: var(--pl-callout-tip-color, var(--pl-success, oklch(0.64 0.16 155)));
-    --pl-callout-ink: var(--pl-callout-tip-ink, var(--pl-success-ink, oklch(0.45 0.13 155)));
-    --pl-callout-bg: var(
-      --pl-callout-tip-bg,
-      var(--pl-success-soft, color-mix(in oklab, var(--pl-callout-color) 10%, var(--pl-background, #ffffff)))
+  .pf-callout[data-type='tip'] {
+    --pf-callout-color: var(--pf-callout-tip-color, var(--pf-success, oklch(0.64 0.16 155)));
+    --pf-callout-ink: var(--pf-callout-tip-ink, var(--pf-success-ink, oklch(0.45 0.13 155)));
+    --pf-callout-bg: var(
+      --pf-callout-tip-bg,
+      var(--pf-success-soft, color-mix(in oklab, var(--pf-callout-color) 10%, var(--pf-background, #ffffff)))
     );
   }
 
-  .pl-callout[data-type='warning'] {
-    --pl-callout-color: var(--pl-callout-warning-color, var(--pl-warning, oklch(0.74 0.16 80)));
-    --pl-callout-ink: var(--pl-callout-warning-ink, var(--pl-warning-ink, oklch(0.5 0.12 80)));
-    --pl-callout-bg: var(
-      --pl-callout-warning-bg,
-      var(--pl-warning-soft, color-mix(in oklab, var(--pl-callout-color) 12%, var(--pl-background, #ffffff)))
+  .pf-callout[data-type='warning'] {
+    --pf-callout-color: var(--pf-callout-warning-color, var(--pf-warning, oklch(0.74 0.16 80)));
+    --pf-callout-ink: var(--pf-callout-warning-ink, var(--pf-warning-ink, oklch(0.5 0.12 80)));
+    --pf-callout-bg: var(
+      --pf-callout-warning-bg,
+      var(--pf-warning-soft, color-mix(in oklab, var(--pf-callout-color) 12%, var(--pf-background, #ffffff)))
     );
   }
 
-  .pl-callout[data-type='danger'] {
-    --pl-callout-color: var(--pl-callout-danger-color, var(--pl-danger, oklch(0.62 0.2 25)));
-    --pl-callout-ink: var(--pl-callout-danger-ink, var(--pl-danger-ink, oklch(0.52 0.16 25)));
-    --pl-callout-bg: var(
-      --pl-callout-danger-bg,
-      var(--pl-danger-soft, color-mix(in oklab, var(--pl-callout-color) 10%, var(--pl-background, #ffffff)))
+  .pf-callout[data-type='danger'] {
+    --pf-callout-color: var(--pf-callout-danger-color, var(--pf-danger, oklch(0.62 0.2 25)));
+    --pf-callout-ink: var(--pf-callout-danger-ink, var(--pf-danger-ink, oklch(0.52 0.16 25)));
+    --pf-callout-bg: var(
+      --pf-callout-danger-bg,
+      var(--pf-danger-soft, color-mix(in oklab, var(--pf-callout-color) 10%, var(--pf-background, #ffffff)))
     );
   }
 
-  .pl-callout[data-has-title='false'] {
+  .pf-callout[data-has-title='false'] {
     align-items: center;
   }
 
-  .pl-callout__icon {
+  .pf-callout__icon {
     align-items: center;
-    color: var(--pl-callout-ink);
+    color: var(--pf-callout-ink);
     display: inline-flex;
     height: 1.25rem;
     justify-content: center;
@@ -90,44 +90,44 @@ const hasTitle = Boolean(title);
     width: 1.25rem;
   }
 
-  .pl-callout[data-has-title='false'] .pl-callout__icon {
+  .pf-callout[data-has-title='false'] .pf-callout__icon {
     margin-block-start: 0;
   }
 
-  .pl-callout__icon :global(.pl-icon) {
+  .pf-callout__icon :global(.pf-icon) {
     display: block;
     height: 1.25rem;
     width: 1.25rem;
   }
 
-  .pl-callout__title {
-    color: var(--pl-callout-ink);
+  .pf-callout__title {
+    color: var(--pf-callout-ink);
     font-size: 1rem;
     font-weight: 700;
     line-height: 1.5;
     margin: 0 0 0.5rem;
   }
 
-  .pl-callout__slot {
-    color: var(--pl-text, #182230);
+  .pf-callout__slot {
+    color: var(--pf-text, #182230);
     font-size: 0.9375rem;
     line-height: 1.75;
   }
 
-  .pl-callout[data-has-title='false'] .pl-callout__slot {
-    color: var(--pl-callout-ink);
+  .pf-callout[data-has-title='false'] .pf-callout__slot {
+    color: var(--pf-callout-ink);
     font-size: 1rem;
   }
 
-  .pl-callout__slot :global(> * + *) {
+  .pf-callout__slot :global(> * + *) {
     margin-top: 0.75rem;
   }
 
-  .pl-callout__slot :global(> :first-child) {
+  .pf-callout__slot :global(> :first-child) {
     margin-top: 0;
   }
 
-  .pl-callout__slot :global(> :last-child) {
+  .pf-callout__slot :global(> :last-child) {
     margin-bottom: 0;
   }
 </style>

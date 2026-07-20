@@ -44,7 +44,7 @@ function getItemLeft(track: HTMLElement, item: HTMLElement): number {
 }
 
 function scrollToAdjacentItem(track: HTMLElement, direction: GalleryDirection): void {
-  const items = [...track.querySelectorAll('.pl-image-gallery__item')].filter(
+  const items = [...track.querySelectorAll('.pf-image-gallery__item')].filter(
     (item): item is HTMLElement => item instanceof HTMLElement,
   );
   const currentLeft = track.scrollLeft;
@@ -61,7 +61,7 @@ function scrollToAdjacentItem(track: HTMLElement, direction: GalleryDirection): 
 }
 
 function measureGallery(gallery: HTMLElement, track: HTMLElement): void {
-  const items = [...track.querySelectorAll('.pl-image-gallery__item')].filter(
+  const items = [...track.querySelectorAll('.pf-image-gallery__item')].filter(
     (item): item is HTMLElement => item instanceof HTMLElement,
   );
   const images = items
@@ -86,19 +86,19 @@ function measureGallery(gallery: HTMLElement, track: HTMLElement): void {
   const styles = getComputedStyle(track);
   const gap = Number.parseFloat(styles.columnGap || styles.gap || '0') || 0;
   const previewWidth = resolveCssLength(
-    getComputedStyle(gallery).getPropertyValue('--pl-image-gallery-preview-width'),
+    getComputedStyle(gallery).getPropertyValue('--pf-image-gallery-preview-width'),
     gallery,
   );
   const firstRatio = resolvedRatios[0];
   const targetHeight = Math.max((track.clientWidth - previewWidth - gap) / firstRatio, 1);
 
-  gallery.style.setProperty('--pl-image-gallery-height', `${targetHeight.toFixed(2)}px`);
-  gallery.dataset.plImageGalleryMeasured = 'true';
+  gallery.style.setProperty('--pf-image-gallery-height', `${targetHeight.toFixed(2)}px`);
+  gallery.dataset.pfImageGalleryMeasured = 'true';
 
   items.forEach((item, index) => {
     const ratio = resolvedRatios[index];
 
-    item.style.setProperty('--pl-image-gallery-ratio', ratio.toFixed(5));
+    item.style.setProperty('--pf-image-gallery-ratio', ratio.toFixed(5));
     item.style.height = `${targetHeight.toFixed(2)}px`;
     item.style.width = `${Math.max(targetHeight * ratio, 1).toFixed(2)}px`;
   });
@@ -107,18 +107,18 @@ function measureGallery(gallery: HTMLElement, track: HTMLElement): void {
 if (typeof window !== 'undefined') {
   if (!window.__proseflyImageGalleryInit) {
     window.__proseflyImageGalleryInit = () => {
-      document.querySelectorAll('[data-pl-image-gallery]').forEach((gallery) => {
-        if (!(gallery instanceof HTMLElement) || gallery.dataset.plImageGalleryReady) {
+      document.querySelectorAll('[data-pf-image-gallery]').forEach((gallery) => {
+        if (!(gallery instanceof HTMLElement) || gallery.dataset.pfImageGalleryReady) {
           return;
         }
 
-        const track = gallery.querySelector<HTMLElement>('[data-pl-image-gallery-track]');
+        const track = gallery.querySelector<HTMLElement>('[data-pf-image-gallery-track]');
 
         if (!(track instanceof HTMLElement)) {
           return;
         }
 
-        gallery.dataset.plImageGalleryReady = 'true';
+        gallery.dataset.pfImageGalleryReady = 'true';
         const measure = () => measureGallery(gallery, track);
         const images = [...track.querySelectorAll('img')].filter(
           (image): image is HTMLImageElement => image instanceof HTMLImageElement,
@@ -127,13 +127,13 @@ if (typeof window !== 'undefined') {
         Promise.all(images.map(imageReady)).then(measure);
         new ResizeObserver(measure).observe(track);
 
-        gallery.querySelectorAll('[data-pl-image-gallery-button]').forEach((button) => {
+        gallery.querySelectorAll('[data-pf-image-gallery-button]').forEach((button) => {
           if (!(button instanceof HTMLButtonElement)) {
             return;
           }
 
           button.addEventListener('click', () => {
-            const direction = button.getAttribute('data-pl-image-gallery-button');
+            const direction = button.getAttribute('data-pf-image-gallery-button');
 
             scrollToAdjacentItem(track, direction === 'previous' ? 'previous' : 'next');
           });

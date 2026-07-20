@@ -10,7 +10,7 @@ interface Props {
 
 const { copy, defaultValue, syncKey } = Astro.props;
 const hasCopy = copy === true || copy === 'true' || copy === '';
-const tabsId = `pl-tabs-${globalThis.crypto.randomUUID()}`;
+const tabsId = `pf-tabs-${globalThis.crypto.randomUUID()}`;
 const panelHtml = await Astro.slots.render('default');
 const { activeIndex, html, panels } = processPanels(panelHtml, {
   defaultValue,
@@ -20,20 +20,20 @@ const hasIcons = panels.some((panel) => panel.icon);
 const activePanel = panels[activeIndex] ?? panels[0];
 ---
 
-<section class="pl-tabs" data-pl-tabs data-sync-key={syncKey}>
-  <div class="pl-tabs__header">
+<section class="pf-tabs" data-pf-tabs data-sync-key={syncKey}>
+  <div class="pf-tabs__header">
     {
       hasIcons && (
         <div
           aria-hidden="true"
-          class="pl-tabs__active-icons"
+          class="pf-tabs__active-icons"
           hidden={!activePanel?.icon}
         >
           {panels.map((panel, index) => (
             panel.icon && (
               <span
-                class="pl-tabs__active-icon"
-                data-pl-tabs-icon-for={panel.panelId}
+                class="pf-tabs__active-icon"
+                data-pf-tabs-icon-for={panel.panelId}
                 hidden={index !== activeIndex}
               >
                 <Icon name={panel.icon} />
@@ -43,14 +43,14 @@ const activePanel = panels[activeIndex] ?? panels[0];
         </div>
       )
     }
-    <div aria-label="Tabs" class="pl-tabs__list" role="tablist">
+    <div aria-label="Tabs" class="pf-tabs__list" role="tablist">
       {
         panels.map((panel, index) => (
           <button
             aria-controls={panel.panelId}
             aria-selected={index === activeIndex ? 'true' : 'false'}
-            class="pl-tabs__trigger"
-            data-pl-tabs-trigger
+            class="pf-tabs__trigger"
+            data-pf-tabs-trigger
             data-tab-label={panel.label}
             data-tab-panel={panel.panelId}
             data-tab-value={panel.value}
@@ -68,22 +68,22 @@ const activePanel = panels[activeIndex] ?? panels[0];
       hasCopy && (
         <button
           aria-label="Copy code"
-          class="pl-tabs__copy"
-          data-pl-tabs-copy
+          class="pf-tabs__copy"
+          data-pf-tabs-copy
           title="Copy code"
           type="button"
         >
-          <span class="pl-tabs__copy-icon" data-pl-tabs-copy-icon="copy">
+          <span class="pf-tabs__copy-icon" data-pf-tabs-copy-icon="copy">
             <Icon name="lucide:copy" />
           </span>
-          <span class="pl-tabs__copy-icon" data-pl-tabs-copy-icon="check" hidden>
+          <span class="pf-tabs__copy-icon" data-pf-tabs-copy-icon="check" hidden>
             <Icon name="lucide:check" />
           </span>
         </button>
       )
     }
   </div>
-  <div class="pl-tabs__panels" set:html={html} />
+  <div class="pf-tabs__panels" set:html={html} />
 </section>
 
 <script>
@@ -91,40 +91,40 @@ const activePanel = panels[activeIndex] ?? panels[0];
 </script>
 
 <style is:global>
-  .pl-tabs {
-    background: var(--pl-surface, #f4f6f8);
-    border: 1px solid var(--pl-border-subtle, #e5e7eb);
-    border-radius: min(var(--pl-radius-lg, 0.75rem), 1rem);
+  .pf-tabs {
+    background: var(--pf-surface, #f4f6f8);
+    border: 1px solid var(--pf-border-subtle, #e5e7eb);
+    border-radius: min(var(--pf-radius-lg, 0.75rem), 1rem);
     margin-block: 1.25rem;
     overflow: hidden;
   }
 
-  .pl-tabs__header {
+  .pf-tabs__header {
     align-items: center;
-    background: var(--pl-surface, #f4f6f8);
-    border-bottom: 1px solid var(--pl-border-subtle, #e5e7eb);
+    background: var(--pf-surface, #f4f6f8);
+    border-bottom: 1px solid var(--pf-border-subtle, #e5e7eb);
     display: flex;
     gap: 0.625rem;
     padding: 0.5rem 1rem;
   }
 
-  .pl-tabs__active-icons {
+  .pf-tabs__active-icons {
     align-items: center;
-    color: var(--pl-text, #344054);
+    color: var(--pf-text, #344054);
     display: inline-grid;
     flex: 0 0 auto;
     justify-content: center;
     line-height: 0;
   }
 
-  .pl-tabs__active-icons[hidden],
-  .pl-tabs__active-icon[hidden],
-  .pl-tabs__copy-icon[hidden],
-  .pl-tabs__panel[hidden] {
+  .pf-tabs__active-icons[hidden],
+  .pf-tabs__active-icon[hidden],
+  .pf-tabs__copy-icon[hidden],
+  .pf-tabs__panel[hidden] {
     display: none;
   }
 
-  .pl-tabs__active-icon {
+  .pf-tabs__active-icon {
     align-items: center;
     display: inline-flex;
     height: 1rem;
@@ -133,13 +133,13 @@ const activePanel = panels[activeIndex] ?? panels[0];
     width: 1rem;
   }
 
-  .pl-tabs__active-icon > .pl-icon {
+  .pf-tabs__active-icon > .pf-icon {
     display: block;
     height: 1rem;
     width: 1rem;
   }
 
-  .pl-tabs__list {
+  .pf-tabs__list {
     align-items: center;
     background: transparent;
     display: inline-flex;
@@ -152,16 +152,16 @@ const activePanel = panels[activeIndex] ?? panels[0];
     scrollbar-width: none;
   }
 
-  .pl-tabs__list::-webkit-scrollbar {
+  .pf-tabs__list::-webkit-scrollbar {
     display: none;
   }
 
-  .pl-tabs__trigger {
+  .pf-tabs__trigger {
     appearance: none;
     background: transparent;
     border: 1px solid transparent;
-    border-radius: var(--pl-radius-md, 0.5rem);
-    color: var(--pl-text-muted, #667085);
+    border-radius: var(--pf-radius-md, 0.5rem);
+    color: var(--pf-text-muted, #667085);
     cursor: pointer;
     flex: 0 0 auto;
     font: inherit;
@@ -176,29 +176,29 @@ const activePanel = panels[activeIndex] ?? panels[0];
       color 160ms ease;
   }
 
-  .pl-tabs__trigger:hover {
-    color: var(--pl-text-strong, var(--pl-text, #182230));
+  .pf-tabs__trigger:hover {
+    color: var(--pf-text-strong, var(--pf-text, #182230));
   }
 
-  .pl-tabs__trigger:focus-visible {
-    outline: 2px solid var(--pl-accent, #4f46e5);
+  .pf-tabs__trigger:focus-visible {
+    outline: 2px solid var(--pf-accent, #4f46e5);
     outline-offset: 2px;
   }
 
-  .pl-tabs__trigger[aria-selected='true'] {
-    background: var(--pl-background, #ffffff);
-    border-color: var(--pl-border-muted, #d0d5dd);
+  .pf-tabs__trigger[aria-selected='true'] {
+    background: var(--pf-background, #ffffff);
+    border-color: var(--pf-border-muted, #d0d5dd);
     box-shadow: none;
-    color: var(--pl-text-strong, var(--pl-text, #182230));
+    color: var(--pf-text-strong, var(--pf-text, #182230));
   }
 
-  .pl-tabs__copy {
+  .pf-tabs__copy {
     align-items: center;
     appearance: none;
     background: transparent;
     border: 1px solid transparent;
-    border-radius: var(--pl-radius-md, 0.5rem);
-    color: var(--pl-text-muted, #667085);
+    border-radius: var(--pf-radius-md, 0.5rem);
+    color: var(--pf-text-muted, #667085);
     cursor: pointer;
     display: inline-flex;
     flex: 0 0 auto;
@@ -213,18 +213,18 @@ const activePanel = panels[activeIndex] ?? panels[0];
     width: 1.875rem;
   }
 
-  .pl-tabs__copy:hover {
-    background: var(--pl-background, #ffffff);
-    border-color: var(--pl-border-muted, #d0d5dd);
-    color: var(--pl-text-strong, var(--pl-text, #182230));
+  .pf-tabs__copy:hover {
+    background: var(--pf-background, #ffffff);
+    border-color: var(--pf-border-muted, #d0d5dd);
+    color: var(--pf-text-strong, var(--pf-text, #182230));
   }
 
-  .pl-tabs__copy:focus-visible {
-    outline: 2px solid var(--pl-accent, #4f46e5);
+  .pf-tabs__copy:focus-visible {
+    outline: 2px solid var(--pf-accent, #4f46e5);
     outline-offset: 2px;
   }
 
-  .pl-tabs__copy-icon {
+  .pf-tabs__copy-icon {
     align-items: center;
     display: inline-flex;
     height: 1rem;
@@ -233,36 +233,36 @@ const activePanel = panels[activeIndex] ?? panels[0];
     width: 1rem;
   }
 
-  .pl-tabs__copy-icon > .pl-icon {
+  .pf-tabs__copy-icon > .pf-icon {
     display: block;
     height: 1rem;
     width: 1rem;
   }
 
-  .pl-tabs__panels {
-    background: var(--pl-background, #fff);
+  .pf-tabs__panels {
+    background: var(--pf-background, #fff);
     padding: 1rem;
   }
 
-  .pl-tabs__panel {
-    color: var(--pl-text, #344054);
+  .pf-tabs__panel {
+    color: var(--pf-text, #344054);
   }
 
-  .pl-tabs__panel:focus-visible {
-    border-radius: var(--pl-radius-md, 0.5rem);
-    outline: 2px solid var(--pl-accent, #4f46e5);
+  .pf-tabs__panel:focus-visible {
+    border-radius: var(--pf-radius-md, 0.5rem);
+    outline: 2px solid var(--pf-accent, #4f46e5);
     outline-offset: 2px;
   }
 
-  .pl-tabs__panel > :first-child {
+  .pf-tabs__panel > :first-child {
     margin-block-start: 0;
   }
 
-  .pl-tabs__panel > :last-child {
+  .pf-tabs__panel > :last-child {
     margin-block-end: 0;
   }
 
-  .pl-tabs__panel pre {
+  .pf-tabs__panel pre {
     margin: 0;
     padding: 0;
     background: transparent;

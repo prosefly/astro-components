@@ -23,8 +23,8 @@ if (!title) {
 ---
 
 <details
-  class="pl-accordion"
-  data-pl-accordion
+  class="pf-accordion"
+  data-pf-accordion
   data-value={value}
   data-disabled={disabled ? 'true' : undefined}
   id={id}
@@ -32,11 +32,11 @@ if (!title) {
 >
   <summary
     aria-disabled={disabled ? 'true' : undefined}
-    class="pl-accordion__trigger"
-    data-pl-accordion-trigger
+    class="pf-accordion__trigger"
+    data-pf-accordion-trigger
   >
-    <span class="pl-accordion__title">{title}</span>
-    <span aria-hidden="true" class="pl-accordion__chevron">
+    <span class="pf-accordion__title">{title}</span>
+    <span aria-hidden="true" class="pf-accordion__chevron">
       <svg fill="none" height="16" viewBox="0 0 24 24" width="16">
         <path
           d="m6 9 6 6 6-6"
@@ -48,7 +48,7 @@ if (!title) {
       </svg>
     </span>
   </summary>
-  <div class="pl-accordion__content">
+  <div class="pf-accordion__content">
     <slot />
   </div>
 </details>

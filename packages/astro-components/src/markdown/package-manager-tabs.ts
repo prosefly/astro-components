@@ -418,7 +418,7 @@ function createPackageManagerCodeElement(code: string, language: string): Markdo
       {
         type: 'mdxJsxAttribute',
         name: 'className',
-        value: 'pl-package-manager-code',
+        value: 'pf-package-manager-code',
       },
       {
         type: 'mdxJsxAttribute',

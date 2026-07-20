@@ -14,8 +14,8 @@ const installCommand = 'pnpm add @prosefly/astro-components';
     <div class="min-w-0 max-w-3xl">
       <p class="mb-7 flex flex-wrap items-center gap-3 font-mono text-xs text-(--lotus-text-muted)">
         <span>Astro</span>
-        <span class="border-l border-(--lotus-border-muted) pl-3">MDX</span>
-        <span class="border-l border-(--lotus-border-muted) pl-3">Documentation UI</span>
+        <span class="border-l border-(--lotus-border-muted) pf-3">MDX</span>
+        <span class="border-l border-(--lotus-border-muted) pf-3">Documentation UI</span>
       </p>
 
       <h1 class="home-title max-w-3xl font-semibold text-(--lotus-text-strong)">
@@ -191,8 +191,8 @@ const installCommand = 'pnpm add @prosefly/astro-components';
     border-color: var(--lotus-accent);
   }
 
-  .home-button :global(.pl-icon),
-  .home-copy :global(.pl-icon) {
+  .home-button :global(.pf-icon),
+  .home-copy :global(.pf-icon) {
     height: 1rem;
     width: 1rem;
   }
@@ -211,15 +211,15 @@ const installCommand = 'pnpm add @prosefly/astro-components';
     border-radius: min(var(--lotus-radius-lg), 1rem);
   }
 
-  .component-preview :global(.pl-callout),
-  .component-preview :global(.pl-tabs),
-  .component-preview :global(.pl-file-tree) {
+  .component-preview :global(.pf-callout),
+  .component-preview :global(.pf-tabs),
+  .component-preview :global(.pf-file-tree) {
     margin-block: 1rem;
     max-width: 100%;
     min-width: 0;
   }
 
-  .component-preview :global(.pl-file-tree) {
+  .component-preview :global(.pf-file-tree) {
     margin-bottom: 0;
   }
 
@@ -232,7 +232,7 @@ const installCommand = 'pnpm add @prosefly/astro-components';
     width: 100%;
   }
 
-  .component-preview :global(.pl-tabs__panel code) {
+  .component-preview :global(.pf-tabs__panel code) {
     display: block;
     min-width: max-content;
   }

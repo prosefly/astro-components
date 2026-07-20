@@ -71,7 +71,7 @@ function createImageGallery(images: ElementNode[]): ElementNode {
       type: 'element',
       tagName: 'figure',
       properties: {
-        className: ['pl-image-gallery'],
+        className: ['pf-image-gallery'],
         dataImageCount: String(imageCount),
       },
       children: images,
@@ -82,9 +82,9 @@ function createImageGallery(images: ElementNode[]): ElementNode {
     type: 'element',
     tagName: 'figure',
     properties: {
-      className: ['pl-image-gallery'],
+      className: ['pf-image-gallery'],
       dataImageCount: String(imageCount),
-      dataPlImageGallery: '',
+      dataPfImageGallery: '',
     },
     children: [
       createGalleryButton('previous'),
@@ -92,8 +92,8 @@ function createImageGallery(images: ElementNode[]): ElementNode {
         type: 'element',
         tagName: 'div',
         properties: {
-          className: ['pl-image-gallery__track'],
-          dataPlImageGalleryTrack: '',
+          className: ['pf-image-gallery__track'],
+          dataPfImageGalleryTrack: '',
         },
         children: images.map(createGalleryItem),
       },
@@ -107,7 +107,7 @@ function createGalleryItem(image: ElementNode): ElementNode {
     type: 'element',
     tagName: 'span',
     properties: {
-      className: ['pl-image-gallery__item'],
+      className: ['pf-image-gallery__item'],
     },
     children: [image],
   };
@@ -119,8 +119,8 @@ function createGalleryButton(direction: 'previous' | 'next'): ElementNode {
     tagName: 'button',
     properties: {
       ariaLabel: direction === 'previous' ? 'Previous image' : 'Next image',
-      className: ['pl-image-gallery__button'],
-      dataPlImageGalleryButton: direction,
+      className: ['pf-image-gallery__button'],
+      dataPfImageGalleryButton: direction,
       type: 'button',
     },
     children: [createChevronIcon(direction)],
@@ -133,7 +133,7 @@ function createChevronIcon(direction: 'previous' | 'next'): ElementNode {
     tagName: 'svg',
     properties: {
       ariaHidden: 'true',
-      className: ['pl-image-gallery__button-icon'],
+      className: ['pf-image-gallery__button-icon'],
       fill: 'none',
       height: '20',
       stroke: 'currentColor',

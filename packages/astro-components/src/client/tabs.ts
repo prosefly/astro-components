@@ -14,7 +14,7 @@ type ActivateOptions = {
 function getStoredLabel(syncKey: string | null): string | undefined {
   if (!syncKey) return undefined;
   try {
-    return localStorage.getItem(`pl-tabs:${syncKey}`) ?? undefined;
+    return localStorage.getItem(`pf-tabs:${syncKey}`) ?? undefined;
   } catch {
     return undefined;
   }
@@ -23,7 +23,7 @@ function getStoredLabel(syncKey: string | null): string | undefined {
 function storeLabel(syncKey: string | null, label: string | null): void {
   if (!syncKey || !label) return;
   try {
-    localStorage.setItem(`pl-tabs:${syncKey}`, label);
+    localStorage.setItem(`pf-tabs:${syncKey}`, label);
   } catch {
     // Ignore storage failures in restricted browsing contexts.
   }
@@ -39,8 +39,8 @@ async function writeClipboard(text: string): Promise<void> {
 }
 
 function setCopyState(button: HTMLButtonElement, copied: boolean): void {
-  const copyIcon = button.querySelector('[data-pl-tabs-copy-icon="copy"]');
-  const checkIcon = button.querySelector('[data-pl-tabs-copy-icon="check"]');
+  const copyIcon = button.querySelector('[data-pf-tabs-copy-icon="copy"]');
+  const checkIcon = button.querySelector('[data-pf-tabs-copy-icon="check"]');
 
   copyIcon?.toggleAttribute('hidden', copied);
   checkIcon?.toggleAttribute('hidden', !copied);
@@ -49,21 +49,21 @@ function setCopyState(button: HTMLButtonElement, copied: boolean): void {
 }
 
 function getActiveCode(root: Element): string {
-  const activePanel = root.querySelector('.pl-tabs__panel:not([hidden])');
+  const activePanel = root.querySelector('.pf-tabs__panel:not([hidden])');
   const code = activePanel?.querySelector('pre code');
 
   return code?.textContent ?? '';
 }
 
 function setActiveIcon(root: Element, panelId: string | null): void {
-  const iconContainer = root.querySelector<HTMLElement>('.pl-tabs__active-icons');
-  const icons = [...root.querySelectorAll('[data-pl-tabs-icon-for]')];
+  const iconContainer = root.querySelector<HTMLElement>('.pf-tabs__active-icons');
+  const icons = [...root.querySelectorAll('[data-pf-tabs-icon-for]')];
 
   if (!(iconContainer instanceof HTMLElement)) return;
 
   let hasActiveIcon = false;
   icons.forEach((icon) => {
-    const isActive = icon.getAttribute('data-pl-tabs-icon-for') === panelId;
+    const isActive = icon.getAttribute('data-pf-tabs-icon-for') === panelId;
     icon.toggleAttribute('hidden', !isActive);
     hasActiveIcon ||= isActive;
   });
@@ -74,8 +74,8 @@ function activate(root: Element, trigger: Element, options: ActivateOptions = {}
   const panelId = trigger.getAttribute('data-tab-panel');
   const label = trigger.getAttribute('data-tab-label');
   const syncKey = root.getAttribute('data-sync-key');
-  const triggers = [...root.querySelectorAll('[data-pl-tabs-trigger]')];
-  const panels = [...root.querySelectorAll('.pl-tabs__panel')];
+  const triggers = [...root.querySelectorAll('[data-pf-tabs-trigger]')];
+  const panels = [...root.querySelectorAll('.pf-tabs__panel')];
 
   triggers.forEach((button) => {
     const isActive = button === trigger;
@@ -103,13 +103,13 @@ function activate(root: Element, trigger: Element, options: ActivateOptions = {}
     return;
   }
 
-  document.querySelectorAll('[data-pl-tabs]').forEach((otherRoot) => {
+  document.querySelectorAll('[data-pf-tabs]').forEach((otherRoot) => {
     if (otherRoot === root || otherRoot.getAttribute('data-sync-key') !== syncKey) {
       return;
     }
 
     const matchingTrigger = [
-      ...otherRoot.querySelectorAll('[data-pl-tabs-trigger]'),
+      ...otherRoot.querySelectorAll('[data-pf-tabs-trigger]'),
     ].find((button) => button.getAttribute('data-tab-label') === label);
 
     if (matchingTrigger) {
@@ -120,12 +120,12 @@ function activate(root: Element, trigger: Element, options: ActivateOptions = {}
 
 if (!window.__proseflyTabsInit) {
   window.__proseflyTabsInit = () => {
-    document.querySelectorAll('[data-pl-tabs]').forEach((root) => {
-      if (root instanceof HTMLElement && root.dataset.plTabsReady === 'true') {
+    document.querySelectorAll('[data-pf-tabs]').forEach((root) => {
+      if (root instanceof HTMLElement && root.dataset.pfTabsReady === 'true') {
         return;
       }
 
-      const triggers = [...root.querySelectorAll('[data-pl-tabs-trigger]')];
+      const triggers = [...root.querySelectorAll('[data-pf-tabs-trigger]')];
       const syncKey = root.getAttribute('data-sync-key');
       const storedLabel = getStoredLabel(syncKey);
       const storedTrigger = storedLabel
@@ -137,7 +137,7 @@ if (!window.__proseflyTabsInit) {
         triggers[0];
 
       if (root instanceof HTMLElement) {
-        root.dataset.plTabsReady = 'true';
+        root.dataset.pfTabsReady = 'true';
       }
 
       if (selectedTrigger) {
@@ -167,7 +167,7 @@ if (!window.__proseflyTabsInit) {
         });
       });
 
-      root.querySelectorAll('[data-pl-tabs-copy]').forEach((button) => {
+      root.querySelectorAll('[data-pf-tabs-copy]').forEach((button) => {
         if (!(button instanceof HTMLButtonElement)) {
           return;
         }

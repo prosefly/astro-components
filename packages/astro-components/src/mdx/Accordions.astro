@@ -14,10 +14,10 @@ const defaultValues =
 ---
 
 <div
-  class="pl-accordions"
+  class="pf-accordions"
   data-default-values={JSON.stringify(defaultValues)}
   data-multiple={multiple ? 'true' : undefined}
-  data-pl-accordions
+  data-pf-accordions
 >
   <slot />
 </div>
@@ -27,26 +27,26 @@ const defaultValues =
 </script>
 
 <style is:global>
-  .pl-accordions {
+  .pf-accordions {
     border-bottom: 1px solid
-      color-mix(in oklab, var(--pl-text-muted, #667085) 18%, transparent);
+      color-mix(in oklab, var(--pf-text-muted, #667085) 18%, transparent);
     border-top: 1px solid
-      color-mix(in oklab, var(--pl-text-muted, #667085) 18%, transparent);
+      color-mix(in oklab, var(--pf-text-muted, #667085) 18%, transparent);
     margin-block: 1.5rem;
   }
 
-  .pl-accordion {
+  .pf-accordion {
     border-bottom: 1px solid
-      color-mix(in oklab, var(--pl-text-muted, #667085) 18%, transparent);
+      color-mix(in oklab, var(--pf-text-muted, #667085) 18%, transparent);
   }
 
-  .pl-accordion:last-child {
+  .pf-accordion:last-child {
     border-bottom: 0;
   }
 
-  .pl-accordion__trigger {
+  .pf-accordion__trigger {
     align-items: center;
-    color: var(--pl-text-strong, var(--pl-text, #182230));
+    color: var(--pf-text-strong, var(--pf-text, #182230));
     cursor: pointer;
     display: flex;
     gap: 1rem;
@@ -57,30 +57,30 @@ const defaultValues =
     transition: color 160ms ease;
   }
 
-  .pl-accordion__trigger::-webkit-details-marker {
+  .pf-accordion__trigger::-webkit-details-marker {
     display: none;
   }
 
-  .pl-accordion__trigger:hover {
-    color: var(--pl-accent, #4f46e5);
+  .pf-accordion__trigger:hover {
+    color: var(--pf-accent, #4f46e5);
     text-decoration: underline;
     text-underline-offset: 0.25rem;
   }
 
-  .pl-accordion__trigger:focus-visible {
-    border-radius: var(--pl-radius-md, 0.5rem);
-    outline: 2px solid var(--pl-accent, #4f46e5);
+  .pf-accordion__trigger:focus-visible {
+    border-radius: var(--pf-radius-md, 0.5rem);
+    outline: 2px solid var(--pf-accent, #4f46e5);
     outline-offset: 2px;
   }
 
-  .pl-accordion__title {
+  .pf-accordion__title {
     font-size: 0.9375rem;
     font-weight: 500;
     line-height: 1.5rem;
   }
 
-  .pl-accordion__chevron {
-    color: var(--pl-text-muted, #667085);
+  .pf-accordion__chevron {
+    color: var(--pf-text-muted, #667085);
     display: inline-flex;
     flex: 0 0 auto;
     transition:
@@ -88,38 +88,38 @@ const defaultValues =
       transform 160ms ease;
   }
 
-  .pl-accordion[open] > .pl-accordion__trigger .pl-accordion__chevron {
+  .pf-accordion[open] > .pf-accordion__trigger .pf-accordion__chevron {
     transform: rotate(180deg);
   }
 
-  .pl-accordion__trigger:hover .pl-accordion__chevron {
+  .pf-accordion__trigger:hover .pf-accordion__chevron {
     color: currentColor;
   }
 
-  .pl-accordion__content {
-    color: var(--pl-text, #344054);
+  .pf-accordion__content {
+    color: var(--pf-text, #344054);
     font-size: 0.9375rem;
     line-height: 1.75;
     padding-block: 0 1rem;
   }
 
-  .pl-accordion__content > :first-child {
+  .pf-accordion__content > :first-child {
     margin-block-start: 0;
   }
 
-  .pl-accordion__content > :last-child {
+  .pf-accordion__content > :last-child {
     margin-block-end: 0;
   }
 
-  .pl-accordion__content > * + * {
+  .pf-accordion__content > * + * {
     margin-block-start: 0.75rem;
   }
 
-  .pl-accordion[data-disabled='true'] {
+  .pf-accordion[data-disabled='true'] {
     opacity: 0.55;
   }
 
-  .pl-accordion[data-disabled='true'] > .pl-accordion__trigger {
+  .pf-accordion[data-disabled='true'] > .pf-accordion__trigger {
     cursor: not-allowed;
     text-decoration: none;
   }

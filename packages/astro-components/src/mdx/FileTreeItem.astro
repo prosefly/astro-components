@@ -26,70 +26,70 @@ const children = entry.children.length > 0 ? entry.children : [placeholderEntry]
 
 <li
   class:list={[
-    'pl-file-tree__item',
-    entry.isDirectory ? 'pl-file-tree__item--directory' : 'pl-file-tree__item--file',
-    entry.isPlaceholder && 'pl-file-tree__item--placeholder',
-    entry.highlighted && 'pl-file-tree__item--highlighted',
+    'pf-file-tree__item',
+    entry.isDirectory ? 'pf-file-tree__item--directory' : 'pf-file-tree__item--file',
+    entry.isPlaceholder && 'pf-file-tree__item--placeholder',
+    entry.highlighted && 'pf-file-tree__item--highlighted',
   ]}
 >
   {
     entry.isDirectory ? (
-      <details class="pl-file-tree__details" open={entry.children.length > 0 ? true : undefined}>
-        <summary class="pl-file-tree__summary">
-          <span class="pl-file-tree__entry">
+      <details class="pf-file-tree__details" open={entry.children.length > 0 ? true : undefined}>
+        <summary class="pf-file-tree__summary">
+          <span class="pf-file-tree__entry">
             {!entry.isPlaceholder && (
-              <span aria-hidden="true" class="pl-file-tree__chevron">
+              <span aria-hidden="true" class="pf-file-tree__chevron">
                 <Icon name="lucide:chevron-right" />
               </span>
             )}
             <span
               class:list={[
-                'pl-file-tree__target',
-                entry.highlighted && 'pl-file-tree__target--highlighted',
+                'pf-file-tree__target',
+                entry.highlighted && 'pf-file-tree__target--highlighted',
               ]}
             >
               {!entry.isPlaceholder && (
-                <span aria-hidden="true" class="pl-file-tree__icon" data-kind={entry.kind}>
-                  <span class="pl-file-tree__icon-closed">
+                <span aria-hidden="true" class="pf-file-tree__icon" data-kind={entry.kind}>
+                  <span class="pf-file-tree__icon-closed">
                     <Icon name={icon.closed ?? icon.name} />
                   </span>
-                  <span class="pl-file-tree__icon-open">
+                  <span class="pf-file-tree__icon-open">
                     <Icon name={icon.open ?? icon.name} />
                   </span>
                 </span>
               )}
-              <span class="pl-file-tree__name">
-                {!entry.isPlaceholder && <span class="pl-file-tree__sr-only">Directory </span>}
+              <span class="pf-file-tree__name">
+                {!entry.isPlaceholder && <span class="pf-file-tree__sr-only">Directory </span>}
                 <Fragment set:html={entry.nameHtml} />
               </span>
             </span>
             {
               entry.commentHtml && (
-                <span class="pl-file-tree__comment" set:html={entry.commentHtml} />
+                <span class="pf-file-tree__comment" set:html={entry.commentHtml} />
               )
             }
           </span>
         </summary>
-        <ul class="pl-file-tree__list" role="list">
+        <ul class="pf-file-tree__list" role="list">
           {children.map((child) => <FileTreeItem entry={child} iconSet={iconSet} />)}
         </ul>
       </details>
     ) : (
-      <span class="pl-file-tree__entry">
+      <span class="pf-file-tree__entry">
         <span
           class:list={[
-            'pl-file-tree__target',
-            entry.highlighted && 'pl-file-tree__target--highlighted',
+            'pf-file-tree__target',
+            entry.highlighted && 'pf-file-tree__target--highlighted',
           ]}
         >
           {!entry.isPlaceholder && (
-            <span aria-hidden="true" class="pl-file-tree__icon" data-kind={entry.kind}>
+            <span aria-hidden="true" class="pf-file-tree__icon" data-kind={entry.kind}>
               {icon.light && icon.dark ? (
                 <>
-                  <span class="pl-file-tree__icon-theme pl-file-tree__icon-theme--light">
+                  <span class="pf-file-tree__icon-theme pf-file-tree__icon-theme--light">
                     <Icon name={icon.light} />
                   </span>
-                  <span class="pl-file-tree__icon-theme pl-file-tree__icon-theme--dark">
+                  <span class="pf-file-tree__icon-theme pf-file-tree__icon-theme--dark">
                     <Icon name={icon.dark} />
                   </span>
                 </>
@@ -98,11 +98,11 @@ const children = entry.children.length > 0 ? entry.children : [placeholderEntry]
               )}
             </span>
           )}
-          <span class="pl-file-tree__name" set:html={entry.nameHtml} />
+          <span class="pf-file-tree__name" set:html={entry.nameHtml} />
         </span>
         {
           entry.commentHtml && (
-            <span class="pl-file-tree__comment" set:html={entry.commentHtml} />
+            <span class="pf-file-tree__comment" set:html={entry.commentHtml} />
           )
         }
       </span>

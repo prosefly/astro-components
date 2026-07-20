@@ -103,7 +103,7 @@ export function processPanels(html: string | undefined, options: ProcessPanelsOp
             tagName: 'div',
             properties: {
               'aria-labelledby': tabId,
-              className: ['pl-tabs__panel'],
+              className: ['pf-tabs__panel'],
               hidden: isActive ? undefined : true,
               id: panelId,
               role: 'tabpanel',

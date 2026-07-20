@@ -7,7 +7,7 @@ declare global {
 export {};
 
 function getItems(root: Element): HTMLDetailsElement[] {
-  return [...root.querySelectorAll(':scope > [data-pl-accordion]')].filter(
+  return [...root.querySelectorAll(':scope > [data-pf-accordion]')].filter(
     (item): item is HTMLDetailsElement => item instanceof HTMLDetailsElement,
   );
 }
@@ -21,7 +21,7 @@ function closeSiblings(root: Element, activeItem: HTMLDetailsElement): void {
 }
 
 function openItem(item: HTMLDetailsElement): void {
-  const root = item.closest('[data-pl-accordions]');
+  const root = item.closest('[data-pf-accordions]');
 
   item.open = true;
   if (root) closeSiblings(root, item);
@@ -33,19 +33,19 @@ function openHashTarget(): void {
   const id = decodeURIComponent(location.hash.slice(1));
   const item = document.getElementById(id);
 
-  if (item instanceof HTMLDetailsElement && item.matches('[data-pl-accordion]')) {
+  if (item instanceof HTMLDetailsElement && item.matches('[data-pf-accordion]')) {
     openItem(item);
   }
 }
 
 if (!window.__proseflyAccordionsInit) {
   window.__proseflyAccordionsInit = () => {
-    document.querySelectorAll('[data-pl-accordions]').forEach((root) => {
-      if (!(root instanceof HTMLElement) || root.dataset.plAccordionsReady === 'true') {
+    document.querySelectorAll('[data-pf-accordions]').forEach((root) => {
+      if (!(root instanceof HTMLElement) || root.dataset.pfAccordionsReady === 'true') {
         return;
       }
 
-      root.dataset.plAccordionsReady = 'true';
+      root.dataset.pfAccordionsReady = 'true';
 
       let defaultValues: string[] = [];
       try {
@@ -60,7 +60,7 @@ if (!window.__proseflyAccordionsInit) {
         }
 
         item.addEventListener('click', (event) => {
-          if (!(event.target instanceof Element) || !event.target.closest('[data-pl-accordion-trigger]')) {
+          if (!(event.target instanceof Element) || !event.target.closest('[data-pf-accordion-trigger]')) {
             return;
           }
 

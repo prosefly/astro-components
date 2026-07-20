@@ -1,17 +1,17 @@
-<div class="pl-card-grid">
+<div class="pf-card-grid">
   <slot />
 </div>
 
 <style>
-  .pl-card-grid {
+  .pf-card-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--pl-card-grid-gap, 1rem);
-    margin-block: var(--pl-card-grid-margin, 2rem);
+    gap: var(--pf-card-grid-gap, 1rem);
+    margin-block: var(--pf-card-grid-margin, 2rem);
   }
 
   @media (min-width: 48rem) {
-    .pl-card-grid {
+    .pf-card-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }

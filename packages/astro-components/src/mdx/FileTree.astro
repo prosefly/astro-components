@@ -13,29 +13,29 @@ const fileTreeHtml = await Astro.slots.render('default');
 const entries = parseFileTree(fileTreeHtml);
 ---
 
-<ul class="pl-file-tree" data-icon-set={iconSet} role="list">
+<ul class="pf-file-tree" data-icon-set={iconSet} role="list">
   {entries.map((entry) => <FileTreeItem entry={entry} iconSet={iconSet} />)}
 </ul>
 
 <style is:global>
-  .pl-file-tree {
-    --pl-file-tree-border: color-mix(
+  .pf-file-tree {
+    --pf-file-tree-border: color-mix(
       in oklab,
-      var(--pl-text-muted, #667085) 18%,
+      var(--pf-text-muted, #667085) 18%,
       transparent
     );
-    --pl-file-tree-line: color-mix(
+    --pf-file-tree-line: color-mix(
       in oklab,
-      var(--pl-text-muted, #667085) 16%,
+      var(--pf-text-muted, #667085) 16%,
       transparent
     );
 
-    background: var(--pl-background, #ffffff);
-    border: 1px solid var(--pl-file-tree-border);
-    border-radius: min(var(--pl-radius-lg, 0.75rem), 1rem);
-    color: var(--pl-text, #344054);
+    background: var(--pf-background, #ffffff);
+    border: 1px solid var(--pf-file-tree-border);
+    border-radius: min(var(--pf-radius-lg, 0.75rem), 1rem);
+    color: var(--pf-text, #344054);
     font-family:
-      var(--pl-font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+      var(--pf-font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
     font-size: 0.875rem;
     line-height: 1.5rem;
     list-style: none;
@@ -44,27 +44,27 @@ const entries = parseFileTree(fileTreeHtml);
     padding: 0.75rem;
   }
 
-  .pl-file-tree,
-  .pl-file-tree ul {
+  .pf-file-tree,
+  .pf-file-tree ul {
     list-style: none;
   }
 
-  .pl-file-tree :where(ul, li, p) {
+  .pf-file-tree :where(ul, li, p) {
     margin: 0;
   }
 
-  .pl-file-tree :where(ul) {
+  .pf-file-tree :where(ul) {
     padding: 0;
   }
 
-  .pl-file-tree__list {
+  .pf-file-tree__list {
     margin-block-start: 0.125rem;
     padding-inline-start: 1.5rem;
     position: relative;
   }
 
-  .pl-file-tree__list::before {
-    background: var(--pl-file-tree-line);
+  .pf-file-tree__list::before {
+    background: var(--pf-file-tree-line);
     bottom: 0.75rem;
     content: "";
     inset-inline-start: 0.625rem;
@@ -73,24 +73,24 @@ const entries = parseFileTree(fileTreeHtml);
     width: 1px;
   }
 
-  .pl-file-tree__item {
+  .pf-file-tree__item {
     margin: 0;
     min-width: max-content;
     padding: 0;
   }
 
-  .pl-file-tree__entry {
+  .pf-file-tree__entry {
     align-items: center;
-    border-radius: var(--pl-radius-md, 0.5rem);
+    border-radius: var(--pf-radius-md, 0.5rem);
     display: inline-flex;
     gap: 0.375rem;
     min-height: 1.75rem;
     white-space: nowrap;
   }
 
-  .pl-file-tree__target {
+  .pf-file-tree__target {
     align-items: center;
-    border-radius: var(--pl-radius-md, 0.5rem);
+    border-radius: var(--pf-radius-md, 0.5rem);
     box-sizing: border-box;
     display: inline-flex;
     gap: 0.375rem;
@@ -98,32 +98,32 @@ const entries = parseFileTree(fileTreeHtml);
     padding: 0.125rem 0.5rem;
   }
 
-  .pl-file-tree__target--highlighted {
+  .pf-file-tree__target--highlighted {
     background: var(
-      --pl-accent-soft,
-      color-mix(in oklab, var(--pl-accent, #4f46e5) 12%, var(--pl-background, #ffffff))
+      --pf-accent-soft,
+      color-mix(in oklab, var(--pf-accent, #4f46e5) 12%, var(--pf-background, #ffffff))
     );
-    color: var(--pl-text-strong, var(--pl-text, #182230));
+    color: var(--pf-text-strong, var(--pf-text, #182230));
     font-weight: 600;
   }
 
-  .pl-file-tree__summary {
+  .pf-file-tree__summary {
     cursor: pointer;
     display: block;
     list-style: none;
   }
 
-  .pl-file-tree__summary::-webkit-details-marker {
+  .pf-file-tree__summary::-webkit-details-marker {
     display: none;
   }
 
-  .pl-file-tree__summary:hover .pl-file-tree__target:not(.pl-file-tree__target--highlighted) {
-    background: var(--pl-surface, #f4f6f8);
+  .pf-file-tree__summary:hover .pf-file-tree__target:not(.pf-file-tree__target--highlighted) {
+    background: var(--pf-surface, #f4f6f8);
   }
 
-  .pl-file-tree__chevron {
+  .pf-file-tree__chevron {
     align-items: center;
-    color: var(--pl-text-muted, #667085);
+    color: var(--pf-text-muted, #667085);
     display: inline-flex;
     flex: 0 0 auto;
     justify-content: center;
@@ -131,89 +131,89 @@ const entries = parseFileTree(fileTreeHtml);
     transition: transform 160ms ease;
   }
 
-  .pl-file-tree__details[open] > .pl-file-tree__summary .pl-file-tree__chevron {
+  .pf-file-tree__details[open] > .pf-file-tree__summary .pf-file-tree__chevron {
     transform: rotate(90deg);
   }
 
-  .pl-file-tree__icon {
+  .pf-file-tree__icon {
     align-items: center;
-    color: var(--pl-text-muted, #667085);
+    color: var(--pf-text-muted, #667085);
     display: inline-flex;
     flex: 0 0 auto;
     justify-content: center;
     line-height: 0;
   }
 
-  .pl-file-tree__icon .pl-icon,
-  .pl-file-tree__icon-closed .pl-icon,
-  .pl-file-tree__icon-open .pl-icon,
-  .pl-file-tree__icon-theme .pl-icon,
-  .pl-file-tree__chevron .pl-icon {
+  .pf-file-tree__icon .pf-icon,
+  .pf-file-tree__icon-closed .pf-icon,
+  .pf-file-tree__icon-open .pf-icon,
+  .pf-file-tree__icon-theme .pf-icon,
+  .pf-file-tree__chevron .pf-icon {
     display: block;
     height: 1rem;
     width: 1rem;
   }
 
-  .pl-file-tree__icon-open,
-  .pl-file-tree__details[open] > .pl-file-tree__summary .pl-file-tree__icon-closed {
+  .pf-file-tree__icon-open,
+  .pf-file-tree__details[open] > .pf-file-tree__summary .pf-file-tree__icon-closed {
     display: none;
   }
 
-  .pl-file-tree__details[open] > .pl-file-tree__summary .pl-file-tree__icon-open {
+  .pf-file-tree__details[open] > .pf-file-tree__summary .pf-file-tree__icon-open {
     display: inline-flex;
   }
 
-  .pl-file-tree__icon-theme--dark {
+  .pf-file-tree__icon-theme--dark {
     display: none;
   }
 
-  :root[data-theme='dark'] .pl-file-tree__icon-theme--light {
+  :root[data-theme='dark'] .pf-file-tree__icon-theme--light {
     display: none;
   }
 
-  :root[data-theme='dark'] .pl-file-tree__icon-theme--dark {
+  :root[data-theme='dark'] .pf-file-tree__icon-theme--dark {
     display: block;
   }
 
   @media (prefers-color-scheme: dark) {
-    :root:is([data-theme='system'], :not([data-theme])) .pl-file-tree__icon-theme--light {
+    :root:is([data-theme='system'], :not([data-theme])) .pf-file-tree__icon-theme--light {
       display: none;
     }
 
-    :root:is([data-theme='system'], :not([data-theme])) .pl-file-tree__icon-theme--dark {
+    :root:is([data-theme='system'], :not([data-theme])) .pf-file-tree__icon-theme--dark {
       display: block;
     }
   }
 
-  .pl-file-tree__icon[data-kind='directory'] {
-    color: color-mix(in oklab, var(--pl-accent, #4f46e5) 82%, var(--pl-text, #344054));
+  .pf-file-tree__icon[data-kind='directory'] {
+    color: color-mix(in oklab, var(--pf-accent, #4f46e5) 82%, var(--pf-text, #344054));
   }
 
-  .pl-file-tree[data-icon-set='lucide'] .pl-file-tree__icon[data-kind='code'] {
+  .pf-file-tree[data-icon-set='lucide'] .pf-file-tree__icon[data-kind='code'] {
     color: oklch(0.58 0.18 250);
   }
 
-  .pl-file-tree[data-icon-set='lucide'] .pl-file-tree__icon[data-kind='config'] {
+  .pf-file-tree[data-icon-set='lucide'] .pf-file-tree__icon[data-kind='config'] {
     color: oklch(0.56 0.14 155);
   }
 
-  .pl-file-tree[data-icon-set='lucide'] .pl-file-tree__icon[data-kind='style'] {
+  .pf-file-tree[data-icon-set='lucide'] .pf-file-tree__icon[data-kind='style'] {
     color: oklch(0.58 0.19 320);
   }
 
-  .pl-file-tree[data-icon-set='lucide'] .pl-file-tree__icon[data-kind='image'] {
+  .pf-file-tree[data-icon-set='lucide'] .pf-file-tree__icon[data-kind='image'] {
     color: oklch(0.58 0.16 80);
   }
 
-  .pl-file-tree__name {
-    color: var(--pl-text, #344054);
+  .pf-file-tree__name {
+    color: var(--pf-text, #344054);
   }
 
-  .pl-file-tree__target--highlighted .pl-file-tree__name {
+  .pf-file-tree__target--highlighted .pf-file-tree__name {
     color: inherit;
   }
 
-  .pl-file-tree__name code {
+  .pf-file-tree__name code {
     background: transparent;
     border: 0;
     border-radius: 0;
@@ -222,19 +222,19 @@ const entries = parseFileTree(fileTreeHtml);
     padding: 0;
   }
 
-  .pl-file-tree__comment {
-    color: var(--pl-text-muted, #667085);
+  .pf-file-tree__comment {
+    color: var(--pf-text-muted, #667085);
     font-family:
-      var(--pl-font-sans, ui-sans-serif, system-ui, sans-serif);
+      var(--pf-font-sans, ui-sans-serif, system-ui, sans-serif);
     font-size: 0.8125rem;
   }
 
-  .pl-file-tree__comment :where(strong) {
-    color: var(--pl-text-strong, var(--pl-text, #182230));
+  .pf-file-tree__comment :where(strong) {
+    color: var(--pf-text-strong, var(--pf-text, #182230));
     font-weight: 600;
   }
 
-  .pl-file-tree__comment :where(code) {
+  .pf-file-tree__comment :where(code) {
     background: transparent;
     border: 0;
     color: inherit;
@@ -242,12 +242,12 @@ const entries = parseFileTree(fileTreeHtml);
     padding: 0;
   }
 
-  .pl-file-tree__item--placeholder > .pl-file-tree__entry,
-  .pl-file-tree__item--placeholder .pl-file-tree__name {
-    color: var(--pl-text-muted, #667085);
+  .pf-file-tree__item--placeholder > .pf-file-tree__entry,
+  .pf-file-tree__item--placeholder .pf-file-tree__name {
+    color: var(--pf-text-muted, #667085);
   }
 
-  .pl-file-tree__sr-only {
+  .pf-file-tree__sr-only {
     clip: rect(0, 0, 0, 0);
     border: 0;
     height: 1px;
