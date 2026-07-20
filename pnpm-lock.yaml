@@ -15,8 +15,8 @@ importers:
         specifier: workspace:*
         version: link:packages/astro-components
       '@prosefly/astro-theme-lotus':
-        specifier: ^0.2.0
-        version: 0.2.0(@astrojs/markdown-satteri@0.3.4)(@types/node@26.1.1)(astro@7.1.0(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
+        specifier: ^0.4.0
+        version: 0.4.0(@astrojs/markdown-satteri@0.3.4)(@types/node@26.1.1)(astro@7.1.0(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       astro:
         specifier: ^7.1.0
         version: 7.1.0(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0)
@@ -696,13 +696,13 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@prosefly/astro-components@0.1.0':
-    resolution: {integrity: sha512-IXwcJSDGkssEf4sK9qoofIeoUUfItgnW1i7gKevxQlCzh5HqZ3s6cIoEdSPXxSf2YJijo5xesRUb7lYejX209Q==}
+  '@prosefly/astro-components@0.3.0':
+    resolution: {integrity: sha512-oPNPQBPAbXywXrP46RRN8oeFzq2ySXwKbQUyaIL0RwpKq47PK/WXs4XEjxjXDqHJRiEUoGs8Kco0jHt5TXxBng==}
     peerDependencies:
       astro: ^7.0.0
 
-  '@prosefly/astro-theme-lotus@0.2.0':
-    resolution: {integrity: sha512-N7/1JG+V79/n6/Qa5WGv8JHOawStqkb+k7UOgCTPZSfHmIQ00j51miw9hUhAkzYYelhXVzwixx5b5z6i0kdIfw==}
+  '@prosefly/astro-theme-lotus@0.4.0':
+    resolution: {integrity: sha512-tbSi8tSmlokOtypEI838MJ49lCNsvfF0ZtBRdff83FSIeYYHUidpUWcwvmyDcCcY88lBbAC9EnXFmFwGCWAbsQ==}
     peerDependencies:
       astro: ^7.0.0
 
@@ -1588,6 +1588,9 @@ packages:
   markdown-table@3.0.4:
     resolution: {integrity: sha512-wiYz4+JrLyb/DqW2hkFJxP7Vd7JuTDm77fvbM8VfEQdmSMqcImWeeRbHwZjBjIFki/VaMK2BhFi7oUUZeM5bqw==}
 
+  mdast-heading-id@2.0.0:
+    resolution: {integrity: sha512-JVh0xKqsI3INPzJEqqCiuq3BGde5x6AlBTQAetLQQr9qTiDjX4dCvFhIiGmyPt1rftiHELQPI5obGphIOTXeWQ==}
+
   mdast-util-definitions@6.0.0:
     resolution: {integrity: sha512-scTllyX6pnYNZH/AIp/0ePz6s4cZtARxImwoPJ7kS42n+MnVsI4XbnG6d4ibehRIldYMWM2LD7ImQblVhUejVQ==}
 
@@ -1707,6 +1710,9 @@ packages:
 
   micromark-factory-whitespace@2.0.1:
     resolution: {integrity: sha512-Ob0nuZ3PKt/n0hORHyvoD9uZhr+Za8sFoP+OnMcnWK5lngSzALgQYKMr9RJVOWLqQYuyn6ulqGWSXdwf6F80lQ==}
+
+  micromark-heading-id@2.0.0:
+    resolution: {integrity: sha512-TdR5WCmwuCroK8QrfX0/4w9bjj3ayN0GzatxGV/lWQKmM75kNKVZEmdvKZS4MOskARxWXu1WHdIJjMSVMBegow==}
 
   micromark-util-character@2.1.1:
     resolution: {integrity: sha512-wv8tdUTJ3thSFFFJKtpYKOYiGP2+v96Hvk4Tu8KpCAsTMs6yi+nVmGh1syvSCsaxz45J6Jbw+9DD6g97+NV67Q==}
@@ -3022,26 +3028,31 @@ snapshots:
   '@pagefind/windows-x64@1.5.2':
     optional: true
 
-  '@prosefly/astro-components@0.1.0(astro@7.1.0(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0))':
+  '@prosefly/astro-components@0.3.0(astro@7.1.0(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0))':
     dependencies:
       '@astrojs/markdown-remark': 7.2.1
       '@iconify/utils': 3.1.4
       astro: 7.1.0(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0)
       rehype: 13.0.2
       rehype-format: 5.0.1
+      remark-directive: 4.0.0
     transitivePeerDependencies:
       - supports-color
 
-  '@prosefly/astro-theme-lotus@0.2.0(@astrojs/markdown-satteri@0.3.4)(@types/node@26.1.1)(astro@7.1.0(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)':
+  '@prosefly/astro-theme-lotus@0.4.0(@astrojs/markdown-satteri@0.3.4)(@types/node@26.1.1)(astro@7.1.0(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)':
     dependencies:
       '@astrojs/markdown-remark': 7.2.1
       '@astrojs/mdx': 7.0.3(@astrojs/markdown-satteri@0.3.4)(astro@7.1.0(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0))
       '@expressive-code/plugin-line-numbers': 0.44.0
-      '@prosefly/astro-components': 0.1.0(astro@7.1.0(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0))
+      '@prosefly/astro-components': 0.3.0(astro@7.1.0(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0))
       '@tailwindcss/vite': 4.3.3(vite@8.1.5(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       astro: 7.1.0(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0)
       astro-expressive-code: 0.44.0(astro@7.1.0(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0))
+      github-slugger: 2.0.0
+      mdast-heading-id: 2.0.0
+      micromark-heading-id: 2.0.0
       pagefind: 1.5.2
+      shiki: 4.3.1
       vite: 8.1.5(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
     transitivePeerDependencies:
       - '@astrojs/markdown-satteri'
@@ -4055,6 +4066,8 @@ snapshots:
 
   markdown-table@3.0.4: {}
 
+  mdast-heading-id@2.0.0: {}
+
   mdast-util-definitions@6.0.0:
     dependencies:
       '@types/mdast': 4.0.4
@@ -4423,6 +4436,10 @@ snapshots:
       micromark-util-character: 2.1.1
       micromark-util-symbol: 2.0.1
       micromark-util-types: 2.0.2
+
+  micromark-heading-id@2.0.0:
+    dependencies:
+      micromark-util-symbol: 2.0.1
 
   micromark-util-character@2.1.1:
     dependencies:

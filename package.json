@@ -1,6 +1,6 @@
 {
   "name": "astro-components",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.9.0",
@@ -18,7 +18,7 @@
   "dependencies": {
     "@astrojs/check": "latest",
     "@prosefly/astro-components": "workspace:*",
-    "@prosefly/astro-theme-lotus": "^0.2.0",
+    "@prosefly/astro-theme-lotus": "^0.4.0",
     "astro": "^7.1.0",
     "typescript": "^6.0.3"
   }
