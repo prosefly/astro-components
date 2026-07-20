@@ -1,3 +1,5 @@
+@import "../theme-tokens.css";
+
 .pf-image-gallery {
   margin-inline: 0;
 }
@@ -95,7 +97,7 @@
 }
 
 .pf-image-gallery__button:focus-visible {
-  outline: 2px solid var(--pf-accent, #4f46e5);
+  outline: 2px solid var(--pf-accent, #3e7e55);
   outline-offset: 2px;
 }
 

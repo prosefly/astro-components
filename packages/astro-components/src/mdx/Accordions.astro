@@ -1,4 +1,6 @@
 ---
+import '../theme-tokens.css';
+
 interface Props {
   multiple?: boolean;
   defaultValue?: string | string[];
@@ -62,14 +64,14 @@ const defaultValues =
   }
 
   .pf-accordion__trigger:hover {
-    color: var(--pf-accent, #4f46e5);
+    color: var(--pf-accent, #3e7e55);
     text-decoration: underline;
     text-underline-offset: 0.25rem;
   }
 
   .pf-accordion__trigger:focus-visible {
     border-radius: var(--pf-radius-md, 0.5rem);
-    outline: 2px solid var(--pf-accent, #4f46e5);
+    outline: 2px solid var(--pf-accent, #3e7e55);
     outline-offset: 2px;
   }
 

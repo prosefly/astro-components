@@ -1,4 +1,6 @@
 ---
+import '../theme-tokens.css';
+
 type BadgeVariant = 'solid' | 'soft' | 'subtle' | 'outline';
 type BadgeColor = 'neutral' | 'accent' | 'info' | 'success' | 'warning' | 'danger';
 
@@ -52,16 +54,16 @@ const {
   }
 
   .pf-badge[data-color='accent'] {
-    --pf-badge-color: var(--pf-accent, #4f46e5);
-    --pf-badge-solid: var(--pf-accent, #4f46e5);
+    --pf-badge-color: var(--pf-accent, #3e7e55);
+    --pf-badge-solid: var(--pf-accent, #3e7e55);
     --pf-badge-soft: var(
       --pf-accent-soft,
-      color-mix(in oklab, var(--pf-accent, #4f46e5) 12%, var(--pf-background, #ffffff))
+      color-mix(in oklab, var(--pf-accent, #3e7e55) 12%, var(--pf-background, #ffffff))
     );
     --pf-badge-contrast: var(--pf-accent-contrast, #ffffff);
     --pf-badge-border: color-mix(
       in oklab,
-      var(--pf-accent, #4f46e5) 28%,
+      var(--pf-accent, #3e7e55) 28%,
       transparent
     );
   }

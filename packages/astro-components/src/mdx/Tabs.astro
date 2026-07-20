@@ -1,4 +1,5 @@
 ---
+import '../theme-tokens.css';
 import Icon from './Icon.astro';
 import { processPanels } from './rehype-tabs';
 
@@ -181,7 +182,7 @@ const activePanel = panels[activeIndex] ?? panels[0];
   }
 
   .pf-tabs__trigger:focus-visible {
-    outline: 2px solid var(--pf-accent, #4f46e5);
+    outline: 2px solid var(--pf-accent, #3e7e55);
     outline-offset: 2px;
   }
 
@@ -220,7 +221,7 @@ const activePanel = panels[activeIndex] ?? panels[0];
   }
 
   .pf-tabs__copy:focus-visible {
-    outline: 2px solid var(--pf-accent, #4f46e5);
+    outline: 2px solid var(--pf-accent, #3e7e55);
     outline-offset: 2px;
   }
 
@@ -250,7 +251,7 @@ const activePanel = panels[activeIndex] ?? panels[0];
 
   .pf-tabs__panel:focus-visible {
     border-radius: var(--pf-radius-md, 0.5rem);
-    outline: 2px solid var(--pf-accent, #4f46e5);
+    outline: 2px solid var(--pf-accent, #3e7e55);
     outline-offset: 2px;
   }
 

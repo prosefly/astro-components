@@ -1,0 +1,96 @@
+@layer prosefly.components {
+  :where(:root) {
+    --pf-text-strong: #182230;
+    --pf-text: #344054;
+    --pf-text-muted: #667085;
+    --pf-background: #ffffff;
+    --pf-surface: #f4f6f8;
+    --pf-accent: #3e7e55;
+    --pf-accent-soft: color-mix(in oklab, var(--pf-accent) 12%, var(--pf-background));
+    --pf-accent-contrast: #ffffff;
+    --pf-info: oklch(0.62 0.16 255);
+    --pf-info-soft: color-mix(in oklab, var(--pf-info) 12%, var(--pf-background));
+    --pf-info-ink: oklch(0.46 0.14 255);
+    --pf-info-contrast: #ffffff;
+    --pf-success: oklch(0.64 0.16 155);
+    --pf-success-soft: color-mix(in oklab, var(--pf-success) 12%, var(--pf-background));
+    --pf-success-ink: oklch(0.45 0.13 155);
+    --pf-success-contrast: #ffffff;
+    --pf-warning: oklch(0.74 0.16 80);
+    --pf-warning-soft: color-mix(in oklab, var(--pf-warning) 14%, var(--pf-background));
+    --pf-warning-ink: oklch(0.5 0.12 80);
+    --pf-warning-contrast: oklch(0.18 0.04 80);
+    --pf-danger: oklch(0.62 0.2 25);
+    --pf-danger-soft: color-mix(in oklab, var(--pf-danger) 12%, var(--pf-background));
+    --pf-danger-ink: oklch(0.52 0.16 25);
+    --pf-danger-contrast: #ffffff;
+    --pf-border-subtle: #e5e7eb;
+    --pf-border-muted: #d0d5dd;
+    --pf-font-sans: ui-sans-serif, system-ui, sans-serif;
+    --pf-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --pf-radius-sm: 0.25rem;
+    --pf-radius-md: 0.5rem;
+    --pf-radius-lg: 0.75rem;
+    --pf-radius-full: 999px;
+  }
+
+  :where(:root[data-theme='dark']) {
+    --pf-text-strong: #f8fafc;
+    --pf-text: #d0d5dd;
+    --pf-text-muted: #98a2b3;
+    --pf-background: #0b1220;
+    --pf-surface: #111827;
+    --pf-accent: #8bd79a;
+    --pf-accent-soft: color-mix(in oklab, var(--pf-accent) 22%, var(--pf-background));
+    --pf-accent-contrast: #0b1220;
+    --pf-info: oklch(0.68 0.15 255);
+    --pf-info-soft: color-mix(in oklab, var(--pf-info) 20%, var(--pf-background));
+    --pf-info-ink: oklch(0.82 0.1 255);
+    --pf-info-contrast: #0b1220;
+    --pf-success: oklch(0.7 0.15 155);
+    --pf-success-soft: color-mix(in oklab, var(--pf-success) 20%, var(--pf-background));
+    --pf-success-ink: oklch(0.82 0.11 155);
+    --pf-success-contrast: #0b1220;
+    --pf-warning: oklch(0.78 0.16 80);
+    --pf-warning-soft: color-mix(in oklab, var(--pf-warning) 22%, var(--pf-background));
+    --pf-warning-ink: oklch(0.86 0.12 80);
+    --pf-warning-contrast: #1c1917;
+    --pf-danger: oklch(0.68 0.2 25);
+    --pf-danger-soft: color-mix(in oklab, var(--pf-danger) 20%, var(--pf-background));
+    --pf-danger-ink: oklch(0.82 0.11 25);
+    --pf-danger-contrast: #ffffff;
+    --pf-border-subtle: #243044;
+    --pf-border-muted: #344054;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :where(:root:is([data-theme='system'], :not([data-theme]))) {
+      --pf-text-strong: #f8fafc;
+      --pf-text: #d0d5dd;
+      --pf-text-muted: #98a2b3;
+      --pf-background: #0b1220;
+      --pf-surface: #111827;
+      --pf-accent: #8bd79a;
+      --pf-accent-soft: color-mix(in oklab, var(--pf-accent) 22%, var(--pf-background));
+      --pf-accent-contrast: #0b1220;
+      --pf-info: oklch(0.68 0.15 255);
+      --pf-info-soft: color-mix(in oklab, var(--pf-info) 20%, var(--pf-background));
+      --pf-info-ink: oklch(0.82 0.1 255);
+      --pf-info-contrast: #0b1220;
+      --pf-success: oklch(0.7 0.15 155);
+      --pf-success-soft: color-mix(in oklab, var(--pf-success) 20%, var(--pf-background));
+      --pf-success-ink: oklch(0.82 0.11 155);
+      --pf-success-contrast: #0b1220;
+      --pf-warning: oklch(0.78 0.16 80);
+      --pf-warning-soft: color-mix(in oklab, var(--pf-warning) 22%, var(--pf-background));
+      --pf-warning-ink: oklch(0.86 0.12 80);
+      --pf-warning-contrast: #1c1917;
+      --pf-danger: oklch(0.68 0.2 25);
+      --pf-danger-soft: color-mix(in oklab, var(--pf-danger) 20%, var(--pf-background));
+      --pf-danger-ink: oklch(0.82 0.11 25);
+      --pf-danger-contrast: #ffffff;
+      --pf-border-subtle: #243044;
+      --pf-border-muted: #344054;
+    }
+  }
+}

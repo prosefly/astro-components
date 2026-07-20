@@ -1,4 +1,5 @@
 ---
+import '../theme-tokens.css';
 import FileTreeItem from './FileTreeItem.astro';
 import { normalizeFileTreeIconSet, type FileTreeIconSet } from '../icon/file-tree-icons.js';
 import { parseFileTree } from './rehype-file-tree';
@@ -101,7 +102,7 @@ const entries = parseFileTree(fileTreeHtml);
   .pf-file-tree__target--highlighted {
     background: var(
       --pf-accent-soft,
-      color-mix(in oklab, var(--pf-accent, #4f46e5) 12%, var(--pf-background, #ffffff))
+      color-mix(in oklab, var(--pf-accent, #3e7e55) 12%, var(--pf-background, #ffffff))
     );
     color: var(--pf-text-strong, var(--pf-text, #182230));
     font-weight: 600;
@@ -186,7 +187,7 @@ const entries = parseFileTree(fileTreeHtml);
   }
 
   .pf-file-tree__icon[data-kind='directory'] {
-    color: color-mix(in oklab, var(--pf-accent, #4f46e5) 82%, var(--pf-text, #344054));
+    color: color-mix(in oklab, var(--pf-accent, #3e7e55) 82%, var(--pf-text, #344054));
   }
 
   .pf-file-tree[data-icon-set='lucide'] .pf-file-tree__icon[data-kind='code'] {

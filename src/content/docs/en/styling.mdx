@@ -10,11 +10,16 @@ import { Badge, Callout } from '@prosefly/astro-components';
 The components ship with fallback styles, but production documentation should
 set shared tokens in the site shell. This keeps callouts, cards, tabs, badges,
 and file trees aligned with the surrounding typography, colors, and radius.
+The built-in token defaults include dark-mode values for
+`:root[data-theme='dark']` and for system dark mode when `:root` has no
+`data-theme` or uses `data-theme='system'`.
 
 ## Recommended Scope
 
 Set tokens on `:root` for a full documentation site. Set them on a layout
 wrapper if only one section should use the Prosefly visual system.
+Component defaults use low-specificity cascade-layer rules, so normal site CSS
+overrides still win.
 
 ```css
 :root {
@@ -23,8 +28,8 @@ wrapper if only one section should use the Prosefly visual system.
   --pf-text-muted: #71717a;
   --pf-background: #ffffff;
   --pf-surface: #fafafa;
-  --pf-accent: #059669;
-  --pf-accent-soft: #d1fae5;
+  --pf-accent: #3e7e55;
+  --pf-accent-soft: #e4f3e8;
   --pf-accent-contrast: #ffffff;
   --pf-info: #2563eb;
   --pf-info-soft: #dbeafe;

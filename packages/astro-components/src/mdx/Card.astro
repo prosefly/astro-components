@@ -1,4 +1,5 @@
 ---
+import '../theme-tokens.css';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -66,11 +67,11 @@ const linkAttrs = href
 
   .pf-card--link:hover {
     background: transparent;
-    border-color: var(--pf-accent, #4f46e5);
+    border-color: var(--pf-accent, #3e7e55);
   }
 
   .pf-card--link:focus-visible {
-    outline: 2px solid var(--pf-accent, #4f46e5);
+    outline: 2px solid var(--pf-accent, #3e7e55);
     outline-offset: 2px;
   }
 
@@ -89,10 +90,10 @@ const linkAttrs = href
     align-items: center;
     background: var(
       --pf-accent-soft,
-      color-mix(in oklab, var(--pf-accent, #4f46e5) 12%, white)
+      color-mix(in oklab, var(--pf-accent, #3e7e55) 12%, white)
     );
     border-radius: var(--pf-radius-md, 0.5rem);
-    color: var(--pf-accent, #4f46e5);
+    color: var(--pf-accent, #3e7e55);
     display: inline-flex;
     height: var(--pf-card-icon-size, 2.25rem);
     justify-content: center;
@@ -101,7 +102,7 @@ const linkAttrs = href
   }
 
   .pf-card--link:hover .pf-card__icon {
-    color: var(--pf-accent, #4f46e5);
+    color: var(--pf-accent, #3e7e55);
   }
 
   .pf-card__icon :global(.pf-icon) {
