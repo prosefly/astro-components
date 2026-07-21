@@ -4,10 +4,9 @@ import {
   remarkCalloutDirectives,
   unified,
 } from '@prosefly/astro-components/markdown';
-import themeConfig from './src/theme.config';
 
 export default defineConfig({
-  integrations: [lotus(themeConfig)],
+  integrations: [lotus()],
   markdown: {
     processor: unified({
       remarkPlugins: [remarkCalloutDirectives],

@@ -1,8 +1,6 @@
 ---
 title: File Tree
 description: Show files and directories readers need to create or inspect.
-sidebar:
-  order: 4
 ---
 
 import { FileTree } from '@prosefly/astro-components';
@@ -28,7 +26,7 @@ import { FileTree } from '@prosefly/astro-components';
           - index.mdx
           - installation.mdx
     - content.config.ts
-    - theme.config.ts
+    - theme.config.json
   - astro.config.ts
   - package.json
 
@@ -44,7 +42,7 @@ import { FileTree } from '@prosefly/astro-components';
           - index.mdx
           - installation.mdx
     - content.config.ts
-    - theme.config.ts
+    - theme.config.json
   - astro.config.ts
   - package.json
 
@@ -172,7 +170,7 @@ You can also highlight a name that uses inline code formatting.
 
 - src
   - **`content.config.ts`** registers the docs collection
-  - theme.config.ts configures navigation
+  - theme.config.json configures navigation
 
 </FileTree>
 
@@ -181,7 +179,7 @@ You can also highlight a name that uses inline code formatting.
 
 - src
   - **`content.config.ts`** registers the docs collection
-  - theme.config.ts configures navigation
+  - theme.config.json configures navigation
 
 </FileTree>
 ```
@@ -229,7 +227,7 @@ characters that Markdown may treat as formatting.
 
 - `__init__.py`
 - `README copy.md`
-- **`theme.config.ts`** highlighted with code formatting
+- **`theme.config.json`** highlighted with code formatting
 - docs
   - `getting started.mdx`
   - `faq?.mdx`
@@ -241,7 +239,7 @@ characters that Markdown may treat as formatting.
 
 - `__init__.py`
 - `README copy.md`
-- **`theme.config.ts`** highlighted with code formatting
+- **`theme.config.json`** highlighted with code formatting
 - docs
   - `getting started.mdx`
   - `faq?.mdx`
