@@ -6,7 +6,7 @@ export default defineLotusConfig({
   favicon: '/prosefly-mark.svg',
   logo: '/prosefly-mark.svg',
   docsBase: '/docs/',
-  navbar: [
+  siteNav: [
     { label: 'Docs', href: '/docs/' },
     { label: 'Sponsors', href: '/sponsors/' },
   ],
@@ -35,7 +35,7 @@ export default defineLotusConfig({
       directory: 'en',
     },
   },
-  sidebars: [
+  docsNav: [
     {
       slug: 'guide',
       label: 'Guides',
