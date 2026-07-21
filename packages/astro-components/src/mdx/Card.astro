@@ -28,8 +28,9 @@ const linkAttrs = href
 ---
 
 <Tag
-  class:list={['pf-card', href && 'pf-card--link']}
+  class="pf-card"
   data-external={href && external ? 'true' : undefined}
+  data-link={href ? 'true' : undefined}
   {...linkAttrs}
   {...attrs}
 >
@@ -65,12 +66,12 @@ const linkAttrs = href
       border-color 160ms ease;
   }
 
-  .pf-card--link:hover {
+  .pf-card[data-link='true']:hover {
     background: transparent;
     border-color: var(--pf-accent, #3e7e55);
   }
 
-  .pf-card--link:focus-visible {
+  .pf-card[data-link='true']:focus-visible {
     outline: 2px solid var(--pf-accent, #3e7e55);
     outline-offset: 2px;
   }
@@ -101,7 +102,7 @@ const linkAttrs = href
     width: var(--pf-card-icon-size, 2.25rem);
   }
 
-  .pf-card--link:hover .pf-card__icon {
+  .pf-card[data-link='true']:hover .pf-card__icon {
     color: var(--pf-accent, #3e7e55);
   }
 

@@ -99,7 +99,7 @@ const entries = parseFileTree(fileTreeHtml);
     padding: 0.125rem 0.5rem;
   }
 
-  .pf-file-tree__target--highlighted {
+  .pf-file-tree__target[data-highlighted='true'] {
     background: var(
       --pf-accent-soft,
       color-mix(in oklab, var(--pf-accent, #3e7e55) 12%, var(--pf-background, #ffffff))
@@ -118,7 +118,7 @@ const entries = parseFileTree(fileTreeHtml);
     display: none;
   }
 
-  .pf-file-tree__summary:hover .pf-file-tree__target:not(.pf-file-tree__target--highlighted) {
+  .pf-file-tree__summary:hover .pf-file-tree__target:not([data-highlighted='true']) {
     background: var(--pf-surface, #f4f6f8);
   }
 
@@ -164,24 +164,24 @@ const entries = parseFileTree(fileTreeHtml);
     display: inline-flex;
   }
 
-  .pf-file-tree__icon-theme--dark {
+  .pf-file-tree__icon-theme[data-icon-theme='dark'] {
     display: none;
   }
 
-  :root[data-theme='dark'] .pf-file-tree__icon-theme--light {
+  :root[data-theme='dark'] .pf-file-tree__icon-theme[data-icon-theme='light'] {
     display: none;
   }
 
-  :root[data-theme='dark'] .pf-file-tree__icon-theme--dark {
+  :root[data-theme='dark'] .pf-file-tree__icon-theme[data-icon-theme='dark'] {
     display: block;
   }
 
   @media (prefers-color-scheme: dark) {
-    :root:is([data-theme='system'], :not([data-theme])) .pf-file-tree__icon-theme--light {
+    :root:is([data-theme='system'], :not([data-theme])) .pf-file-tree__icon-theme[data-icon-theme='light'] {
       display: none;
     }
 
-    :root:is([data-theme='system'], :not([data-theme])) .pf-file-tree__icon-theme--dark {
+    :root:is([data-theme='system'], :not([data-theme])) .pf-file-tree__icon-theme[data-icon-theme='dark'] {
       display: block;
     }
   }
@@ -210,7 +210,7 @@ const entries = parseFileTree(fileTreeHtml);
     color: var(--pf-text, #344054);
   }
 
-  .pf-file-tree__target--highlighted .pf-file-tree__name {
+  .pf-file-tree__target[data-highlighted='true'] .pf-file-tree__name {
     color: inherit;
   }
 
@@ -243,8 +243,8 @@ const entries = parseFileTree(fileTreeHtml);
     padding: 0;
   }
 
-  .pf-file-tree__item--placeholder > .pf-file-tree__entry,
-  .pf-file-tree__item--placeholder .pf-file-tree__name {
+  .pf-file-tree__item[data-placeholder='true'] > .pf-file-tree__entry,
+  .pf-file-tree__item[data-placeholder='true'] .pf-file-tree__name {
     color: var(--pf-text-muted, #667085);
   }
 

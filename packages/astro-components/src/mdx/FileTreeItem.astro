@@ -25,12 +25,10 @@ const children = entry.children.length > 0 ? entry.children : [placeholderEntry]
 ---
 
 <li
-  class:list={[
-    'pf-file-tree__item',
-    entry.isDirectory ? 'pf-file-tree__item--directory' : 'pf-file-tree__item--file',
-    entry.isPlaceholder && 'pf-file-tree__item--placeholder',
-    entry.highlighted && 'pf-file-tree__item--highlighted',
-  ]}
+  class="pf-file-tree__item"
+  data-entry-type={entry.isDirectory ? 'directory' : 'file'}
+  data-highlighted={entry.highlighted ? 'true' : undefined}
+  data-placeholder={entry.isPlaceholder ? 'true' : undefined}
 >
   {
     entry.isDirectory ? (
@@ -43,10 +41,8 @@ const children = entry.children.length > 0 ? entry.children : [placeholderEntry]
               </span>
             )}
             <span
-              class:list={[
-                'pf-file-tree__target',
-                entry.highlighted && 'pf-file-tree__target--highlighted',
-              ]}
+              class="pf-file-tree__target"
+              data-highlighted={entry.highlighted ? 'true' : undefined}
             >
               {!entry.isPlaceholder && (
                 <span aria-hidden="true" class="pf-file-tree__icon" data-kind={entry.kind}>
@@ -77,19 +73,17 @@ const children = entry.children.length > 0 ? entry.children : [placeholderEntry]
     ) : (
       <span class="pf-file-tree__entry">
         <span
-          class:list={[
-            'pf-file-tree__target',
-            entry.highlighted && 'pf-file-tree__target--highlighted',
-          ]}
+          class="pf-file-tree__target"
+          data-highlighted={entry.highlighted ? 'true' : undefined}
         >
           {!entry.isPlaceholder && (
             <span aria-hidden="true" class="pf-file-tree__icon" data-kind={entry.kind}>
               {icon.light && icon.dark ? (
                 <>
-                  <span class="pf-file-tree__icon-theme pf-file-tree__icon-theme--light">
+                  <span class="pf-file-tree__icon-theme" data-icon-theme="light">
                     <Icon name={icon.light} />
                   </span>
-                  <span class="pf-file-tree__icon-theme pf-file-tree__icon-theme--dark">
+                  <span class="pf-file-tree__icon-theme" data-icon-theme="dark">
                     <Icon name={icon.dark} />
                   </span>
                 </>
