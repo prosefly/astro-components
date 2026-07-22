@@ -1,9 +1,7 @@
+minimumReleaseAge: 0
+
 packages:
   - packages/*
-
-minimumReleaseAgeExclude:
-  - '@prosefly/astro-components'
-  - '@prosefly/astro-theme-lotus'
 
 allowBuilds:
   esbuild: true
