@@ -25,7 +25,7 @@ import { Callout } from '@prosefly/astro-components';
 ```
 
 Full documentation is available at
-[astro-components.prosefly.dev](https://astro-components.prosefly.dev).
+[prosefly.dev/docs/astro-components](https://prosefly.dev/docs/astro-components/).
 
 ## Exports
 

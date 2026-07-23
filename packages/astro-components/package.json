@@ -16,6 +16,7 @@
     "url": "git+https://github.com/prosefly/astro-components.git",
     "directory": "packages/astro-components"
   },
+  "homepage": "https://prosefly.dev/docs/astro-components/",
   "publishConfig": {
     "access": "public"
   },
