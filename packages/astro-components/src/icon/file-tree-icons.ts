@@ -5,7 +5,7 @@ interface FileTreeIconEntry {
   nameText: string;
 }
 
-interface FileTreeIcon {
+export interface FileTreeIcon {
   closed?: string;
   dark?: string;
   light?: string;
@@ -113,8 +113,39 @@ const vscodeExtensionIcons = [
   [/\.html?$/i, 'vscode-icons:file-type-html'],
   [/\.xml$/i, 'vscode-icons:file-type-xml'],
   [/\.svg$/i, 'vscode-icons:file-type-svg'],
+  [/\.py$/i, 'vscode-icons:file-type-python'],
+  [/\.(sh|bash|zsh)$/i, 'vscode-icons:file-type-shell'],
   [/\.(png|jpe?g|gif|webp|avif|ico)$/i, 'vscode-icons:file-type-image'],
 ] as const;
+
+const languageIconFileNames: Record<string, string> = {
+  astro: 'component.astro',
+  bash: 'script.sh',
+  cjs: 'index.cjs',
+  css: 'style.css',
+  html: 'index.html',
+  js: 'index.js',
+  javascript: 'index.js',
+  json: 'data.json',
+  jsx: 'component.jsx',
+  markdown: 'README.md',
+  md: 'README.md',
+  mdx: 'page.mdx',
+  mjs: 'index.mjs',
+  py: 'main.py',
+  python: 'main.py',
+  sass: 'style.sass',
+  scss: 'style.scss',
+  sh: 'script.sh',
+  shell: 'script.sh',
+  ts: 'index.ts',
+  tsx: 'component.tsx',
+  typescript: 'index.ts',
+  vue: 'component.vue',
+  yaml: 'config.yaml',
+  yml: 'config.yml',
+  zsh: 'script.sh',
+};
 
 export const fileTreeComponentIconNames = [
   'lucide:chevron-right',
@@ -122,8 +153,8 @@ export const fileTreeComponentIconNames = [
   lucideIcons.directory.open,
   lucideIcons.file.name,
   vscodeFileIcon.name,
-  ...vscodeExactFileIcons.flatMap(([, icon]) => getIconNames(icon)),
-  ...vscodeExtensionIcons.flatMap(([, icon]) => getIconNames(icon)),
+  ...vscodeExactFileIcons.flatMap(([, icon]) => getFileIconNames(icon)),
+  ...vscodeExtensionIcons.flatMap(([, icon]) => getFileIconNames(icon)),
 ] as const;
 
 export function normalizeFileTreeIconSet(iconSet: string | undefined): FileTreeIconSet {
@@ -139,7 +170,11 @@ export function getFileTreeIcon(entry: FileTreeIconEntry, iconSet: FileTreeIconS
     return lucideIcons.directory;
   }
 
-  const name = entry.nameText.trim();
+  return getFileIcon(entry.nameText);
+}
+
+export function getFileIcon(nameText: string): FileTreeIcon {
+  const name = nameText.trim();
 
   for (const [pattern, icon] of vscodeExactFileIcons) {
     if (pattern.test(name)) {
@@ -156,7 +191,14 @@ export function getFileTreeIcon(entry: FileTreeIconEntry, iconSet: FileTreeIconS
   return vscodeFileIcon;
 }
 
-function getIconNames(icon: FileTreeIcon | string): string[] {
+export function getFileIconForLanguage(language: string | undefined): FileTreeIcon {
+  const normalizedLanguage = language?.trim().toLowerCase();
+  const fileName = normalizedLanguage ? languageIconFileNames[normalizedLanguage] : undefined;
+
+  return fileName ? getFileIcon(fileName) : vscodeFileIcon;
+}
+
+export function getFileIconNames(icon: FileTreeIcon | string): string[] {
   return typeof icon === 'string'
     ? [icon]
     : [icon.name, icon.light, icon.dark].filter((name): name is string => Boolean(name));

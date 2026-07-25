@@ -42,6 +42,9 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
     devDependencies:
+      '@expressive-code/core':
+        specifier: ^0.44.0
+        version: 0.44.1
       '@types/node':
         specifier: latest
         version: 26.1.1
