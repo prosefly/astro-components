@@ -1,13 +1,11 @@
 {
-  "$schema": "https://astro-theme-lotus.prosefly.dev/schema.json",
+  "$schema": "https://prosefly.dev/schema/lotus.json",
   "name": "Astro Components",
   "description": "Reusable Astro components for MDX content.",
   "favicon": "/prosefly-mark.svg",
   "logo": "/prosefly-mark.svg",
-  "docsBase": "/docs/",
   "siteNav": [
-    { "label": "Docs", "href": "/docs/" },
-    { "label": "Sponsors", "href": "/sponsors/" }
+    { "label": "Sponsors", "href": "https://prosefly.dev/sponsors/" }
   ],
   "socials": [
     {
@@ -27,13 +25,6 @@
     "branch": "main"
   },
   "editLink": true,
-  "locales": {
-    "root": {
-      "label": "English",
-      "lang": "en",
-      "directory": "en"
-    }
-  },
   "docsNav": [
     {
       "slug": "guide",
@@ -69,10 +60,10 @@
       {
         "title": "Package",
         "links": [
-          { "label": "Installation", "href": "/docs/installation/" },
-          { "label": "Package manager tabs", "href": "/docs/package-manager-tabs/" },
-          { "label": "Images", "href": "/docs/images/" },
-          { "label": "Styling", "href": "/docs/styling/" }
+          { "label": "Installation", "href": "/installation/" },
+          { "label": "Package manager tabs", "href": "/package-manager-tabs/" },
+          { "label": "Images", "href": "/images/" },
+          { "label": "Styling", "href": "/styling/" }
         ]
       },
       {
@@ -92,8 +83,7 @@
             "label": "GitHub",
             "href": "https://github.com/prosefly/astro-components",
             "external": true
-          },
-          { "label": "Sponsors", "href": "/sponsors/" }
+          }
         ]
       }
     ]
