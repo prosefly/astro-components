@@ -1,10 +1,4 @@
-declare global {
-  interface Window {
-    __proseflyImageGalleryInit?: () => void;
-  }
-}
-
-export {};
+import { registerPageInitializer } from './init.js';
 
 type GalleryDirection = 'previous' | 'next';
 
@@ -40,10 +34,17 @@ function resolveCssLength(value: string, context: Element): number {
 }
 
 function getItemLeft(track: HTMLElement, item: HTMLElement): number {
-  return item.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft;
+  return (
+    item.getBoundingClientRect().left -
+    track.getBoundingClientRect().left +
+    track.scrollLeft
+  );
 }
 
-function scrollToAdjacentItem(track: HTMLElement, direction: GalleryDirection): void {
+function scrollToAdjacentItem(
+  track: HTMLElement,
+  direction: GalleryDirection,
+): void {
   const items = [...track.querySelectorAll('.pf-image-gallery__item')].filter(
     (item): item is HTMLElement => item instanceof HTMLElement,
   );
@@ -56,7 +57,9 @@ function scrollToAdjacentItem(track: HTMLElement, direction: GalleryDirection): 
 
   track.scrollTo({
     behavior: 'smooth',
-    left: target ?? (direction === 'previous' ? 0 : track.scrollWidth - track.clientWidth),
+    left:
+      target ??
+      (direction === 'previous' ? 0 : track.scrollWidth - track.clientWidth),
   });
 }
 
@@ -66,9 +69,15 @@ function measureGallery(gallery: HTMLElement, track: HTMLElement): void {
   );
   const images = items
     .map((item) => item.querySelector('img'))
-    .filter((image): image is HTMLImageElement => image instanceof HTMLImageElement);
+    .filter(
+      (image): image is HTMLImageElement => image instanceof HTMLImageElement,
+    );
 
-  if (items.length === 0 || items.length !== images.length || track.clientWidth <= 0) {
+  if (
+    items.length === 0 ||
+    items.length !== images.length ||
+    track.clientWidth <= 0
+  ) {
     return;
   }
 
@@ -86,13 +95,21 @@ function measureGallery(gallery: HTMLElement, track: HTMLElement): void {
   const styles = getComputedStyle(track);
   const gap = Number.parseFloat(styles.columnGap || styles.gap || '0') || 0;
   const previewWidth = resolveCssLength(
-    getComputedStyle(gallery).getPropertyValue('--pf-image-gallery-preview-width'),
+    getComputedStyle(gallery).getPropertyValue(
+      '--pf-image-gallery-preview-width',
+    ),
     gallery,
   );
   const firstRatio = resolvedRatios[0];
-  const targetHeight = Math.max((track.clientWidth - previewWidth - gap) / firstRatio, 1);
+  const targetHeight = Math.max(
+    (track.clientWidth - previewWidth - gap) / firstRatio,
+    1,
+  );
 
-  gallery.style.setProperty('--pf-image-gallery-height', `${targetHeight.toFixed(2)}px`);
+  gallery.style.setProperty(
+    '--pf-image-gallery-height',
+    `${targetHeight.toFixed(2)}px`,
+  );
   gallery.dataset.pfImageGalleryMeasured = 'true';
 
   items.forEach((item, index) => {
@@ -104,45 +121,49 @@ function measureGallery(gallery: HTMLElement, track: HTMLElement): void {
   });
 }
 
-if (typeof window !== 'undefined') {
-  if (!window.__proseflyImageGalleryInit) {
-    window.__proseflyImageGalleryInit = () => {
-      document.querySelectorAll('[data-pf-image-gallery]').forEach((gallery) => {
-        if (!(gallery instanceof HTMLElement) || gallery.dataset.pfImageGalleryReady) {
+function initImageGalleries(): void {
+  document.querySelectorAll('[data-pf-image-gallery]').forEach((gallery) => {
+    if (
+      !(gallery instanceof HTMLElement) ||
+      gallery.dataset.pfImageGalleryReady
+    ) {
+      return;
+    }
+
+    const track = gallery.querySelector<HTMLElement>(
+      '[data-pf-image-gallery-track]',
+    );
+
+    if (!(track instanceof HTMLElement)) {
+      return;
+    }
+
+    gallery.dataset.pfImageGalleryReady = 'true';
+    const measure = () => measureGallery(gallery, track);
+    const images = [...track.querySelectorAll('img')].filter(
+      (image): image is HTMLImageElement => image instanceof HTMLImageElement,
+    );
+
+    Promise.all(images.map(imageReady)).then(measure);
+    new ResizeObserver(measure).observe(track);
+
+    gallery
+      .querySelectorAll('[data-pf-image-gallery-button]')
+      .forEach((button) => {
+        if (!(button instanceof HTMLButtonElement)) {
           return;
         }
 
-        const track = gallery.querySelector<HTMLElement>('[data-pf-image-gallery-track]');
+        button.addEventListener('click', () => {
+          const direction = button.getAttribute('data-pf-image-gallery-button');
 
-        if (!(track instanceof HTMLElement)) {
-          return;
-        }
-
-        gallery.dataset.pfImageGalleryReady = 'true';
-        const measure = () => measureGallery(gallery, track);
-        const images = [...track.querySelectorAll('img')].filter(
-          (image): image is HTMLImageElement => image instanceof HTMLImageElement,
-        );
-
-        Promise.all(images.map(imageReady)).then(measure);
-        new ResizeObserver(measure).observe(track);
-
-        gallery.querySelectorAll('[data-pf-image-gallery-button]').forEach((button) => {
-          if (!(button instanceof HTMLButtonElement)) {
-            return;
-          }
-
-          button.addEventListener('click', () => {
-            const direction = button.getAttribute('data-pf-image-gallery-button');
-
-            scrollToAdjacentItem(track, direction === 'previous' ? 'previous' : 'next');
-          });
+          scrollToAdjacentItem(
+            track,
+            direction === 'previous' ? 'previous' : 'next',
+          );
         });
       });
-    };
-
-    document.addEventListener('astro:page-load', window.__proseflyImageGalleryInit);
-  }
-
-  window.__proseflyImageGalleryInit();
+  });
 }
+
+registerPageInitializer('image-gallery', initImageGalleries);

@@ -1,5 +1,8 @@
-import { getIconData, iconToSVG, validateIconSet } from '@iconify/utils';
-import type { ExpressiveCodePlugin, PostprocessRenderedBlockContext } from '@expressive-code/core';
+import { getIconData, iconToSVG } from '@iconify/utils';
+import type {
+  ExpressiveCodePlugin,
+  PostprocessRenderedBlockContext,
+} from '@expressive-code/core';
 import {
   fileTreeComponentIconNames,
   getFileIcon,
@@ -7,6 +10,11 @@ import {
   getFileIconNames,
   type FileTreeIcon,
 } from '../icon/file-tree-icons.js';
+import {
+  loadIconCollection,
+  normalizeIconApiBase,
+  parseIconName,
+} from '../icon/data.js';
 
 interface CodeHeaderIconBlock {
   language?: string;
@@ -15,7 +23,6 @@ interface CodeHeaderIconBlock {
   };
 }
 
-type IconCollection = ReturnType<typeof validateIconSet>;
 type HastElement = PostprocessRenderedBlockContext['renderData']['blockAst'];
 type HastElementContent = HastElement['children'][number];
 
@@ -23,14 +30,16 @@ export interface ExpressiveCodeHeaderIconsOptions {
   apiBase?: string;
 }
 
-const iconDataCache = new Map<string, Promise<IconCollection>>();
-
-export const expressiveCodeHeaderIconNames = [...fileTreeComponentIconNames] as const;
+export const expressiveCodeHeaderIconNames = [
+  ...fileTreeComponentIconNames,
+] as const;
 
 export function expressiveCodeHeaderIcons(
   options: ExpressiveCodeHeaderIconsOptions = {},
 ): ExpressiveCodePlugin {
-  const apiBase = (options.apiBase ?? 'https://api.iconify.design').replace(/\/$/, '');
+  const apiBase = normalizeIconApiBase(
+    options.apiBase ?? 'https://api.iconify.design',
+  );
 
   return {
     name: '@prosefly/astro-components/expressive-code/header-icons',
@@ -118,7 +127,9 @@ export function expressiveCodeHeaderIcons(
           type: 'element',
         });
 
-        const languageLabel = title ? undefined : getCodeBlockLanguageLabel(codeBlock.language);
+        const languageLabel = title
+          ? undefined
+          : getCodeBlockLanguageLabel(codeBlock.language);
 
         if (languageLabel) {
           header.children.splice(1, 0, {
@@ -135,7 +146,9 @@ export function expressiveCodeHeaderIcons(
   };
 }
 
-export function resolveCodeHeaderIcon(codeBlock: CodeHeaderIconBlock): FileTreeIcon {
+export function resolveCodeHeaderIcon(
+  codeBlock: CodeHeaderIconBlock,
+): FileTreeIcon {
   const title = codeBlock.props?.title?.trim();
 
   if (title) {
@@ -167,7 +180,8 @@ function findHeader(root: HastElement): HastElement | undefined {
 
 function hasHeaderIcon(header: HastElement): boolean {
   return header.children.some(
-    (child) => child.type === 'element' && hasClassName(child, 'pf-code-header-icon'),
+    (child) =>
+      child.type === 'element' && hasClassName(child, 'pf-code-header-icon'),
   );
 }
 
@@ -177,17 +191,30 @@ function hasClassName(element: HastElement, className: string): boolean {
   return Array.isArray(value) && value.includes(className);
 }
 
-async function renderIconNodes(icon: FileTreeIcon, apiBase: string): Promise<HastElementContent[]> {
+async function renderIconNodes(
+  icon: FileTreeIcon,
+  apiBase: string,
+): Promise<HastElementContent[]> {
   if (icon.light && icon.dark) {
     const [lightIcon, darkIcon] = await Promise.all([
-      renderIcon(icon.light, apiBase, ['pf-code-header-icon__svg', 'pf-code-header-icon__svg--light']),
-      renderIcon(icon.dark, apiBase, ['pf-code-header-icon__svg', 'pf-code-header-icon__svg--dark']),
+      renderIcon(icon.light, apiBase, [
+        'pf-code-header-icon__svg',
+        'pf-code-header-icon__svg--light',
+      ]),
+      renderIcon(icon.dark, apiBase, [
+        'pf-code-header-icon__svg',
+        'pf-code-header-icon__svg--dark',
+      ]),
     ]);
 
-    return [lightIcon, darkIcon].filter((node): node is HastElement => Boolean(node));
+    return [lightIcon, darkIcon].filter((node): node is HastElement =>
+      Boolean(node),
+    );
   }
 
-  const node = await renderIcon(icon.name, apiBase, ['pf-code-header-icon__svg']);
+  const node = await renderIcon(icon.name, apiBase, [
+    'pf-code-header-icon__svg',
+  ]);
 
   return node ? [node] : [];
 }
@@ -208,7 +235,9 @@ async function renderIcon(
   const renderedIcon = iconToSVG(iconData, { height: '1em', width: '1em' });
   const svg = [
     '<svg xmlns="http://www.w3.org/2000/svg"',
-    ...Object.entries(renderedIcon.attributes).map(([name, value]) => ` ${name}="${escapeAttribute(value)}"`),
+    ...Object.entries(renderedIcon.attributes).map(
+      ([name, value]) => ` ${name}="${escapeAttribute(value)}"`,
+    ),
     '>',
     renderedIcon.body,
     '</svg>',
@@ -228,47 +257,12 @@ async function renderIcon(
   };
 }
 
-function parseIconName(name: string): { prefix: string; icon: string } {
-  const separatorIndex = name.indexOf(':');
-
-  if (separatorIndex <= 0 || separatorIndex === name.length - 1) {
-    throw new Error(`Icon name "${name}" must use the "prefix:icon" format.`);
-  }
-
-  return {
-    icon: name.slice(separatorIndex + 1),
-    prefix: name.slice(0, separatorIndex),
-  };
-}
-
-async function loadIconCollection(
-  prefix: string,
-  icon: string,
-  apiBase: string,
-): Promise<IconCollection> {
-  const cacheKey = `${apiBase}:${prefix}:${icon}`;
-  const cached = iconDataCache.get(cacheKey);
-
-  if (cached) {
-    return cached;
-  }
-
-  const request = fetch(
-    `${apiBase}/${encodeURIComponent(prefix)}.json?icons=${encodeURIComponent(icon)}`,
-  ).then(async (response) => {
-    if (!response.ok) {
-      throw new Error(`Failed to load Iconify data for "${prefix}:${icon}" from ${apiBase}.`);
-    }
-
-    return validateIconSet(await response.json());
-  });
-
-  iconDataCache.set(cacheKey, request);
-  return request;
-}
-
 export function getExpressiveCodeHeaderIconNames(): string[] {
-  return [...new Set(fileTreeComponentIconNames.flatMap((icon) => getFileIconNames(icon)))];
+  return [
+    ...new Set(
+      fileTreeComponentIconNames.flatMap((icon) => getFileIconNames(icon)),
+    ),
+  ];
 }
 
 function escapeAttribute(value: unknown): string {
@@ -289,7 +283,9 @@ function getCodeBlockTitle(props: unknown): string | undefined {
   return typeof title === 'string' ? title : undefined;
 }
 
-function getCodeBlockLanguageLabel(language: string | undefined): string | undefined {
+function getCodeBlockLanguageLabel(
+  language: string | undefined,
+): string | undefined {
   const normalizedLanguage = language?.trim();
 
   return normalizedLanguage || undefined;

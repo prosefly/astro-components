@@ -1,10 +1,4 @@
-declare global {
-  interface Window {
-    __proseflyAccordionsInit?: () => void;
-  }
-}
-
-export {};
+import { registerPageInitializer } from './init.js';
 
 function getItems(root: Element): HTMLDetailsElement[] {
   return [...root.querySelectorAll(':scope > [data-pf-accordion]')].filter(
@@ -33,58 +27,66 @@ function openHashTarget(): void {
   const id = decodeURIComponent(location.hash.slice(1));
   const item = document.getElementById(id);
 
-  if (item instanceof HTMLDetailsElement && item.matches('[data-pf-accordion]')) {
+  if (
+    item instanceof HTMLDetailsElement &&
+    item.matches('[data-pf-accordion]')
+  ) {
     openItem(item);
   }
 }
 
-if (!window.__proseflyAccordionsInit) {
-  window.__proseflyAccordionsInit = () => {
-    document.querySelectorAll('[data-pf-accordions]').forEach((root) => {
-      if (!(root instanceof HTMLElement) || root.dataset.pfAccordionsReady === 'true') {
-        return;
+function initAccordions(): void {
+  document.querySelectorAll('[data-pf-accordions]').forEach((root) => {
+    if (
+      !(root instanceof HTMLElement) ||
+      root.dataset.pfAccordionsReady === 'true'
+    ) {
+      return;
+    }
+
+    root.dataset.pfAccordionsReady = 'true';
+
+    let defaultValues: string[] = [];
+    try {
+      defaultValues = JSON.parse(
+        root.getAttribute('data-default-values') || '[]',
+      );
+    } catch {
+      defaultValues = [];
+    }
+
+    for (const item of getItems(root)) {
+      if (defaultValues.includes(item.getAttribute('data-value') ?? '')) {
+        openItem(item);
       }
 
-      root.dataset.pfAccordionsReady = 'true';
-
-      let defaultValues: string[] = [];
-      try {
-        defaultValues = JSON.parse(root.getAttribute('data-default-values') || '[]');
-      } catch {
-        defaultValues = [];
-      }
-
-      for (const item of getItems(root)) {
-        if (defaultValues.includes(item.getAttribute('data-value') ?? '')) {
-          openItem(item);
+      item.addEventListener('click', (event) => {
+        if (
+          !(event.target instanceof Element) ||
+          !event.target.closest('[data-pf-accordion-trigger]')
+        ) {
+          return;
         }
 
-        item.addEventListener('click', (event) => {
-          if (!(event.target instanceof Element) || !event.target.closest('[data-pf-accordion-trigger]')) {
-            return;
-          }
+        if (item.getAttribute('data-disabled') === 'true') {
+          event.preventDefault();
+          return;
+        }
 
-          if (item.getAttribute('data-disabled') === 'true') {
-            event.preventDefault();
-            return;
-          }
+        if (!item.open) {
+          closeSiblings(root, item);
+        }
+      });
 
-          if (!item.open) {
-            closeSiblings(root, item);
-          }
-        });
+      item.addEventListener('toggle', () => {
+        if (item.open) closeSiblings(root, item);
+      });
+    }
+  });
 
-        item.addEventListener('toggle', () => {
-          if (item.open) closeSiblings(root, item);
-        });
-      }
-    });
-
-    openHashTarget();
-  };
-
-  window.addEventListener('hashchange', openHashTarget);
-  document.addEventListener('astro:page-load', window.__proseflyAccordionsInit);
+  openHashTarget();
 }
 
-window.__proseflyAccordionsInit();
+registerPageInitializer('accordions', initAccordions, () => {
+  window.addEventListener('hashchange', openHashTarget);
+});

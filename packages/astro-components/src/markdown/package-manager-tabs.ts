@@ -1,7 +1,12 @@
 import type { RemarkPlugin } from '@astrojs/markdown-remark';
-
-const importStatement =
-  "import { Tabs as LotusPackageManagerTabs, TabItem as LotusPackageManagerTabItem } from '@prosefly/astro-components';";
+import {
+  createMdxImport,
+  hasMdxImport,
+  isMdxComponentNode,
+  type MarkdownNode,
+  type MarkdownRoot,
+  visitMarkdownTree,
+} from './ast.js';
 
 const shellLanguages = new Set([
   'bash',
@@ -26,21 +31,11 @@ const pythonPackageManagers = [
   { icon: 'simple-icons:pdm', label: 'pdm' },
 ] as const;
 
-interface MarkdownNode {
-  type: string;
-  children?: MarkdownNode[];
-  [key: string]: unknown;
-}
-
 interface CodeNode extends MarkdownNode {
   lang?: string;
   meta?: string;
   type: 'code';
   value: string;
-}
-
-interface RootNode extends MarkdownNode {
-  children: MarkdownNode[];
 }
 
 interface PackageManagerTab {
@@ -60,10 +55,10 @@ interface LineVariants {
 
 export const remarkPackageManagerTabs: RemarkPlugin = () => {
   return (tree) => {
-    const root = tree as RootNode;
+    const root = tree as MarkdownRoot;
     let transformed = false;
 
-    visitChildren(root, (node, parent, index, ancestors) => {
+    visitMarkdownTree(root, (node, parent, index, ancestors) => {
       if (!parent || index === undefined || !isCodeNode(node)) {
         return;
       }
@@ -86,54 +81,35 @@ export const remarkPackageManagerTabs: RemarkPlugin = () => {
       transformed = true;
     });
 
-    if (transformed && !hasPackageManagerTabsImport(root)) {
-      root.children.unshift(createImportNode());
+    if (transformed && !hasMdxImport(root, 'LotusPackageManagerTabs')) {
+      root.children.unshift(
+        createMdxImport([
+          { imported: 'Tabs', local: 'LotusPackageManagerTabs' },
+          { imported: 'TabItem', local: 'LotusPackageManagerTabItem' },
+        ]),
+      );
     }
   };
 };
-
-function visitChildren(
-  node: MarkdownNode,
-  visitor: (
-    node: MarkdownNode,
-    parent?: MarkdownNode,
-    index?: number,
-    ancestors?: MarkdownNode[],
-  ) => void,
-  parent?: MarkdownNode,
-  index?: number,
-  ancestors: MarkdownNode[] = [],
-): void {
-  visitor(node, parent, index, ancestors);
-
-  if (!node.children) {
-    return;
-  }
-
-  node.children.forEach((child, childIndex) => {
-    visitChildren(child, visitor, node, childIndex, [...ancestors, node]);
-  });
-}
 
 function isCodeNode(node: MarkdownNode): node is CodeNode {
   return node.type === 'code' && typeof node.value === 'string';
 }
 
-function isMdxComponentNode(node: MarkdownNode): boolean {
-  return node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement';
-}
-
 function getPackageManagerVariants(
   node: CodeNode,
-): { group: PackageManagerTabGroup; lines: Record<string, string>[] } | undefined {
+):
+  | { group: PackageManagerTabGroup; lines: Record<string, string>[] }
+  | undefined {
   if (node.lang && !shellLanguages.has(node.lang)) {
     return undefined;
   }
 
   const lines = node.value.split('\n');
   const variants = lines.map(getLineVariants);
-  const commands = variants.filter((line): line is { kind: 'command'; variants: LineVariants } =>
-    line?.kind === 'command'
+  const commands = variants.filter(
+    (line): line is { kind: 'command'; variants: LineVariants } =>
+      line?.kind === 'command',
   );
 
   if (variants.some((line) => line === undefined)) {
@@ -153,7 +129,9 @@ function getPackageManagerVariants(
   return {
     group,
     lines: variants.map((line) =>
-      line?.kind === 'command' ? line.variants.variants : createEmptyLineVariants(group)
+      line?.kind === 'command'
+        ? line.variants.variants
+        : createEmptyLineVariants(group),
     ),
   };
 }
@@ -171,7 +149,10 @@ function getLineVariants(
   if (command.startsWith('$ ')) {
     const variants = getCommandVariants(command.slice(2));
     return variants
-      ? { kind: 'command', variants: prefixVariants(variants, `${indentation}$ `) }
+      ? {
+          kind: 'command',
+          variants: prefixVariants(variants, `${indentation}$ `),
+        }
       : undefined;
   }
 
@@ -253,7 +234,9 @@ function getNodeCommandVariants(command: string): LineVariants | undefined {
 }
 
 function getPythonCommandVariants(command: string): LineVariants | undefined {
-  const pipInstallMatch = command.match(/^(?:(?:python|python3)\s+-m\s+)?pip\s+install(?:\s+(.*))?$/);
+  const pipInstallMatch = command.match(
+    /^(?:(?:python|python3)\s+-m\s+)?pip\s+install(?:\s+(.*))?$/,
+  );
   const uvPipInstallMatch = command.match(/^uv\s+pip\s+install(?:\s+(.*))?$/);
   const uvAddMatch = command.match(/^uv\s+add(?:\s+(.*))?$/);
   const poetryAddMatch = command.match(/^poetry\s+add(?:\s+(.*))?$/);
@@ -267,7 +250,13 @@ function getPythonCommandVariants(command: string): LineVariants | undefined {
     ''
   ).trim();
 
-  if (!pipInstallMatch && !uvPipInstallMatch && !uvAddMatch && !poetryAddMatch && !pdmAddMatch) {
+  if (
+    !pipInstallMatch &&
+    !uvPipInstallMatch &&
+    !uvAddMatch &&
+    !poetryAddMatch &&
+    !pdmAddMatch
+  ) {
     return undefined;
   }
 
@@ -304,62 +293,28 @@ function prefixVariants(line: LineVariants, prefix: string): LineVariants {
   return {
     group: line.group,
     variants: Object.fromEntries(
-      Object.entries(line.variants).map(([label, command]) => [label, `${prefix}${command}`]),
+      Object.entries(line.variants).map(([label, command]) => [
+        label,
+        `${prefix}${command}`,
+      ]),
     ),
   };
 }
 
-function createImportNode(): MarkdownNode {
-  return {
-    type: 'mdxjsEsm',
-    value: importStatement,
-    data: {
-      estree: {
-        type: 'Program',
-        sourceType: 'module',
-        body: [
-          {
-            type: 'ImportDeclaration',
-            specifiers: [
-              {
-                type: 'ImportSpecifier',
-                imported: { type: 'Identifier', name: 'Tabs' },
-                local: { type: 'Identifier', name: 'LotusPackageManagerTabs' },
-              },
-              {
-                type: 'ImportSpecifier',
-                imported: { type: 'Identifier', name: 'TabItem' },
-                local: { type: 'Identifier', name: 'LotusPackageManagerTabItem' },
-              },
-            ],
-            source: {
-              type: 'Literal',
-              value: '@prosefly/astro-components',
-              raw: "'@prosefly/astro-components'",
-            },
-          },
-        ],
-      },
-    },
-  };
-}
-
-function hasPackageManagerTabsImport(tree: RootNode): boolean {
-  return tree.children.some(
-    (node) =>
-      node.type === 'mdxjsEsm' &&
-      typeof node.value === 'string' &&
-      node.value.includes('LotusPackageManagerTabs'),
+function createEmptyLineVariants(
+  group: PackageManagerTabGroup,
+): Record<string, string> {
+  return Object.fromEntries(
+    group.managers.map((manager) => [manager.label, '']),
   );
-}
-
-function createEmptyLineVariants(group: PackageManagerTabGroup): Record<string, string> {
-  return Object.fromEntries(group.managers.map((manager) => [manager.label, '']));
 }
 
 function createTabsNode(
   sourceNode: CodeNode,
-  variantGroup: { group: PackageManagerTabGroup; lines: Record<string, string>[] },
+  variantGroup: {
+    group: PackageManagerTabGroup;
+    lines: Record<string, string>[];
+  },
 ): MarkdownNode {
   const valueByPackageManager = Object.fromEntries(
     variantGroup.group.managers.map((manager) => [
@@ -408,7 +363,10 @@ function createTabsNode(
   };
 }
 
-function createPackageManagerCodeElement(code: string, language: string): MarkdownNode {
+function createPackageManagerCodeElement(
+  code: string,
+  language: string,
+): MarkdownNode {
   // Use JSX elements instead of an mdast `code` node so Expressive Code does
   // not transform package-manager tab contents.
   return {

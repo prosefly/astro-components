@@ -1,10 +1,4 @@
-declare global {
-  interface Window {
-    __proseflyTabsInit?: () => void;
-  }
-}
-
-export {};
+import { registerPageInitializer } from './init.js';
 
 type ActivateOptions = {
   focus?: boolean;
@@ -56,7 +50,9 @@ function getActiveCode(root: Element): string {
 }
 
 function setActiveIcon(root: Element, panelId: string | null): void {
-  const iconContainer = root.querySelector<HTMLElement>('.pf-tabs__active-icons');
+  const iconContainer = root.querySelector<HTMLElement>(
+    '.pf-tabs__active-icons',
+  );
   const icons = [...root.querySelectorAll('[data-pf-tabs-icon-for]')];
 
   if (!(iconContainer instanceof HTMLElement)) return;
@@ -70,7 +66,11 @@ function setActiveIcon(root: Element, panelId: string | null): void {
   iconContainer.toggleAttribute('hidden', !hasActiveIcon);
 }
 
-function activate(root: Element, trigger: Element, options: ActivateOptions = {}): void {
+function activate(
+  root: Element,
+  trigger: Element,
+  options: ActivateOptions = {},
+): void {
   const panelId = trigger.getAttribute('data-tab-panel');
   const label = trigger.getAttribute('data-tab-label');
   const syncKey = root.getAttribute('data-sync-key');
@@ -104,7 +104,10 @@ function activate(root: Element, trigger: Element, options: ActivateOptions = {}
   }
 
   document.querySelectorAll('[data-pf-tabs]').forEach((otherRoot) => {
-    if (otherRoot === root || otherRoot.getAttribute('data-sync-key') !== syncKey) {
+    if (
+      otherRoot === root ||
+      otherRoot.getAttribute('data-sync-key') !== syncKey
+    ) {
       return;
     }
 
@@ -118,80 +121,80 @@ function activate(root: Element, trigger: Element, options: ActivateOptions = {}
   });
 }
 
-if (!window.__proseflyTabsInit) {
-  window.__proseflyTabsInit = () => {
-    document.querySelectorAll('[data-pf-tabs]').forEach((root) => {
-      if (root instanceof HTMLElement && root.dataset.pfTabsReady === 'true') {
-        return;
-      }
+function initTabs(): void {
+  document.querySelectorAll('[data-pf-tabs]').forEach((root) => {
+    if (root instanceof HTMLElement && root.dataset.pfTabsReady === 'true') {
+      return;
+    }
 
-      const triggers = [...root.querySelectorAll('[data-pf-tabs-trigger]')];
-      const syncKey = root.getAttribute('data-sync-key');
-      const storedLabel = getStoredLabel(syncKey);
-      const storedTrigger = storedLabel
-        ? triggers.find((button) => button.getAttribute('data-tab-label') === storedLabel)
-        : undefined;
-      const selectedTrigger =
-        storedTrigger ??
-        triggers.find((button) => button.getAttribute('aria-selected') === 'true') ??
-        triggers[0];
+    const triggers = [...root.querySelectorAll('[data-pf-tabs-trigger]')];
+    const syncKey = root.getAttribute('data-sync-key');
+    const storedLabel = getStoredLabel(syncKey);
+    const storedTrigger = storedLabel
+      ? triggers.find(
+          (button) => button.getAttribute('data-tab-label') === storedLabel,
+        )
+      : undefined;
+    const selectedTrigger =
+      storedTrigger ??
+      triggers.find(
+        (button) => button.getAttribute('aria-selected') === 'true',
+      ) ??
+      triggers[0];
 
-      if (root instanceof HTMLElement) {
-        root.dataset.pfTabsReady = 'true';
-      }
+    if (root instanceof HTMLElement) {
+      root.dataset.pfTabsReady = 'true';
+    }
 
-      if (selectedTrigger) {
-        activate(root, selectedTrigger, { persist: false });
-      }
+    if (selectedTrigger) {
+      activate(root, selectedTrigger, { persist: false });
+    }
 
-      triggers.forEach((trigger) => {
-        trigger.addEventListener('click', () => activate(root, trigger));
-        trigger.addEventListener('keydown', (event) => {
-          if (!(event instanceof KeyboardEvent)) {
-            return;
-          }
-
-          const currentIndex = triggers.indexOf(trigger);
-          let nextIndex = currentIndex;
-
-          if (event.key === 'ArrowRight') nextIndex = currentIndex + 1;
-          else if (event.key === 'ArrowLeft') nextIndex = currentIndex - 1;
-          else if (event.key === 'Home') nextIndex = 0;
-          else if (event.key === 'End') nextIndex = triggers.length - 1;
-          else return;
-
-          event.preventDefault();
-          const nextTrigger =
-            triggers[(nextIndex + triggers.length) % triggers.length];
-          activate(root, nextTrigger, { focus: true });
-        });
-      });
-
-      root.querySelectorAll('[data-pf-tabs-copy]').forEach((button) => {
-        if (!(button instanceof HTMLButtonElement)) {
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => activate(root, trigger));
+      trigger.addEventListener('keydown', (event) => {
+        if (!(event instanceof KeyboardEvent)) {
           return;
         }
 
-        button.addEventListener('click', async () => {
-          const text = getActiveCode(root);
+        const currentIndex = triggers.indexOf(trigger);
+        let nextIndex = currentIndex;
 
-          if (!text) {
-            return;
-          }
+        if (event.key === 'ArrowRight') nextIndex = currentIndex + 1;
+        else if (event.key === 'ArrowLeft') nextIndex = currentIndex - 1;
+        else if (event.key === 'Home') nextIndex = 0;
+        else if (event.key === 'End') nextIndex = triggers.length - 1;
+        else return;
 
-          try {
-            await writeClipboard(text);
-            setCopyState(button, true);
-            window.setTimeout(() => setCopyState(button, false), 1600);
-          } catch {
-            setCopyState(button, false);
-          }
-        });
+        event.preventDefault();
+        const nextTrigger =
+          triggers[(nextIndex + triggers.length) % triggers.length];
+        activate(root, nextTrigger, { focus: true });
       });
     });
-  };
 
-  document.addEventListener('astro:page-load', window.__proseflyTabsInit);
+    root.querySelectorAll('[data-pf-tabs-copy]').forEach((button) => {
+      if (!(button instanceof HTMLButtonElement)) {
+        return;
+      }
+
+      button.addEventListener('click', async () => {
+        const text = getActiveCode(root);
+
+        if (!text) {
+          return;
+        }
+
+        try {
+          await writeClipboard(text);
+          setCopyState(button, true);
+          window.setTimeout(() => setCopyState(button, false), 1600);
+        } catch {
+          setCopyState(button, false);
+        }
+      });
+    });
+  });
 }
 
-window.__proseflyTabsInit();
+registerPageInitializer('tabs', initTabs);

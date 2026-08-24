@@ -1,8 +1,12 @@
 import type { RemarkPlugin } from '@astrojs/markdown-remark';
 import remarkDirective from 'remark-directive';
-
-const importStatement =
-  "import { Callout as ProseflyDirectiveCallout } from '@prosefly/astro-components';";
+import {
+  createMdxImport,
+  hasMdxImport,
+  type MarkdownNode,
+  type MarkdownRoot,
+  visitMarkdownTree,
+} from './ast.js';
 
 const calloutTypes = new Map([
   ['caution', 'warning'],
@@ -12,22 +16,11 @@ const calloutTypes = new Map([
   ['warning', 'warning'],
 ]);
 
-interface MarkdownNode {
-  type: string;
-  children?: MarkdownNode[];
-  data?: Record<string, unknown>;
-  [key: string]: unknown;
-}
-
 interface DirectiveNode extends MarkdownNode {
   attributes?: Record<string, string | null | undefined> | null;
   children: MarkdownNode[];
   name: string;
   type: 'containerDirective' | 'leafDirective';
-}
-
-interface RootNode extends MarkdownNode {
-  children: MarkdownNode[];
 }
 
 interface ProcessorWithUse {
@@ -40,10 +33,10 @@ export const remarkCalloutDirectives: RemarkPlugin = function (
   this.use(remarkDirective);
 
   return (tree) => {
-    const root = tree as RootNode;
+    const root = tree as MarkdownRoot;
     let transformed = false;
 
-    visitChildren(root, (node, parent, index) => {
+    visitMarkdownTree(root, (node, parent, index) => {
       if (
         !parent?.children ||
         index === undefined ||
@@ -56,28 +49,15 @@ export const remarkCalloutDirectives: RemarkPlugin = function (
       transformed = true;
     });
 
-    if (transformed && !hasCalloutDirectiveImport(root)) {
-      root.children.unshift(createImportNode());
+    if (transformed && !hasMdxImport(root, 'ProseflyDirectiveCallout')) {
+      root.children.unshift(
+        createMdxImport([
+          { imported: 'Callout', local: 'ProseflyDirectiveCallout' },
+        ]),
+      );
     }
   };
 };
-
-function visitChildren(
-  node: MarkdownNode,
-  visitor: (node: MarkdownNode, parent?: MarkdownNode, index?: number) => void,
-  parent?: MarkdownNode,
-  index?: number,
-): void {
-  visitor(node, parent, index);
-
-  if (!node.children) {
-    return;
-  }
-
-  node.children.forEach((child, childIndex) => {
-    visitChildren(child, visitor, node, childIndex);
-  });
-}
 
 function isCalloutDirective(node: MarkdownNode): node is DirectiveNode {
   return (
@@ -155,43 +135,4 @@ function getPlainText(node: MarkdownNode): string {
   }
 
   return node.children?.map(getPlainText).join('') ?? '';
-}
-
-function createImportNode(): MarkdownNode {
-  return {
-    type: 'mdxjsEsm',
-    value: importStatement,
-    data: {
-      estree: {
-        type: 'Program',
-        sourceType: 'module',
-        body: [
-          {
-            type: 'ImportDeclaration',
-            specifiers: [
-              {
-                type: 'ImportSpecifier',
-                imported: { type: 'Identifier', name: 'Callout' },
-                local: { type: 'Identifier', name: 'ProseflyDirectiveCallout' },
-              },
-            ],
-            source: {
-              type: 'Literal',
-              value: '@prosefly/astro-components',
-              raw: "'@prosefly/astro-components'",
-            },
-          },
-        ],
-      },
-    },
-  };
-}
-
-function hasCalloutDirectiveImport(tree: RootNode): boolean {
-  return tree.children.some(
-    (node) =>
-      node.type === 'mdxjsEsm' &&
-      typeof node.value === 'string' &&
-      node.value.includes('ProseflyDirectiveCallout'),
-  );
 }

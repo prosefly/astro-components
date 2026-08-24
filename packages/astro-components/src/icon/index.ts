@@ -12,7 +12,8 @@ export interface IconIntegrationOptions {
   scan?: boolean;
 }
 
-const virtualIconConfigModuleId = 'virtual:prosefly/astro-components/icon/config';
+const virtualIconConfigModuleId =
+  'virtual:prosefly/astro-components/icon/config';
 const resolvedVirtualIconConfigModuleId = `\0${virtualIconConfigModuleId}`;
 
 interface IconPreloadConfig {
@@ -125,7 +126,9 @@ function iconConfigPlugin(config: IconPreloadConfig): Plugin {
   };
 }
 
-export default function icon(options: IconIntegrationOptions = {}): AstroIntegration {
+export default function icon(
+  options: IconIntegrationOptions = {},
+): AstroIntegration {
   return {
     name: '@prosefly/astro-components/icon',
     hooks: {
@@ -152,16 +155,20 @@ export default function icon(options: IconIntegrationOptions = {}): AstroIntegra
           return;
         }
 
-        updateConfig({
+        const configUpdate = {
           vite: {
             plugins: [
               iconConfigPlugin({
-                apiBase: (options.apiBase ?? 'https://api.iconify.design').replace(/\/$/, ''),
+                apiBase: (
+                  options.apiBase ?? 'https://api.iconify.design'
+                ).replace(/\/$/, ''),
                 iconsByPrefix,
               }),
             ],
           },
-        });
+        } as Parameters<typeof updateConfig>[0];
+
+        updateConfig(configUpdate);
 
         addMiddleware({
           order: 'pre',
