@@ -14,7 +14,8 @@ import {
   loadIconCollection,
   normalizeIconApiBase,
   parseIconName,
-} from '../icon/data.js';
+} from '../icon/iconify.js';
+import { getLanguageDisplayName } from './language-labels.js';
 
 interface CodeHeaderIconBlock {
   language?: string;
@@ -283,10 +284,8 @@ function getCodeBlockTitle(props: unknown): string | undefined {
   return typeof title === 'string' ? title : undefined;
 }
 
-function getCodeBlockLanguageLabel(
+export function getCodeBlockLanguageLabel(
   language: string | undefined,
 ): string | undefined {
-  const normalizedLanguage = language?.trim();
-
-  return normalizedLanguage || undefined;
+  return getLanguageDisplayName(language);
 }

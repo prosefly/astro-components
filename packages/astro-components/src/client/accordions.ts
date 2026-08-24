@@ -1,4 +1,4 @@
-import { registerPageInitializer } from './init.js';
+import { registerPageInitializer } from './page-init.js';
 
 function getItems(root: Element): HTMLDetailsElement[] {
   return [...root.querySelectorAll(':scope > [data-pf-accordion]')].filter(

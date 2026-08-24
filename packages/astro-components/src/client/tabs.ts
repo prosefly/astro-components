@@ -1,4 +1,4 @@
-import { registerPageInitializer } from './init.js';
+import { registerPageInitializer } from './page-init.js';
 
 type ActivateOptions = {
   focus?: boolean;

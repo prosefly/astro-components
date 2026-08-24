@@ -1,6 +1,7 @@
 export {
   expressiveCodeHeaderIcons,
   expressiveCodeHeaderIconNames,
+  getCodeBlockLanguageLabel,
   getExpressiveCodeHeaderIconNames,
   resolveCodeHeaderIcon,
 } from './header-icons.js';

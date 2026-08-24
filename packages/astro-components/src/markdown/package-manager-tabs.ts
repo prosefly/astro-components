@@ -6,7 +6,7 @@ import {
   type MarkdownNode,
   type MarkdownRoot,
   visitMarkdownTree,
-} from './ast.js';
+} from './ast-utils.js';
 
 const shellLanguages = new Set([
   'bash',

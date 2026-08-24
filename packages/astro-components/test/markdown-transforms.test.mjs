@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
   expressiveCodeHeaderIcons,
+  getCodeBlockLanguageLabel,
   resolveCodeHeaderIcon,
 } from '../dist/expressive-code/index.js';
 import {
@@ -194,7 +195,9 @@ test('expressiveCodeHeaderIcons inserts an icon into rendered frame headers', as
     );
 
   try {
-    const plugin = expressiveCodeHeaderIcons({ apiBase: 'https://icons.example.test' });
+    const plugin = expressiveCodeHeaderIcons({
+      apiBase: 'https://icons.example.test',
+    });
     const header = {
       type: 'element',
       tagName: 'figcaption',
@@ -224,9 +227,14 @@ test('expressiveCodeHeaderIcons inserts an icon into rendered frame headers', as
     });
 
     assert.equal(header.children[0].tagName, 'span');
-    assert.deepEqual(header.children[0].properties.className, ['pf-code-header-icon']);
+    assert.deepEqual(header.children[0].properties.className, [
+      'pf-code-header-icon',
+    ]);
     assert.equal(header.children[0].children[0].tagName, 'img');
-    assert.match(header.children[0].children[0].properties.src, /^data:image\/svg\+xml,/);
+    assert.match(
+      header.children[0].children[0].properties.src,
+      /^data:image\/svg\+xml,/,
+    );
     assert.deepEqual(header.children[1].properties.className, ['title']);
   } finally {
     globalThis.fetch = originalFetch;
@@ -254,7 +262,9 @@ test('expressiveCodeHeaderIcons inserts a language label when no title is presen
     );
 
   try {
-    const plugin = expressiveCodeHeaderIcons({ apiBase: 'https://icons.example.test' });
+    const plugin = expressiveCodeHeaderIcons({
+      apiBase: 'https://icons.example.test',
+    });
     const header = {
       type: 'element',
       tagName: 'figcaption',
@@ -276,12 +286,24 @@ test('expressiveCodeHeaderIcons inserts a language label when no title is presen
       renderData: { blockAst },
     });
 
-    assert.deepEqual(header.children[0].properties.className, ['pf-code-header-icon']);
-    assert.deepEqual(header.children[1].properties.className, ['pf-code-header-language']);
-    assert.equal(header.children[1].children[0].value, 'ts');
+    assert.deepEqual(header.children[0].properties.className, [
+      'pf-code-header-icon',
+    ]);
+    assert.deepEqual(header.children[1].properties.className, [
+      'pf-code-header-language',
+    ]);
+    assert.equal(header.children[1].children[0].value, 'typescript');
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test('getCodeBlockLanguageLabel expands common language aliases', () => {
+  assert.equal(getCodeBlockLanguageLabel('py'), 'python');
+  assert.equal(getCodeBlockLanguageLabel('md'), 'markdown');
+  assert.equal(getCodeBlockLanguageLabel('ts'), 'typescript');
+  assert.equal(getCodeBlockLanguageLabel('custom-language'), 'custom-language');
+  assert.equal(getCodeBlockLanguageLabel(undefined), undefined);
 });
 
 test('expressiveCodeHeaderIcons skips terminal frames', async () => {
@@ -293,7 +315,9 @@ test('expressiveCodeHeaderIcons skips terminal frames', async () => {
   };
 
   try {
-    const plugin = expressiveCodeHeaderIcons({ apiBase: 'https://icons.example.test' });
+    const plugin = expressiveCodeHeaderIcons({
+      apiBase: 'https://icons.example.test',
+    });
     const header = {
       type: 'element',
       tagName: 'figcaption',
@@ -332,7 +356,10 @@ test('expressiveCodeHeaderIcons skips terminal frames', async () => {
 
 test('resolveCodeHeaderIcon falls back from title to language', () => {
   assert.equal(
-    resolveCodeHeaderIcon({ language: 'json', props: { title: 'package.json' } }).name,
+    resolveCodeHeaderIcon({
+      language: 'json',
+      props: { title: 'package.json' },
+    }).name,
     'vscode-icons:file-type-npm',
   );
   assert.equal(

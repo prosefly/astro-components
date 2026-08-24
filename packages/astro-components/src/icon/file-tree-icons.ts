@@ -30,7 +30,10 @@ const vscodeFileIcon = {
 
 const vscodeExactFileIcons = [
   [/^package\.json$/i, 'vscode-icons:file-type-npm'],
-  [/^(package-lock\.json|npm-shrinkwrap\.json)$/i, 'vscode-icons:file-type-npm'],
+  [
+    /^(package-lock\.json|npm-shrinkwrap\.json)$/i,
+    'vscode-icons:file-type-npm',
+  ],
   [/^tsconfig(?:\.[\w-]+)?\.json$/i, 'vscode-icons:file-type-tsconfig'],
   [
     /^astro\.config\.[cm]?[jt]s$/i,
@@ -58,9 +61,15 @@ const vscodeExactFileIcons = [
   ],
   [/^tailwind\.config\.[cm]?[jt]s$/i, 'vscode-icons:file-type-tailwind'],
   [/^eslint\.config\.[cm]?[jt]s$/i, 'vscode-icons:file-type-eslint'],
-  [/^\.eslint(?:rc)?(?:\.[cm]?[jt]s|\.json|\.ya?ml)?$/i, 'vscode-icons:file-type-eslint'],
+  [
+    /^\.eslint(?:rc)?(?:\.[cm]?[jt]s|\.json|\.ya?ml)?$/i,
+    'vscode-icons:file-type-eslint',
+  ],
   [/^prettier\.config\.[cm]?[jt]s$/i, 'vscode-icons:file-type-prettier'],
-  [/^\.prettierrc(?:\.[cm]?[jt]s|\.json|\.ya?ml)?$/i, 'vscode-icons:file-type-prettier'],
+  [
+    /^\.prettierrc(?:\.[cm]?[jt]s|\.json|\.ya?ml)?$/i,
+    'vscode-icons:file-type-prettier',
+  ],
   [/^\.prettierignore$/i, 'vscode-icons:file-type-prettier'],
   [/^\.git(?:ignore|attributes|modules)$/i, 'vscode-icons:file-type-git'],
   [/^dockerfile$/i, 'vscode-icons:file-type-docker'],
@@ -157,11 +166,16 @@ export const fileTreeComponentIconNames = [
   ...vscodeExtensionIcons.flatMap(([, icon]) => getFileIconNames(icon)),
 ] as const;
 
-export function normalizeFileTreeIconSet(iconSet: string | undefined): FileTreeIconSet {
+export function normalizeFileTreeIconSet(
+  iconSet: string | undefined,
+): FileTreeIconSet {
   return iconSet === 'vscode-icons' ? 'vscode-icons' : 'lucide';
 }
 
-export function getFileTreeIcon(entry: FileTreeIconEntry, iconSet: FileTreeIconSet): FileTreeIcon {
+export function getFileTreeIcon(
+  entry: FileTreeIconEntry,
+  iconSet: FileTreeIconSet,
+): FileTreeIcon {
   if (iconSet === 'lucide') {
     return entry.isDirectory ? lucideIcons.directory : lucideIcons.file;
   }
@@ -191,9 +205,13 @@ export function getFileIcon(nameText: string): FileTreeIcon {
   return vscodeFileIcon;
 }
 
-export function getFileIconForLanguage(language: string | undefined): FileTreeIcon {
+export function getFileIconForLanguage(
+  language: string | undefined,
+): FileTreeIcon {
   const normalizedLanguage = language?.trim().toLowerCase();
-  const fileName = normalizedLanguage ? languageIconFileNames[normalizedLanguage] : undefined;
+  const fileName = normalizedLanguage
+    ? languageIconFileNames[normalizedLanguage]
+    : undefined;
 
   return fileName ? getFileIcon(fileName) : vscodeFileIcon;
 }
@@ -201,7 +219,9 @@ export function getFileIconForLanguage(language: string | undefined): FileTreeIc
 export function getFileIconNames(icon: FileTreeIcon | string): string[] {
   return typeof icon === 'string'
     ? [icon]
-    : [icon.name, icon.light, icon.dark].filter((name): name is string => Boolean(name));
+    : [icon.name, icon.light, icon.dark].filter((name): name is string =>
+        Boolean(name),
+      );
 }
 
 function normalizeIcon(icon: FileTreeIcon | string): FileTreeIcon {
