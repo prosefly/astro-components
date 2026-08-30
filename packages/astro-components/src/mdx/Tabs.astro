@@ -4,12 +4,13 @@ import Icon from './Icon.astro';
 import { processPanels } from './rehype-tabs';
 
 interface Props {
+  class?: string;
   copy?: boolean | string;
   defaultValue?: string;
   syncKey?: string;
 }
 
-const { copy, defaultValue, syncKey } = Astro.props;
+const { copy, defaultValue, syncKey, class: className } = Astro.props;
 const hasCopy = copy === true || copy === 'true' || copy === '';
 const tabsId = `pf-tabs-${globalThis.crypto.randomUUID()}`;
 const panelHtml = await Astro.slots.render('default');
@@ -21,7 +22,7 @@ const hasIcons = panels.some((panel) => panel.icon);
 const activePanel = panels[activeIndex] ?? panels[0];
 ---
 
-<section class="pf-tabs" data-pf-tabs data-sync-key={syncKey}>
+<section class:list={['pf-tabs', className]} data-pf-tabs data-sync-key={syncKey}>
   <div class="pf-tabs__header">
     {
       hasIcons && (
@@ -269,5 +270,17 @@ const activePanel = panels[activeIndex] ?? panels[0];
     background: transparent;
     border: none;
     border-radius: 0;
+  }
+
+  /* reset expressive code style for package manager tabs */
+  .pf-tabs.pf-package-manager-tabs .expressive-code :where(.header, .copy) {
+    display: none !important;
+  }
+  .pf-tabs.pf-package-manager-tabs .expressive-code :where(.frame, pre) {
+    border: 0 !important;
+    border-radius: 0 !important;
+  }
+  .pf-tabs.pf-package-manager-tabs .expressive-code pre :where(code, .code) {
+    padding: 0 !important;
   }
 </style>

@@ -81,11 +81,11 @@ export const remarkPackageManagerTabs: RemarkPlugin = () => {
       transformed = true;
     });
 
-    if (transformed && !hasMdxImport(root, 'LotusPackageManagerTabs')) {
+    if (transformed && !hasMdxImport(root, 'ProseflyPackageManagerTabs')) {
       root.children.unshift(
         createMdxImport([
-          { imported: 'Tabs', local: 'LotusPackageManagerTabs' },
-          { imported: 'TabItem', local: 'LotusPackageManagerTabItem' },
+          { imported: 'Tabs', local: 'ProseflyPackageManagerTabs' },
+          { imported: 'TabItem', local: 'ProseflyPackageManagerTabItem' },
         ]),
       );
     }
@@ -325,8 +325,13 @@ function createTabsNode(
 
   return {
     type: 'mdxJsxFlowElement',
-    name: 'LotusPackageManagerTabs',
+    name: 'ProseflyPackageManagerTabs',
     attributes: [
+      {
+        type: 'mdxJsxAttribute',
+        name: 'class',
+        value: 'pf-package-manager-tabs',
+      },
       {
         type: 'mdxJsxAttribute',
         name: 'copy',
@@ -340,7 +345,7 @@ function createTabsNode(
     ],
     children: variantGroup.group.managers.map((manager) => ({
       type: 'mdxJsxFlowElement',
-      name: 'LotusPackageManagerTabItem',
+      name: 'ProseflyPackageManagerTabItem',
       attributes: [
         {
           type: 'mdxJsxAttribute',
@@ -357,6 +362,7 @@ function createTabsNode(
         createPackageManagerCodeElement(
           valueByPackageManager[manager.label] ?? '',
           sourceNode.lang ?? 'sh',
+          sourceNode.meta,
         ),
       ],
     })),
@@ -366,44 +372,13 @@ function createTabsNode(
 function createPackageManagerCodeElement(
   code: string,
   language: string,
+  meta?: string,
 ): MarkdownNode {
-  // Use JSX elements instead of an mdast `code` node so Expressive Code does
-  // not transform package-manager tab contents.
   return {
-    type: 'mdxJsxFlowElement',
-    name: 'figure',
-    attributes: [
-      {
-        type: 'mdxJsxAttribute',
-        name: 'className',
-        value: 'pf-package-manager-code',
-      },
-      {
-        type: 'mdxJsxAttribute',
-        name: 'data-language',
-        value: language,
-      },
-    ],
-    children: [
-      {
-        type: 'mdxJsxFlowElement',
-        name: 'pre',
-        attributes: [],
-        children: [
-          {
-            type: 'mdxJsxTextElement',
-            name: 'code',
-            attributes: [],
-            children: [
-              {
-                type: 'text',
-                value: code,
-              },
-            ],
-          },
-        ],
-      },
-    ],
+    type: 'code',
+    lang: language,
+    meta,
+    value: code,
   };
 }
 

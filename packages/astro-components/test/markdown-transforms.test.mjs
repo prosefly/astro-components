@@ -49,7 +49,7 @@ function getAttribute(node, name) {
 }
 
 function getCodeText(tabItem) {
-  return tabItem.children[0].children[0].children[0].children[0].value;
+  return tabItem.children[0].value;
 }
 
 test('remarkCalloutDirectives converts container directives to Callout MDX nodes', () => {
@@ -135,7 +135,7 @@ test('remarkPackageManagerTabs converts supported npm commands to package manage
 
   assert.equal(root.children[0].type, 'mdxjsEsm');
   const tabs = root.children[1];
-  assert.equal(tabs.name, 'LotusPackageManagerTabs');
+  assert.equal(tabs.name, 'ProseflyPackageManagerTabs');
   assert.equal(getAttribute(tabs, 'syncKey'), 'package-manager');
 
   const commands = Object.fromEntries(
