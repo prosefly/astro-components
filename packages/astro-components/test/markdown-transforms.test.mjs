@@ -1,15 +1,33 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import * as expressiveCodePublic from '../dist/expressive-code/index.js';
 import {
   expressiveCodeHeaderIcons,
   getCodeBlockLanguageLabel,
   resolveCodeHeaderIcon,
-} from '../dist/expressive-code/index.js';
+} from '../dist/expressive-code/header-icons.js';
+import * as markdownPublic from '../dist/markdown/index.js';
 import {
   rehypeImageGallery,
   remarkCalloutDirectives,
   remarkPackageManagerTabs,
 } from '../dist/markdown/index.js';
+
+test('Expressive Code helpers are not part of public entry points', () => {
+  assert.deepEqual(Object.keys(expressiveCodePublic).sort(), [
+    'expressiveCodeHeaderIcons',
+  ]);
+
+  for (const name of [
+    'expressiveCodeHeaderIconNames',
+    'getExpressiveCodeHeaderIconNames',
+    'getCodeBlockLanguageLabel',
+    'resolveCodeHeaderIcon',
+  ]) {
+    assert.equal(name in expressiveCodePublic, false);
+    assert.equal(name in markdownPublic, false);
+  }
+});
 
 function runPlugin(plugin, tree) {
   const usedPlugins = [];
