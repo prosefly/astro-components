@@ -100,16 +100,16 @@ import { Callout } from '@prosefly/astro-components';
 
 ## Markdown Directives
 
-The `components()` integration enables callout directives so authors can write
+The `proseflyComponents()` integration enables callout directives so authors can write
 callouts, also known as admonitions, without importing the component in every
 MDX file.
 
 ```ts title="astro.config.ts"
 import { defineConfig } from 'astro/config';
-import components from '@prosefly/astro-components/integration';
+import proseflyComponents from '@prosefly/astro-components/integration';
 
 export default defineConfig({
-  integrations: [components()],
+  integrations: [proseflyComponents()],
 });
 ```
 
@@ -118,7 +118,7 @@ Callout directives are enabled by default. Set
 syntax untransformed.
 
 ```ts title="astro.config.ts"
-components({
+proseflyComponents({
   markdown: { calloutDirectives: false },
 })
 ```

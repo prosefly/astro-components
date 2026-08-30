@@ -36,10 +36,10 @@ Markdown transforms, and image-gallery assets together:
 
 ```ts
 import { defineConfig } from 'astro/config';
-import components from '@prosefly/astro-components/integration';
+import proseflyComponents from '@prosefly/astro-components/integration';
 
 export default defineConfig({
-  integrations: [components()],
+  integrations: [proseflyComponents()],
 });
 ```
 
@@ -56,7 +56,7 @@ The main entry exports:
 - `Steps`
 - `TabItem` and `Tabs`
 
-The `/integration` entry exports the `components()` Astro integration and its
+The `/integration` entry exports the `proseflyComponents()` Astro integration and its
 `ComponentsIntegrationOptions` type.
 
 The markdown entry exports:
@@ -127,7 +127,7 @@ import '@prosefly/astro-components/markdown/image-gallery.css';
 
 ## Independent Expressive Code plugin
 
-Expressive Code is intentionally separate from `components()`. Install
+Expressive Code is intentionally separate from `proseflyComponents()`. Install
 `astro-expressive-code` and register
 `expressiveCodeHeaderIcons()` in its `plugins` option:
 

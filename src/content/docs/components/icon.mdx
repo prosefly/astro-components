@@ -36,16 +36,16 @@ when the icon itself carries meaning.
 
 ## Icon Integration
 
-Register the `components()` integration when a standalone Astro project needs
+Register the `proseflyComponents()` integration when a standalone Astro project needs
 Iconify scanning and preloading.
 
 ```ts title="astro.config.ts"
 import { defineConfig } from 'astro/config';
-import components from '@prosefly/astro-components/integration';
+import proseflyComponents from '@prosefly/astro-components/integration';
 
 export default defineConfig({
   integrations: [
-    components({
+    proseflyComponents({
       icons: {
         preload: ['lucide:sparkles', 'simple-icons:github'],
       },
@@ -72,7 +72,7 @@ Set `scan: false` when a site should preload only the icons listed in
   [Dahlia](https://astro-theme-dahlia.prosefly.dev/) and
   [Lotus](https://astro-theme-lotus.prosefly.dev/) already register the shared
   integration and scan `src/**/*.astro`, `src/**/*.md`, and `src/**/*.mdx` for
-  static icon names. Theme projects do not need another `components()` entry.
+  static icon names. Theme projects do not need another `proseflyComponents()` entry.
 </Callout>
 
 ## Props

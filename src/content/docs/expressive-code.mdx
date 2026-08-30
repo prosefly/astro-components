@@ -7,7 +7,7 @@ import { Callout, Card, CardGrid } from '@prosefly/astro-components';
 
 `@prosefly/astro-components/expressive-code` is an independent Expressive Code
 plugin. It does not register `astro-expressive-code` and is not included by
-`components()`. Add it to the `plugins` option of your own
+`proseflyComponents()`. Add it to the `plugins` option of your own
 `astro-expressive-code` integration.
 
 ## Standalone setup
@@ -35,7 +35,7 @@ export default defineConfig({
 });
 ```
 
-## Use with `components()`
+## Use with `proseflyComponents()`
 
 The shared components integration owns icons, Markdown transforms, and gallery
 assets. It does not own Expressive Code, so register both integrations when
@@ -44,12 +44,12 @@ you want all of those features:
 ```ts title="astro.config.ts"
 import { defineConfig } from 'astro/config';
 import astroExpressiveCode from 'astro-expressive-code';
-import components from '@prosefly/astro-components/integration';
+import proseflyComponents from '@prosefly/astro-components/integration';
 import { expressiveCodeHeaderIcons } from '@prosefly/astro-components/expressive-code';
 
 export default defineConfig({
   integrations: [
-    components(),
+    proseflyComponents(),
     astroExpressiveCode({
       plugins: [expressiveCodeHeaderIcons()],
     }),

@@ -5,14 +5,14 @@ description: Turn image-only paragraphs into styled figures and galleries.
 
 import { Callout, Steps } from '@prosefly/astro-components';
 
-The `components()` integration enables image galleries so authors can write
+The `proseflyComponents()` integration enables image galleries so authors can write
 normal Markdown images while the site renders polished figures and multi-image
 galleries.
 
 <Callout type="tip" title="Using a Prosefly theme">
   [Dahlia](https://astro-theme-dahlia.prosefly.dev/) and
   [Lotus](https://astro-theme-lotus.prosefly.dev/) already register the
-  `components()` integration. The transform, styles, and runtime are active
+  `proseflyComponents()` integration. The transform, styles, and runtime are active
   automatically.
 </Callout>
 
@@ -39,10 +39,10 @@ default.
 
 ```ts title="astro.config.ts"
 import { defineConfig } from 'astro/config';
-import components from '@prosefly/astro-components/integration';
+import proseflyComponents from '@prosefly/astro-components/integration';
 
 export default defineConfig({
-  integrations: [components()],
+  integrations: [proseflyComponents()],
 });
 ```
 
@@ -55,7 +55,7 @@ To keep the other integration features but disable galleries and their assets,
 set `markdown.imageGallery` to `false`.
 
 ```ts title="astro.config.ts"
-components({
+proseflyComponents({
   markdown: { imageGallery: false },
 })
 ```
@@ -83,6 +83,6 @@ components({
 
 <Callout type="warning" title="Avoid double configuration">
   Dahlia and Lotus already register the shared integration. Do not add another
-  `components()` instance or manually load the gallery assets in theme
+  `proseflyComponents()` instance or manually load the gallery assets in theme
   projects.
 </Callout>

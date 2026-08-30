@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import components from '@prosefly/astro-components/integration';
+import proseflyComponents from '@prosefly/astro-components/integration';
 import icon from '../dist/icon/index.js';
 import {
   rehypeImageGallery,
@@ -10,7 +10,7 @@ import {
 } from '../dist/markdown/index.js';
 
 const setup = async (options, markdown = {}) => {
-  const integration = components(options);
+  const integration = proseflyComponents(options);
   const updates = [];
   const scripts = [];
   const middlewares = [];
@@ -128,8 +128,8 @@ test('does not compose shared transforms twice when preconfigured before MDX', a
 });
 
 test('diagnoses duplicate root registrations', async () => {
-  const first = components();
-  const second = components();
+  const first = proseflyComponents();
+  const second = proseflyComponents();
 
   await assert.rejects(
     first.hooks['astro:config:setup']({
@@ -144,7 +144,7 @@ test('diagnoses duplicate root registrations', async () => {
 
 test('icon compatibility wrapper uses the shared icon setup', async () => {
   const standalone = icon({ scan: false, preload: ['lucide:star'] });
-  const root = components({
+  const root = proseflyComponents({
     markdown: false,
     icons: { scan: false, preload: ['lucide:star'] },
   });

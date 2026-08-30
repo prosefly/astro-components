@@ -5,14 +5,14 @@ description: Convert package-manager commands into synced MDX tabs.
 
 import { Callout, Steps } from '@prosefly/astro-components';
 
-The `components()` integration enables package manager tabs so authors can
+The `proseflyComponents()` integration enables package manager tabs so authors can
 write one familiar command and let the docs render equivalent commands for
 other package managers.
 
 <Callout type="tip" title="Using a Prosefly theme">
   [Dahlia](https://astro-theme-dahlia.prosefly.dev/) and
   [Lotus](https://astro-theme-lotus.prosefly.dev/) already register the
-  `components()` integration. Theme projects do not need to add it again.
+  `proseflyComponents()` integration. Theme projects do not need to add it again.
 </Callout>
 
 ## What Authors Write
@@ -89,10 +89,10 @@ If you are not using a Prosefly theme, register the shared integration in
 
 ```ts title="astro.config.ts"
 import { defineConfig } from 'astro/config';
-import components from '@prosefly/astro-components/integration';
+import proseflyComponents from '@prosefly/astro-components/integration';
 
 export default defineConfig({
-  integrations: [components()],
+  integrations: [proseflyComponents()],
 });
 ```
 
@@ -104,7 +104,7 @@ To keep the other integration features but disable this transform, set
 `markdown.packageManagerTabs` to `false`.
 
 ```ts title="astro.config.ts"
-components({
+proseflyComponents({
   markdown: { packageManagerTabs: false },
 })
 ```
@@ -138,6 +138,6 @@ components({
 
 <Callout type="warning" title="Avoid double configuration">
   Dahlia and Lotus already register the shared integration. Adding another
-  `components()` instance can duplicate Markdown transforms and is rejected
+  `proseflyComponents()` instance can duplicate Markdown transforms and is rejected
   during configuration.
 </Callout>

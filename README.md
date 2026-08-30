@@ -33,10 +33,10 @@ the shared Markdown transforms, and image-gallery assets together:
 
 ```ts
 import { defineConfig } from 'astro/config';
-import components from '@prosefly/astro-components/integration';
+import proseflyComponents from '@prosefly/astro-components/integration';
 
 export default defineConfig({
-  integrations: [components({
+  integrations: [proseflyComponents({
     icons: { preload: ['lucide:star'] },
   })],
 });
@@ -55,7 +55,7 @@ The main entry exports:
 - `Steps`
 - `TabItem` and `Tabs`
 
-The `@prosefly/astro-components/integration` entry exports the `components()`
+The `@prosefly/astro-components/integration` entry exports the `proseflyComponents()`
 Astro integration and its `ComponentsIntegrationOptions` type.
 
 The markdown entry exports:
@@ -111,7 +111,7 @@ tabs for Node and Python package managers. `rehypeImageGallery` turns paragraphs
 that contain only images into gallery figures. Dahlia and Lotus enable both
 transforms through the shared integration by default.
 
-When using `components()`, gallery styles and runtime are injected
+When using `proseflyComponents()`, gallery styles and runtime are injected
 automatically. If you configure `rehypeImageGallery` through the standalone
 `/markdown` entry instead, import the image gallery runtime once in the page
 shell:
@@ -128,7 +128,7 @@ import '@prosefly/astro-components/markdown/image-gallery.css';
 
 ## Independent Expressive Code plugin
 
-Expressive Code is intentionally separate from `components()`. Install
+Expressive Code is intentionally separate from `proseflyComponents()`. Install
 `astro-expressive-code` and register
 `expressiveCodeHeaderIcons()` in its `plugins` option:
 

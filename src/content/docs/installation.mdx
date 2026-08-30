@@ -54,11 +54,11 @@ import { Callout, Steps } from '@prosefly/astro-components';
 
    ```ts title="astro.config.ts"
    import { defineConfig } from 'astro/config';
-   import components from '@prosefly/astro-components/integration';
+   import proseflyComponents from '@prosefly/astro-components/integration';
 
    export default defineConfig({
      integrations: [
-       components({
+       proseflyComponents({
          icons: { preload: ['lucide:sparkles', 'simple-icons:github'] },
        }),
      ],
@@ -69,10 +69,10 @@ import { Callout, Steps } from '@prosefly/astro-components';
 
    ```ts title="astro.config.ts"
    import { defineConfig } from 'astro/config';
-   import components from '@prosefly/astro-components/integration';
+   import proseflyComponents from '@prosefly/astro-components/integration';
 
    export default defineConfig({
-     integrations: [components({ markdown: { imageGallery: false } })],
+     integrations: [proseflyComponents({ markdown: { imageGallery: false } })],
    });
    ```
 
@@ -118,7 +118,7 @@ export default defineConfig({
 ```
 
 See [Expressive Code](/expressive-code/) for `apiBase`, plugin behavior, and
-how to combine this setup with `components()`.
+how to combine this setup with `proseflyComponents()`.
 
 ## Import Paths
 
@@ -131,7 +131,7 @@ import { Callout, Card, Tabs } from '@prosefly/astro-components';
 Use the integration entry for shared Astro setup:
 
 ```ts
-import components from '@prosefly/astro-components/integration';
+import proseflyComponents from '@prosefly/astro-components/integration';
 ```
 
 Use the standalone subpath entries only when configuring a feature separately:
