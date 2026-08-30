@@ -36,6 +36,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./integration": {
+      "types": "./dist/integration.d.ts",
+      "default": "./dist/integration.js"
+    },
     "./icon": {
       "types": "./dist/icon/index.d.ts",
       "default": "./dist/icon/index.js"

@@ -126,55 +126,71 @@ function iconConfigPlugin(config: IconPreloadConfig): Plugin {
   };
 }
 
-export default function icon(
+export interface IconSetupContext {
+  addMiddleware: Parameters<NonNullable<AstroIntegration['hooks']['astro:config:setup']>>[0]['addMiddleware'];
+  config: Parameters<NonNullable<AstroIntegration['hooks']['astro:config:setup']>>[0]['config'];
+  updateConfig: Parameters<NonNullable<AstroIntegration['hooks']['astro:config:setup']>>[0]['updateConfig'];
+}
+
+/** Configure icon scanning and preload data for an existing integration. */
+export async function setupIcons(
+  options: IconIntegrationOptions,
+  { addMiddleware, config, updateConfig }: IconSetupContext,
+): Promise<void> {
+  const iconNames = new Set<string>();
+
+  for (const icon of componentIconNames) {
+    addIconName(iconNames, icon);
+  }
+
+  for (const icon of options.preload ?? []) {
+    addIconName(iconNames, icon);
+  }
+
+  if (options.scan !== false) {
+    for (const icon of await collectStaticIconNames(config.root)) {
+      addIconName(iconNames, icon);
+    }
+  }
+
+  const iconsByPrefix = groupIconNames(iconNames);
+
+  if (Object.keys(iconsByPrefix).length === 0) {
+    return;
+  }
+
+  const configUpdate = {
+    vite: {
+      plugins: [
+        iconConfigPlugin({
+          apiBase: (options.apiBase ?? 'https://api.iconify.design').replace(/\/$/, ''),
+          iconsByPrefix,
+        }),
+      ],
+    },
+  } as Parameters<IconSetupContext['updateConfig']>[0];
+
+  updateConfig(configUpdate);
+
+  addMiddleware({
+    order: 'pre',
+    entrypoint: new URL('./middleware.js', import.meta.url),
+  });
+}
+
+export function createIconIntegration(
   options: IconIntegrationOptions = {},
 ): AstroIntegration {
   return {
     name: '@prosefly/astro-components/icon',
     hooks: {
-      'astro:config:setup': async ({ addMiddleware, config, updateConfig }) => {
-        const iconNames = new Set<string>();
-
-        for (const icon of componentIconNames) {
-          addIconName(iconNames, icon);
-        }
-
-        for (const icon of options.preload ?? []) {
-          addIconName(iconNames, icon);
-        }
-
-        if (options.scan !== false) {
-          for (const icon of await collectStaticIconNames(config.root)) {
-            addIconName(iconNames, icon);
-          }
-        }
-
-        const iconsByPrefix = groupIconNames(iconNames);
-
-        if (Object.keys(iconsByPrefix).length === 0) {
-          return;
-        }
-
-        const configUpdate = {
-          vite: {
-            plugins: [
-              iconConfigPlugin({
-                apiBase: (
-                  options.apiBase ?? 'https://api.iconify.design'
-                ).replace(/\/$/, ''),
-                iconsByPrefix,
-              }),
-            ],
-          },
-        } as Parameters<typeof updateConfig>[0];
-
-        updateConfig(configUpdate);
-
-        addMiddleware({
-          order: 'pre',
-          entrypoint: new URL('./middleware.js', import.meta.url),
-        });
+      'astro:config:setup': async (context) => {
+        await setupIcons(options, context);
       },
     },
   };
+}
+
+export default function icon(options: IconIntegrationOptions = {}): AstroIntegration {
+  return createIconIntegration(options);
 }

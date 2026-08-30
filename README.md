@@ -27,6 +27,20 @@ import { Callout } from '@prosefly/astro-components';
 Full documentation is available at
 [prosefly.dev/docs/astro-components](https://prosefly.dev/docs/astro-components/).
 
+For a standalone Astro site, the root integration configures icon preloading,
+the shared Markdown transforms, and image-gallery assets together:
+
+```ts
+import { defineConfig } from 'astro/config';
+import components from '@prosefly/astro-components/integration';
+
+export default defineConfig({
+  integrations: [components({
+    icons: { preload: ['lucide:star'] },
+  })],
+});
+```
+
 ## Exports
 
 The main entry exports:
@@ -88,9 +102,10 @@ tabs for Node and Python package managers. `rehypeImageGallery` turns paragraphs
 that contain only images into gallery figures. [Lotus](https://astro-theme-lotus.prosefly.dev/)
 enables both transforms by default.
 
-Import the image gallery runtime once in the page shell to load styles and
-enable previous and next controls for galleries produced by
-`rehypeImageGallery`:
+When using `components()`, gallery styles and runtime are injected
+automatically. If you configure `rehypeImageGallery` through the standalone
+`/markdown` entry instead, import the image gallery runtime once in the page
+shell:
 
 ```astro
 ---

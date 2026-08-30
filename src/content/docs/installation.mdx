@@ -8,7 +8,7 @@ import { Callout, TabItem, Tabs, Steps } from '@prosefly/astro-components';
 Install the package where your MDX content is rendered.
 [Lotus](https://astro-theme-lotus.prosefly.dev/) users can usually start
 importing components immediately. Standalone Astro users can also enable the
-icon integration and bundled Markdown transforms.
+root integration for icon preloading and bundled Markdown transforms.
 
 ## Install
 
@@ -70,39 +70,29 @@ import { Callout, Steps } from '@prosefly/astro-components';
 
 <Steps>
 
-1. **Add icon preloading if you use icons outside [Lotus](https://astro-theme-lotus.prosefly.dev/).**
+1. **Register the shared integration.**
 
    ```ts title="astro.config.ts"
    import { defineConfig } from 'astro/config';
-   import proseflyIcon from '@prosefly/astro-components/icon';
+   import components from '@prosefly/astro-components/integration';
 
    export default defineConfig({
      integrations: [
-       proseflyIcon({
-         preload: ['lucide:sparkles', 'simple-icons:github'],
+       components({
+         icons: { preload: ['lucide:sparkles', 'simple-icons:github'] },
        }),
      ],
    });
    ```
 
-2. **Add markdown transforms if you want callout directives, also known as admonitions, automatic tabs, or galleries.**
+2. **Configure feature switches if you want to disable callout directives, automatic tabs, or galleries.**
 
    ```ts title="astro.config.ts"
    import { defineConfig } from 'astro/config';
-   import {
-     rehypeImageGallery,
-     remarkCalloutDirectives,
-     remarkPackageManagerTabs,
-     unified,
-   } from '@prosefly/astro-components/markdown';
+   import components from '@prosefly/astro-components/integration';
 
    export default defineConfig({
-     markdown: {
-       processor: unified({
-         remarkPlugins: [remarkCalloutDirectives, remarkPackageManagerTabs],
-         rehypePlugins: [rehypeImageGallery],
-       }),
-     },
+     integrations: [components({ markdown: { imageGallery: false } })],
    });
    ```
 
