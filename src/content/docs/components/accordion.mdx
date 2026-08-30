@@ -18,25 +18,29 @@ import { AccordionItem, Accordions } from '@prosefly/astro-components';
 ## Basic Usage
 
 <Accordions>
-  <AccordionItem title="Can I use these components without Lotus?">
+  <AccordionItem title="Can I use these components without a Prosefly theme?">
     Yes. Import them directly from `@prosefly/astro-components` in any Astro or
-    MDX page.
+    MDX page, and register `@prosefly/astro-components/integration` when you want
+    the shared Markdown, icon, and gallery setup.
   </AccordionItem>
-  <AccordionItem title="Does Lotus need extra markdown configuration?">
-    No. [Lotus](https://astro-theme-lotus.prosefly.dev/) enables the package
-    manager tabs and image gallery transforms by default.
+  <AccordionItem title="Do Prosefly themes need extra component configuration?">
+    No. [Dahlia](https://astro-theme-dahlia.prosefly.dev/) and
+    [Lotus](https://astro-theme-lotus.prosefly.dev/) register the shared
+    `components()` integration automatically.
   </AccordionItem>
 </Accordions>
 
 ```mdx
 <Accordions>
-  <AccordionItem title="Can I use these components without Lotus?">
+  <AccordionItem title="Can I use these components without a Prosefly theme?">
     Yes. Import them directly from `@prosefly/astro-components` in any Astro or
-    MDX page.
+    MDX page, and register `@prosefly/astro-components/integration` when you want
+    the shared Markdown, icon, and gallery setup.
   </AccordionItem>
-  <AccordionItem title="Does Lotus need extra markdown configuration?">
-    No. [Lotus](https://astro-theme-lotus.prosefly.dev/) enables the package
-    manager tabs and image gallery transforms by default.
+  <AccordionItem title="Do Prosefly themes need extra component configuration?">
+    No. [Dahlia](https://astro-theme-dahlia.prosefly.dev/) and
+    [Lotus](https://astro-theme-lotus.prosefly.dev/) register the shared
+    `components()` integration automatically.
   </AccordionItem>
 </Accordions>
 ```

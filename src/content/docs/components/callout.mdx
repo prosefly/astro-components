@@ -100,23 +100,27 @@ import { Callout } from '@prosefly/astro-components';
 
 ## Markdown Directives
 
-Enable `remarkCalloutDirectives` when authors should write callouts, also known
-as admonitions, without importing the component in every MDX file.
+The `components()` integration enables callout directives so authors can write
+callouts, also known as admonitions, without importing the component in every
+MDX file.
 
 ```ts title="astro.config.ts"
 import { defineConfig } from 'astro/config';
-import {
-  remarkCalloutDirectives,
-  unified,
-} from '@prosefly/astro-components/markdown';
+import components from '@prosefly/astro-components/integration';
 
 export default defineConfig({
-  markdown: {
-    processor: unified({
-      remarkPlugins: [remarkCalloutDirectives],
-    }),
-  },
+  integrations: [components()],
 });
+```
+
+Callout directives are enabled by default. Set
+`markdown.calloutDirectives` to `false` when a project should keep directive
+syntax untransformed.
+
+```ts title="astro.config.ts"
+components({
+  markdown: { calloutDirectives: false },
+})
 ```
 
 :::tip[Directive syntax]

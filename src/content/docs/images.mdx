@@ -5,14 +5,15 @@ description: Turn image-only paragraphs into styled figures and galleries.
 
 import { Callout, Steps } from '@prosefly/astro-components';
 
-Use `rehypeImageGallery` when authors should write normal Markdown images while
-the site renders polished figures and multi-image galleries.
+The `components()` integration enables image galleries so authors can write
+normal Markdown images while the site renders polished figures and multi-image
+galleries.
 
-<Callout type="tip" title="Using Lotus">
-  [Lotus](https://astro-theme-lotus.prosefly.dev/) enables the image gallery
-  transform automatically. If your site uses
-  [`@prosefly/astro-theme-lotus`](https://astro-theme-lotus.prosefly.dev/), the
-  Markdown transform is already active.
+<Callout type="tip" title="Using a Prosefly theme">
+  [Dahlia](https://astro-theme-dahlia.prosefly.dev/) and
+  [Lotus](https://astro-theme-lotus.prosefly.dev/) already register the
+  `components()` integration. The transform, styles, and runtime are active
+  automatically.
 </Callout>
 
 ## What Authors Write
@@ -32,42 +33,32 @@ A paragraph that contains multiple images becomes a gallery.
 
 ## Standalone Astro Setup
 
-If you are not using [Lotus](https://astro-theme-lotus.prosefly.dev/), add the
-rehype plugin in `astro.config.ts`.
+If you are not using a Prosefly theme, register the shared integration in
+`astro.config.ts`. The image transform, CSS, and client runtime are enabled by
+default.
 
 ```ts title="astro.config.ts"
 import { defineConfig } from 'astro/config';
-import {
-  rehypeImageGallery,
-  unified,
-} from '@prosefly/astro-components/markdown';
+import components from '@prosefly/astro-components/integration';
 
 export default defineConfig({
-  markdown: {
-    processor: unified({
-      rehypePlugins: [rehypeImageGallery],
-    }),
-  },
+  integrations: [components()],
 });
 ```
 
-Then load the gallery CSS and runtime once in the layout that renders your
-Markdown.
+The integration configures `rehypeImageGallery` and injects the gallery assets
+once for every page. No layout imports are required. The JavaScript adds
+previous and next controls for galleries generated from multiple images;
+single-image figures use the same injected CSS.
 
-```astro title="src/layouts/DocsLayout.astro"
----
-import '@prosefly/astro-components/markdown/image-gallery.css';
----
+To keep the other integration features but disable galleries and their assets,
+set `markdown.imageGallery` to `false`.
 
-<slot />
-
-<script>
-  import '@prosefly/astro-components/markdown/image-gallery.js';
-</script>
+```ts title="astro.config.ts"
+components({
+  markdown: { imageGallery: false },
+})
 ```
-
-The JavaScript adds previous and next controls for galleries generated from
-multiple images. Single-image figures only need the CSS.
 
 ## Authoring Rules
 
@@ -91,7 +82,7 @@ multiple images. Single-image figures only need the CSS.
 </Steps>
 
 <Callout type="warning" title="Avoid double configuration">
-  [Lotus](https://astro-theme-lotus.prosefly.dev/) already configures
-  `rehypeImageGallery` and loads the theme styles. Add the plugin and runtime
-  manually only in standalone Astro projects.
+  Dahlia and Lotus already register the shared integration. Do not add another
+  `components()` instance or manually load the gallery assets in theme
+  projects.
 </Callout>

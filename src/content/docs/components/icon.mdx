@@ -36,17 +36,19 @@ when the icon itself carries meaning.
 
 ## Icon Integration
 
-Use `@prosefly/astro-components/icon` when a project wants Iconify preloading
-without [Lotus](https://astro-theme-lotus.prosefly.dev/).
+Register the `components()` integration when a standalone Astro project needs
+Iconify scanning and preloading.
 
 ```ts title="astro.config.ts"
 import { defineConfig } from 'astro/config';
-import proseflyIcon from '@prosefly/astro-components/icon';
+import components from '@prosefly/astro-components/integration';
 
 export default defineConfig({
   integrations: [
-    proseflyIcon({
-      preload: ['lucide:sparkles', 'simple-icons:github'],
+    components({
+      icons: {
+        preload: ['lucide:sparkles', 'simple-icons:github'],
+      },
     }),
   ],
 });
@@ -66,10 +68,11 @@ because the scanner only sees literal strings.
 Set `scan: false` when a site should preload only the icons listed in
 `preload`, or set `apiBase` to use an internal Iconify-compatible endpoint.
 
-<Callout type="note" title="Lotus default">
-  [Lotus](https://astro-theme-lotus.prosefly.dev/) registers the icon
-  integration and scans `src/**/*.astro`, `src/**/*.md`, and `src/**/*.mdx` for
-  static icon names.
+<Callout type="note" title="Prosefly theme defaults">
+  [Dahlia](https://astro-theme-dahlia.prosefly.dev/) and
+  [Lotus](https://astro-theme-lotus.prosefly.dev/) already register the shared
+  integration and scan `src/**/*.astro`, `src/**/*.md`, and `src/**/*.mdx` for
+  static icon names. Theme projects do not need another `components()` entry.
 </Callout>
 
 ## Props
