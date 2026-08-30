@@ -11,8 +11,9 @@ pnpm add @prosefly/astro-components
 ```
 
 If your site renders `.mdx` pages, make sure MDX is configured in Astro first.
+[Dahlia](https://astro-theme-dahlia.prosefly.dev/) and
 [Lotus](https://astro-theme-lotus.prosefly.dev/) projects already include MDX,
-the markdown transforms, icon preloading, and the docs shell.
+the shared integration, icon preloading, and their docs shell.
 
 ```astro
 ---
@@ -27,7 +28,7 @@ import { Callout } from '@prosefly/astro-components';
 Full documentation is available at
 [prosefly.dev/docs/astro-components](https://prosefly.dev/docs/astro-components/).
 
-For a standalone Astro site, the root integration configures icon preloading,
+For a standalone Astro site, the shared integration configures icon preloading,
 the shared Markdown transforms, and image-gallery assets together:
 
 ```ts
@@ -54,15 +55,21 @@ The main entry exports:
 - `Steps`
 - `TabItem` and `Tabs`
 
+The `@prosefly/astro-components/integration` entry exports the `components()`
+Astro integration and its `ComponentsIntegrationOptions` type.
+
 The markdown entry exports:
 
 - `rehypeImageGallery`
 - `remarkPackageManagerTabs`
 
-## Icon Integration
+## Advanced icon-only setup
 
-Use the `@prosefly/astro-components/icon` integration when a project wants
-Iconify preloading without the full [Lotus](https://astro-theme-lotus.prosefly.dev/) theme:
+Use the `@prosefly/astro-components/integration` entry for the usual setup. The
+standalone `@prosefly/astro-components/icon` entry remains available when a
+project wants only Iconify preloading without Markdown transforms or the full
+[Dahlia](https://astro-theme-dahlia.prosefly.dev/) or
+[Lotus](https://astro-theme-lotus.prosefly.dev/) theme:
 
 ```ts
 import { defineConfig } from 'astro/config';
@@ -81,9 +88,11 @@ The integration can scan `src/**/*.astro`, `src/**/*.md`, and `src/**/*.mdx`
 for static icon usage. Set `scan: false` to disable that behavior or `apiBase`
 to point at an internal Iconify-compatible endpoint.
 
-## Markdown Transforms
+## Independent Markdown transforms
 
-Use `@prosefly/astro-components/markdown` for optional markdown transforms:
+Use `@prosefly/astro-components/integration` for the normal Markdown setup. The
+`@prosefly/astro-components/markdown` entry remains available for advanced
+manual processor composition:
 
 ```ts
 import { defineConfig } from 'astro/config';
@@ -99,8 +108,8 @@ export default defineConfig({
 
 `remarkPackageManagerTabs` recognizes common `npm` commands and can generate
 tabs for Node and Python package managers. `rehypeImageGallery` turns paragraphs
-that contain only images into gallery figures. [Lotus](https://astro-theme-lotus.prosefly.dev/)
-enables both transforms by default.
+that contain only images into gallery figures. Dahlia and Lotus enable both
+transforms through the shared integration by default.
 
 When using `components()`, gallery styles and runtime are injected
 automatically. If you configure `rehypeImageGallery` through the standalone
@@ -116,6 +125,35 @@ import '@prosefly/astro-components/markdown/image-gallery.css';
   import '@prosefly/astro-components/markdown/image-gallery.js';
 </script>
 ```
+
+## Independent Expressive Code plugin
+
+Expressive Code is intentionally separate from `components()`. Install
+`astro-expressive-code` and register
+`expressiveCodeHeaderIcons()` in its `plugins` option:
+
+```ts
+import astroExpressiveCode from 'astro-expressive-code';
+import { expressiveCodeHeaderIcons } from '@prosefly/astro-components/expressive-code';
+
+export default {
+  integrations: [
+    astroExpressiveCode({
+      plugins: [expressiveCodeHeaderIcons()],
+    }),
+  ],
+};
+```
+
+Pass `{ apiBase: 'https://example.com' }` to use an Iconify-compatible endpoint
+for code-header icons. Dahlia and Lotus already configure this plugin; do not
+register it a second time in those themes. See the
+[Expressive Code guide](https://prosefly.dev/docs/astro-components/expressive-code/)
+for standalone and combined examples.
+
+The `/expressive-code` entry publicly exports only
+`expressiveCodeHeaderIcons` and the `ExpressiveCodeHeaderIconsOptions` type.
+The icon and language-label helpers used by the plugin are internal.
 
 ## Styling
 

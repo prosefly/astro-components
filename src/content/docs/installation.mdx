@@ -1,45 +1,25 @@
 ---
 title: Installation
-description: Install the package for Lotus or a standalone Astro site.
+description: Install Astro Components in a standalone Astro site or documentation theme.
 ---
 
-import { Callout, TabItem, Tabs, Steps } from '@prosefly/astro-components';
+import { Callout, Steps } from '@prosefly/astro-components';
 
-Install the package where your MDX content is rendered.
-[Lotus](https://astro-theme-lotus.prosefly.dev/) users can usually start
-importing components immediately. Standalone Astro users can also enable the
-root integration for icon preloading and bundled Markdown transforms.
+Install the package where your MDX content is rendered. Dahlia and Lotus
+already include the shared integration; standalone Astro sites can register it
+directly for icon preloading, Markdown transforms, and gallery assets.
 
 ## Install
 
-<Tabs copy syncKey="install-package">
-  <TabItem label="pnpm" icon="simple-icons:pnpm">
-    ```sh
-    pnpm add @prosefly/astro-components
-    ```
-  </TabItem>
-  <TabItem label="npm" icon="simple-icons:npm">
-    ```sh
-    npm install @prosefly/astro-components
-    ```
-  </TabItem>
-  <TabItem label="yarn" icon="simple-icons:yarn">
-    ```sh
-    yarn add @prosefly/astro-components
-    ```
-  </TabItem>
-  <TabItem label="bun" icon="simple-icons:bun">
-    ```sh
-    bun add @prosefly/astro-components
-    ```
-  </TabItem>
-</Tabs>
+```sh
+npm install @prosefly/astro-components
+```
 
 ## Use In MDX
 
 Standalone Astro projects need MDX configured before they can render component
 imports inside `.mdx` files. If the project already renders MDX pages, or if it
-uses [Lotus](https://astro-theme-lotus.prosefly.dev/), skip this setup.
+uses Dahlia or Lotus, skip this setup.
 
 ```ts title="astro.config.ts"
 import mdx from '@astrojs/mdx';
@@ -103,15 +83,42 @@ import { Callout, Steps } from '@prosefly/astro-components';
 
 </Steps>
 
-<Callout type="tip" title="Using Lotus">
-  [`@prosefly/astro-theme-lotus`](https://astro-theme-lotus.prosefly.dev/) already wires the
-  markdown transforms, Iconify preloading, MDX, and docs shell. Install this
-  package directly only when you are using the components outside the
-  [Lotus](https://astro-theme-lotus.prosefly.dev/) integration.
+<Callout type="tip" title="Using Dahlia or Lotus">
+  [`@prosefly/astro-theme-dahlia`](https://astro-theme-dahlia.prosefly.dev/) and
+  [`@prosefly/astro-theme-lotus`](https://astro-theme-lotus.prosefly.dev/)
+  already wire the shared integration, MDX, Iconify preloading, and their docs
+  shell. Install this package directly only when you use the components outside
+  those themes.
 </Callout>
 
 For detailed setup, see [Callout](/components/callout/),
 [Package Manager Tabs](/package-manager-tabs/), and [Images](/images/).
+
+## Configure Expressive Code
+
+Expressive Code is an independent integration. Install
+`astro-expressive-code`, then add the Prosefly plugin to its `plugins` array:
+
+```sh
+pnpm add astro-expressive-code
+```
+
+```ts title="astro.config.ts"
+import { defineConfig } from 'astro/config';
+import astroExpressiveCode from 'astro-expressive-code';
+import { expressiveCodeHeaderIcons } from '@prosefly/astro-components/expressive-code';
+
+export default defineConfig({
+  integrations: [
+    astroExpressiveCode({
+      plugins: [expressiveCodeHeaderIcons()],
+    }),
+  ],
+});
+```
+
+See [Expressive Code](/expressive-code/) for `apiBase`, plugin behavior, and
+how to combine this setup with `components()`.
 
 ## Import Paths
 
@@ -121,15 +128,21 @@ Use the main entry for components:
 import { Callout, Card, Tabs } from '@prosefly/astro-components';
 ```
 
-Use subpath entries for integrations:
+Use the integration entry for shared Astro setup:
 
 ```ts
-import proseflyIcon from '@prosefly/astro-components/icon';
+import components from '@prosefly/astro-components/integration';
+```
+
+Use the standalone subpath entries only when configuring a feature separately:
+
+```ts
 import {
   rehypeImageGallery,
   remarkCalloutDirectives,
   unified,
 } from '@prosefly/astro-components/markdown';
+import { expressiveCodeHeaderIcons } from '@prosefly/astro-components/expressive-code';
 ```
 
 ## Component Exports

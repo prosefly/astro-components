@@ -1,0 +1,110 @@
+---
+title: Expressive Code
+description: Add Prosefly file icons and language labels to Expressive Code frames.
+---
+
+import { Callout, Card, CardGrid } from '@prosefly/astro-components';
+
+`@prosefly/astro-components/expressive-code` is an independent Expressive Code
+plugin. It does not register `astro-expressive-code` and is not included by
+`components()`. Add it to the `plugins` option of your own
+`astro-expressive-code` integration.
+
+## Standalone setup
+
+Install both packages in an Astro project that uses MDX or Markdown code
+blocks:
+
+```sh
+pnpm add @prosefly/astro-components astro-expressive-code
+```
+
+Register the plugin with `astro-expressive-code`:
+
+```ts title="astro.config.ts"
+import { defineConfig } from 'astro/config';
+import astroExpressiveCode from 'astro-expressive-code';
+import { expressiveCodeHeaderIcons } from '@prosefly/astro-components/expressive-code';
+
+export default defineConfig({
+  integrations: [
+    astroExpressiveCode({
+      plugins: [expressiveCodeHeaderIcons()],
+    }),
+  ],
+});
+```
+
+## Use with `components()`
+
+The shared components integration owns icons, Markdown transforms, and gallery
+assets. It does not own Expressive Code, so register both integrations when
+you want all of those features:
+
+```ts title="astro.config.ts"
+import { defineConfig } from 'astro/config';
+import astroExpressiveCode from 'astro-expressive-code';
+import components from '@prosefly/astro-components/integration';
+import { expressiveCodeHeaderIcons } from '@prosefly/astro-components/expressive-code';
+
+export default defineConfig({
+  integrations: [
+    components(),
+    astroExpressiveCode({
+      plugins: [expressiveCodeHeaderIcons()],
+    }),
+  ],
+});
+```
+
+<Callout type="note" title="Dahlia and Lotus already include it">
+  Dahlia and Lotus configure `astro-expressive-code` and this plugin for their
+  code blocks. Do not register `expressiveCodeHeaderIcons()` again in a theme
+  project unless you intentionally replace the theme's Expressive Code setup.
+</Callout>
+
+## Behavior
+
+The plugin adds a file-type icon to a code frame header. It derives the icon
+from the frame title when one is present, then falls back to the code language.
+Untitled frames also receive a readable language label when one is available.
+Terminal frames are left unchanged, and light/dark icon variants follow the
+site's theme.
+
+## Options
+
+<CardGrid>
+  <Card title="apiBase" icon="lucide:server">
+    Set `apiBase` to an Iconify-compatible endpoint when icons must be loaded
+    from an internal service. It defaults to `https://api.iconify.design`.
+  </Card>
+  <Card title="Plugin instance" icon="lucide:plug">
+    `expressiveCodeHeaderIcons(options?)` returns an Expressive Code plugin
+    that can be passed in the integration's `plugins` array.
+  </Card>
+</CardGrid>
+
+For an Iconify-compatible internal endpoint, pass `apiBase` when creating the
+plugin:
+
+```ts
+astroExpressiveCode({
+  plugins: [
+    expressiveCodeHeaderIcons({
+      apiBase: 'https://icons.example.com',
+    }),
+  ],
+});
+```
+
+## Public API
+
+The `/expressive-code` entry publicly exports only:
+
+- `expressiveCodeHeaderIcons`
+- `ExpressiveCodeHeaderIconsOptions`
+
+For icon preloading and shared Markdown transforms, use
+`@prosefly/astro-components/integration`. The Expressive Code entry remains
+separate so projects can adopt the plugin without adopting the full shared
+integration.
