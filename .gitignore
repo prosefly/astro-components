@@ -1,6 +1,7 @@
 node_modules/
 dist/
 plans/
+.pnpm-store/
 .astro/
 .DS_Store
 *.log
