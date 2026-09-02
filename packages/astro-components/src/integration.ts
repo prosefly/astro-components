@@ -53,6 +53,10 @@ export default function components(
             supportsTransforms
           ) {
             context.injectScript(
+              'page-ssr',
+              "import '@prosefly/astro-components/markdown/image-gallery.css';",
+            );
+            context.injectScript(
               'page',
               "import '@prosefly/astro-components/markdown/image-gallery.css'; import '@prosefly/astro-components/markdown/image-gallery.js';",
             );
