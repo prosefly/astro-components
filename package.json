@@ -17,8 +17,8 @@
   "dependencies": {
     "@astrojs/check": "latest",
     "@prosefly/astro-components": "workspace:*",
-    "@prosefly/astro-theme-lotus": "^0.7.1",
-    "astro": "^7.2.9",
+    "@prosefly/astro-theme-lotus": "^0.7.2",
+    "astro": "^7.2.10",
     "typescript": "^6.0.3"
   }
 }
