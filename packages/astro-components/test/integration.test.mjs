@@ -3,8 +3,8 @@ import test from 'node:test';
 import proseflyComponents from '@prosefly/astro-components/integration';
 import icon from '../dist/icon/index.js';
 import {
-  rehypeImageGallery,
   remarkCalloutDirectives,
+  remarkImageGallery,
   remarkPackageManagerTabs,
   unified,
 } from '../dist/markdown/index.js';
@@ -28,14 +28,13 @@ const setup = async (options, markdown = {}) => {
   return { middlewares, scripts, updates };
 };
 
-test('components defaults enable transforms and gallery assets', async () => {
+test('components defaults enable shared remark transforms without global gallery assets', async () => {
   const result = await setup({ icons: false });
   const processor = result.updates[0].markdown.processor;
 
-  assert.equal(processor.options.remarkPlugins.length, 2);
-  assert.equal(processor.options.rehypePlugins.length, 1);
-  assert.equal(result.scripts.length, 1);
-  assert.match(result.scripts[0][1], /image-gallery/);
+  assert.equal(processor.options.remarkPlugins.length, 3);
+  assert.equal(processor.options.rehypePlugins.length, 0);
+  assert.equal(result.scripts.length, 0);
 });
 
 test('disabled markdown features register no transforms or assets', async () => {
@@ -81,6 +80,7 @@ test('preserves unified processor options and extension ordering', async () => {
     remarkCalloutDirectives,
     userRemark,
     remarkPackageManagerTabs,
+    remarkImageGallery,
     after,
   ]);
   assert.equal(processor.options.gfm, false);
@@ -88,7 +88,6 @@ test('preserves unified processor options and extension ordering', async () => {
   assert.deepEqual(processor.options.remarkRehype, { allowDangerousHtml: true });
   assert.deepEqual(processor.options.rehypePlugins, [
     userRehype,
-    rehypeImageGallery,
     after,
   ]);
 });
@@ -116,7 +115,7 @@ test('replaces Astro default satteri processor with the shared unified pipeline'
 
   assert.equal(processor.name, 'unified');
   assert.ok(processor.options.remarkPlugins.includes(remarkCalloutDirectives));
-  assert.equal(result.scripts.length, 1);
+  assert.equal(result.scripts.length, 0);
 });
 
 test('does not compose shared transforms twice when preconfigured before MDX', async () => {
@@ -124,7 +123,7 @@ test('does not compose shared transforms twice when preconfigured before MDX', a
   const second = await setup({ icons: false }, first.updates[0].markdown);
 
   assert.deepEqual(second.updates, []);
-  assert.equal(second.scripts.length, 1);
+  assert.equal(second.scripts.length, 0);
 });
 
 test('diagnoses duplicate root registrations', async () => {

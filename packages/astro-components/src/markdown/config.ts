@@ -1,8 +1,8 @@
 import { isUnifiedProcessor, unified } from '@astrojs/markdown-remark';
 import type { AstroConfig } from 'astro';
 import type { RehypePlugins, RemarkPlugins } from '@astrojs/markdown-remark';
-import { rehypeImageGallery } from './image-gallery-plugin.js';
 import { remarkCalloutDirectives } from './callout-directives.js';
+import { remarkImageGallery } from './image-gallery.js';
 import { remarkPackageManagerTabs } from './package-manager-tabs.js';
 
 /** Options for the transforms owned by the components integration. */
@@ -73,12 +73,12 @@ export function resolveMarkdownConfig(
     ]),
     ...userRemarkPlugins,
     ...(options.packageManagerTabs === false ? [] : [remarkPackageManagerTabs]),
+    ...(options.imageGallery === false ? [] : [remarkImageGallery]),
     ...(options.remarkPluginsAfterTransforms ?? []),
   ];
   const rehypePlugins: RehypePlugins = [
     ...(options.rehypePluginsBeforeTransforms ?? []),
     ...userRehypePlugins,
-    ...(options.imageGallery === false ? [] : [rehypeImageGallery]),
     ...(options.rehypePluginsAfterTransforms ?? []),
   ];
 

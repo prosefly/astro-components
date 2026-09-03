@@ -51,9 +51,7 @@
     "./expressive-code": {
       "types": "./dist/expressive-code/index.d.ts",
       "default": "./dist/expressive-code/index.js"
-    },
-    "./markdown/image-gallery.css": "./dist/markdown/image-gallery.css",
-    "./markdown/image-gallery.js": "./dist/markdown/image-gallery.js"
+    }
   },
   "files": [
     "dist",

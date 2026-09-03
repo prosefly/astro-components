@@ -52,6 +52,7 @@ The main entry exports:
 - `Card` and `CardGrid`
 - `FileTree`
 - `Icon`
+- `ImageGallery`
 - `Steps`
 - `TabItem` and `Tabs`
 
@@ -60,7 +61,7 @@ Astro integration and its `ComponentsIntegrationOptions` type.
 
 The markdown entry exports:
 
-- `rehypeImageGallery`
+- `remarkImageGallery`
 - `remarkPackageManagerTabs`
 
 ## Advanced icon-only setup
@@ -90,41 +91,28 @@ to point at an internal Iconify-compatible endpoint.
 
 ## Independent Markdown transforms
 
-Use `@prosefly/astro-components/integration` for the normal Markdown setup. The
-`@prosefly/astro-components/markdown` entry remains available for advanced
-manual processor composition:
+Use `@prosefly/astro-components/integration` for the normal Markdown setup. It
+enables image galleries in `.mdx` files; ordinary `.md` files are unchanged.
+The `@prosefly/astro-components/markdown` entry remains available for advanced
+MDX processor composition:
 
 ```ts
 import { defineConfig } from 'astro/config';
-import { rehypeImageGallery, remarkPackageManagerTabs } from '@prosefly/astro-components/markdown';
+import { remarkImageGallery, remarkPackageManagerTabs } from '@prosefly/astro-components/markdown';
 
 export default defineConfig({
   markdown: {
-    remarkPlugins: [remarkPackageManagerTabs],
-    rehypePlugins: [rehypeImageGallery],
+    remarkPlugins: [remarkImageGallery, remarkPackageManagerTabs],
   },
 });
 ```
 
 `remarkPackageManagerTabs` recognizes common `npm` commands and can generate
-tabs for Node and Python package managers. `rehypeImageGallery` turns paragraphs
-that contain only images into gallery figures. Dahlia and Lotus enable both
-transforms through the shared integration by default.
-
-When using `proseflyComponents()`, gallery styles and runtime are injected
-automatically. If you configure `rehypeImageGallery` through the standalone
-`/markdown` entry instead, import the image gallery runtime once in the page
-shell:
-
-```astro
----
-import '@prosefly/astro-components/markdown/image-gallery.css';
----
-
-<script>
-  import '@prosefly/astro-components/markdown/image-gallery.js';
-</script>
-```
+tabs for Node and Python package managers. `remarkImageGallery` is an MDX-only
+transform that preserves the original image nodes for Astro optimization and
+renders the `ImageGallery` component with page-owned CSS and runtime. No manual
+asset imports are required. Dahlia and Lotus enable both transforms through
+the shared integration by default.
 
 ## Independent Expressive Code plugin
 

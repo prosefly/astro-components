@@ -1,5 +1,4 @@
 import type { AstroIntegration } from 'astro';
-import { isUnifiedProcessor } from '@astrojs/markdown-remark';
 import { createIconIntegration, setupIcons, type IconIntegrationOptions } from './icon/index.js';
 import {
   hasComponentsMarkdownTransforms,
@@ -38,28 +37,10 @@ export default function components(
 
         if (options.markdown !== false) {
           const markdownProcessor = context.config.markdown.processor;
-          const supportsTransforms =
-            !markdownProcessor ||
-            isUnifiedProcessor(markdownProcessor) ||
-            markdownProcessor.name === 'satteri';
           if (!hasComponentsMarkdownTransforms(markdownProcessor)) {
             context.updateConfig({
               markdown: resolveMarkdownConfig(options.markdown ?? {}, context.config.markdown),
             });
-          }
-
-          if (
-            options.markdown?.imageGallery !== false &&
-            supportsTransforms
-          ) {
-            context.injectScript(
-              'page-ssr',
-              "import '@prosefly/astro-components/markdown/image-gallery.css';",
-            );
-            context.injectScript(
-              'page',
-              "import '@prosefly/astro-components/markdown/image-gallery.css'; import '@prosefly/astro-components/markdown/image-gallery.js';",
-            );
           }
         }
       },

@@ -8,8 +8,8 @@ import {
 } from '../dist/expressive-code/header-icons.js';
 import * as markdownPublic from '../dist/markdown/index.js';
 import {
-  rehypeImageGallery,
   remarkCalloutDirectives,
+  remarkImageGallery,
   remarkPackageManagerTabs,
 } from '../dist/markdown/index.js';
 
@@ -29,7 +29,7 @@ test('Expressive Code helpers are not part of public entry points', () => {
   }
 });
 
-function runPlugin(plugin, tree) {
+function runPlugin(plugin, tree, file = {}) {
   const usedPlugins = [];
   const transformer = plugin.call({
     use(usedPlugin, options) {
@@ -38,7 +38,7 @@ function runPlugin(plugin, tree) {
   });
 
   if (typeof transformer === 'function') {
-    transformer(tree);
+    transformer(tree, file);
   }
 
   return { tree, usedPlugins };
@@ -153,43 +153,67 @@ test('remarkPackageManagerTabs converts supported npm commands to package manage
   });
 });
 
-test('rehypeImageGallery converts image-only paragraphs to accessible gallery figures', () => {
+for (const file of [{ path: '/docs/images.mdx' }, { path: '/docs/images.md' }, {}]) {
+  test(`remarkImageGallery converts image-only paragraphs (${file.path ?? 'no file metadata'})`, () => {
+    const root = {
+      type: 'root',
+      children: [
+        {
+          type: 'paragraph',
+          children: [
+            {
+              type: 'image',
+              alt: 'Light mode',
+              title: 'Light',
+              url: '/light.png',
+            },
+            { type: 'text', value: ' ' },
+            {
+              type: 'imageReference',
+              alt: 'Dark mode',
+              identifier: 'dark',
+              label: 'dark',
+            },
+          ],
+        },
+      ],
+    };
+
+    runPlugin(remarkImageGallery, root, file);
+
+    assert.equal(root.children[0].type, 'mdxjsEsm');
+    assert.match(root.children[0].value, /ImageGallery as ProseflyImageGallery/);
+    const gallery = root.children[1];
+    assert.equal(gallery.type, 'mdxJsxFlowElement');
+    assert.equal(gallery.name, 'ProseflyImageGallery');
+    assert.equal(gallery.children.length, 3);
+    assert.equal(gallery.children[0].type, 'image');
+    assert.equal(gallery.children[0].url, '/light.png');
+    assert.equal(gallery.children[0].title, 'Light');
+    assert.equal(gallery.children[1].type, 'text');
+    assert.equal(gallery.children[1].value, ' ');
+    assert.equal(gallery.children[2].type, 'imageReference');
+  });
+
+}
+
+test('remarkImageGallery leaves mixed-content paragraphs unchanged', () => {
   const root = {
     type: 'root',
     children: [
       {
-        type: 'element',
-        tagName: 'p',
-        properties: {},
+        type: 'paragraph',
         children: [
-          {
-            type: 'element',
-            tagName: 'img',
-            properties: { alt: 'Light mode', src: '/light.png' },
-            children: [],
-          },
-          { type: 'text', value: '\n' },
-          {
-            type: 'element',
-            tagName: 'img',
-            properties: { alt: 'Dark mode', src: '/dark.png' },
-            children: [],
-          },
+          { type: 'text', value: 'Screenshot: ' },
+          { type: 'image', alt: 'Screenshot', url: '/screenshot.png' },
         ],
       },
     ],
   };
 
-  runPlugin(rehypeImageGallery, root);
+  runPlugin(remarkImageGallery, root, { path: '/docs/images.md' });
 
-  const figure = root.children[0];
-  assert.equal(figure.tagName, 'figure');
-  assert.deepEqual(figure.properties.className, ['pf-image-gallery']);
-  assert.equal(figure.properties.dataImageCount, '2');
-  assert.equal(figure.children[0].tagName, 'button');
-  assert.equal(figure.children[0].properties.ariaLabel, 'Previous image');
-  assert.equal(figure.children[1].properties.dataPfImageGalleryTrack, '');
-  assert.equal(figure.children[2].properties.ariaLabel, 'Next image');
+  assert.equal(root.children[0].type, 'paragraph');
 });
 
 test('expressiveCodeHeaderIcons inserts an icon into rendered frame headers', async () => {

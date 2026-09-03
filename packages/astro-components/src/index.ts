@@ -6,6 +6,7 @@ export { default as Card } from './mdx/Card.astro';
 export { default as CardGrid } from './mdx/CardGrid.astro';
 export { default as FileTree } from './mdx/FileTree.astro';
 export { default as Icon } from './mdx/Icon.astro';
+export { default as ImageGallery } from './mdx/ImageGallery.astro';
 export { default as Steps } from './mdx/Steps.astro';
 export { default as TabItem } from './mdx/TabItem.astro';
 export { default as Tabs } from './mdx/Tabs.astro';
