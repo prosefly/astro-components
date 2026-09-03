@@ -138,12 +138,16 @@ Use the standalone subpath entries only when configuring a feature separately:
 
 ```ts
 import {
-  rehypeImageGallery,
+  remarkImageGallery,
   remarkCalloutDirectives,
   unified,
 } from '@prosefly/astro-components/markdown';
 import { expressiveCodeHeaderIcons } from '@prosefly/astro-components/expressive-code';
 ```
+
+`remarkImageGallery` is an MDX-only transform. It generates the public
+`ImageGallery` component for image-only paragraphs; regular `.md` files are
+not transformed.
 
 ## Component Exports
 

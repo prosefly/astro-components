@@ -9,6 +9,14 @@ This changelog covers user-facing changes to `@prosefly/astro-components`,
 including components, markdown transforms, integration behavior, styling tokens,
 and documentation.
 
+## Unreleased
+
+- Image-only paragraphs are now transformed by the `remarkImageGallery` MDX-only
+  plugin into the public `ImageGallery` component. Gallery CSS and runtime are
+  bundled only on pages that use the component; ordinary `.md` pages are not
+  transformed. The former `rehypeImageGallery` entry and manual gallery asset
+  setup are no longer supported.
+
 ## 0.6.2
 
 <Badge color="accent" variant="subtle">September 2, 2026</Badge>

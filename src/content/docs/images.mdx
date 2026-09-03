@@ -5,9 +5,9 @@ description: Turn image-only paragraphs into styled figures and galleries.
 
 import { Callout, Steps } from '@prosefly/astro-components';
 
-The `proseflyComponents()` integration enables image galleries so authors can write
-normal Markdown images while the site renders polished figures and multi-image
-galleries.
+The `proseflyComponents()` integration enables image galleries in MDX so authors
+can write normal Markdown images while the site renders polished figures and
+multi-image galleries. Ordinary `.md` pages are intentionally unchanged.
 
 <Callout type="tip" title="Using a Prosefly theme">
   [Dahlia](https://astro-theme-dahlia.prosefly.dev/) and
@@ -20,13 +20,13 @@ galleries.
 
 A paragraph that contains only one image becomes a styled figure.
 
-```md
+```mdx
 ![Dashboard in light mode](/images/dashboard-light.png)
 ```
 
 A paragraph that contains multiple images becomes a gallery.
 
-```md
+```mdx
 ![A wide valley with low clouds](https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&h=600&q=80)
 ![A vertical mountain ridge above a forest](https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=720&h=1000&q=80)
 ![A square waterfall in a green canyon](https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=900&h=900&q=80)
@@ -53,10 +53,10 @@ export default defineConfig({
 });
 ```
 
-The integration configures `rehypeImageGallery` and injects the gallery assets
-once for every page. No layout imports are required. The JavaScript adds
-previous and next controls for galleries generated from multiple images;
-single-image figures use the same injected CSS.
+The integration adds the `remarkImageGallery` transform for `.mdx` files. It
+generates an `ImageGallery` component while preserving the original image nodes
+for Astro's image handling. The component loads its own CSS and runtime only on
+pages that use a gallery; no layout imports are required.
 
 To keep the other integration features but disable galleries and their assets,
 set `markdown.imageGallery` to `false`.
@@ -65,6 +65,21 @@ set `markdown.imageGallery` to `false`.
 proseflyComponents({
   markdown: { imageGallery: false },
 })
+```
+
+## Use the Component Directly
+
+In an Astro component or MDX page, you can also import `ImageGallery` and
+provide image children explicitly. The component owns the same CSS and browser
+runtime as automatically generated galleries.
+
+```mdx
+import { ImageGallery } from '@prosefly/astro-components';
+
+<ImageGallery>
+  ![Light mode](/images/dashboard-light.png)
+  ![Dark mode](/images/dashboard-dark.png)
+</ImageGallery>
 ```
 
 ## Authoring Rules
@@ -90,6 +105,7 @@ proseflyComponents({
 
 <Callout type="warning" title="Avoid double configuration">
   Dahlia and Lotus already register the shared integration. Do not add another
-  `proseflyComponents()` instance or manually load the gallery assets in theme
-  projects.
+  `proseflyComponents()` instance in theme projects. For advanced manual
+  processor composition, add `remarkImageGallery` from the `/markdown` entry;
+  it injects the component import automatically.
 </Callout>
