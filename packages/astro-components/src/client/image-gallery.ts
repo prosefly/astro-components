@@ -1,4 +1,4 @@
-import { registerPageInitializer } from './page-init.js';
+const prosefly = (window.__prosefly ??= {});
 
 type GalleryDirection = 'previous' | 'next';
 
@@ -166,4 +166,11 @@ function initImageGalleries(): void {
   });
 }
 
-registerPageInitializer('initImageGalleries', initImageGalleries);
+if (!prosefly.initImageGalleries) {
+  prosefly.initImageGalleries = initImageGalleries;
+  document.addEventListener('astro:page-load', prosefly.initImageGalleries);
+}
+
+prosefly.initImageGalleries();
+
+export {};

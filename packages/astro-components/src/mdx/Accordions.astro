@@ -1,4 +1,5 @@
 ---
+import accordionsScriptUrl from '../client/accordions.js?url&no-inline';
 import '../theme-tokens.css';
 
 interface Props {
@@ -24,9 +25,7 @@ const defaultValues =
   <slot />
 </div>
 
-<script>
-  import '../client/accordions';
-</script>
+<script is:inline type="module" src={accordionsScriptUrl}></script>
 
 <style is:global>
   .pf-accordions {

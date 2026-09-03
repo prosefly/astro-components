@@ -1,4 +1,4 @@
-import { registerPageInitializer } from './page-init.js';
+const prosefly = (window.__prosefly ??= {});
 
 function getItems(root: Element): HTMLDetailsElement[] {
   return [...root.querySelectorAll(':scope > [data-pf-accordion]')].filter(
@@ -87,6 +87,12 @@ function initAccordions(): void {
   openHashTarget();
 }
 
-registerPageInitializer('initAccordions', initAccordions, () => {
+if (!prosefly.initAccordions) {
+  prosefly.initAccordions = initAccordions;
+  document.addEventListener('astro:page-load', prosefly.initAccordions);
   window.addEventListener('hashchange', openHashTarget);
-});
+}
+
+prosefly.initAccordions();
+
+export {};

@@ -1,4 +1,4 @@
-import { registerPageInitializer } from './page-init.js';
+const prosefly = (window.__prosefly ??= {});
 
 type ActivateOptions = {
   focus?: boolean;
@@ -197,4 +197,11 @@ function initTabs(): void {
   });
 }
 
-registerPageInitializer('initTabs', initTabs);
+if (!prosefly.initTabs) {
+  prosefly.initTabs = initTabs;
+  document.addEventListener('astro:page-load', prosefly.initTabs);
+}
+
+prosefly.initTabs();
+
+export {};
