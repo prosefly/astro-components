@@ -166,4 +166,4 @@ function initImageGalleries(): void {
   });
 }
 
-registerPageInitializer('image-gallery', initImageGalleries);
+registerPageInitializer('initImageGalleries', initImageGalleries);

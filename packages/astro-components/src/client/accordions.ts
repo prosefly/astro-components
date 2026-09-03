@@ -87,6 +87,6 @@ function initAccordions(): void {
   openHashTarget();
 }
 
-registerPageInitializer('accordions', initAccordions, () => {
+registerPageInitializer('initAccordions', initAccordions, () => {
   window.addEventListener('hashchange', openHashTarget);
 });

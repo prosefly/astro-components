@@ -197,4 +197,4 @@ function initTabs(): void {
   });
 }
 
-registerPageInitializer('tabs', initTabs);
+registerPageInitializer('initTabs', initTabs);

@@ -1,13 +1,21 @@
 type PageInitializer = () => void;
 
+interface PageInitializers {
+  initAccordions?: PageInitializer;
+  initTabs?: PageInitializer;
+  initImageGalleries?: PageInitializer;
+}
+
 declare global {
+  interface ProseflyClient extends PageInitializers {}
+
   interface Window {
-    __proseflyClientInitializers?: Set<string>;
+    __prosefly?: ProseflyClient;
   }
 }
 
 export function registerPageInitializer(
-  key: string,
+  key: keyof PageInitializers,
   initializer: PageInitializer,
   onRegister?: () => void,
 ): void {
@@ -15,13 +23,13 @@ export function registerPageInitializer(
     return;
   }
 
-  const initializers = (window.__proseflyClientInitializers ??= new Set());
+  const client = (window.__prosefly ??= {});
 
-  if (initializers.has(key)) {
+  if (client[key]) {
     return;
   }
 
-  initializers.add(key);
+  client[key] = initializer;
   onRegister?.();
   document.addEventListener('astro:page-load', initializer);
   initializer();
