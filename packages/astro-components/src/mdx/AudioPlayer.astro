@@ -1,6 +1,6 @@
 ---
-import '../theme-tokens.css';
-import './media-player.css';
+import '../styles/theme-tokens.css';
+import '../styles/media-player.css';
 import type { HTMLAttributes } from 'astro/types';
 import mediaPlayerScriptUrl from '../client/media-player.js?url&no-inline';
 import Icon from './Icon.astro';
@@ -9,7 +9,7 @@ import {
   resolveArtwork,
   type MediaArtwork,
   type MediaDuration,
-} from './media-player.js';
+} from '../server/media-player.js';
 
 interface Props
   extends Omit<HTMLAttributes<'audio'>, 'controls' | 'preload' | 'title'> {

@@ -1,8 +1,8 @@
 ---
 import imageGalleryScriptUrl from '../client/image-gallery.js?url&no-inline';
-import '../theme-tokens.css';
+import '../styles/theme-tokens.css';
 import Icon from './Icon.astro';
-import { extractImages } from './image-gallery.js';
+import { extractImages } from '../server/image-gallery.js';
 
 const content = await Astro.slots.render('default');
 const images = extractImages(content);

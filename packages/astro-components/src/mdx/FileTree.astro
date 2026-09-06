@@ -1,8 +1,8 @@
 ---
-import '../theme-tokens.css';
+import '../styles/theme-tokens.css';
 import FileTreeItem from './FileTreeItem.astro';
 import { normalizeFileTreeIconSet, type FileTreeIconSet } from '../icon/file-tree-icons.js';
-import { parseFileTree } from './rehype-file-tree';
+import { parseFileTree } from '../server/file-tree';
 
 interface Props {
   iconSet?: FileTreeIconSet;

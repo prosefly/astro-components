@@ -1,8 +1,8 @@
 ---
 import tabsScriptUrl from '../client/tabs.js?url&no-inline';
-import '../theme-tokens.css';
+import '../styles/theme-tokens.css';
 import Icon from './Icon.astro';
-import { processPanels } from './rehype-tabs';
+import { processPanels } from '../server/tabs';
 
 interface Props {
   class?: string;

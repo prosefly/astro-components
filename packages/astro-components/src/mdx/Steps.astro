@@ -1,6 +1,6 @@
 ---
-import '../theme-tokens.css';
-import { processSteps } from './rehype-steps';
+import '../styles/theme-tokens.css';
+import { processSteps } from '../server/steps';
 
 const content = await Astro.slots.render('default');
 const { html } = processSteps(content);

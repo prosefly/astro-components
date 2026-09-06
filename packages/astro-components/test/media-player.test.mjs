@@ -3,7 +3,7 @@ import test from 'node:test';
 import {
   formatDuration,
   resolveArtwork,
-} from '../dist/mdx/media-player.js';
+} from '../dist/server/media-player.js';
 
 test('formats numeric media durations', () => {
   assert.equal(formatDuration(0), '00:00');

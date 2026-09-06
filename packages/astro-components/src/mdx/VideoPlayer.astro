@@ -1,15 +1,15 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
 import mediaPlayerScriptUrl from '../client/media-player.js?url&no-inline';
-import '../theme-tokens.css';
+import '../styles/theme-tokens.css';
 import Icon from './Icon.astro';
-import './media-player.css';
+import '../styles/media-player.css';
 import {
   formatDuration,
   resolveArtwork,
   type MediaArtwork,
   type MediaDuration,
-} from './media-player.js';
+} from '../server/media-player.js';
 
 interface Props
   extends Omit<
