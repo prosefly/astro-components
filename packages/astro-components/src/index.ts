@@ -1,5 +1,6 @@
 export { default as AccordionItem } from './mdx/AccordionItem.astro';
 export { default as Accordions } from './mdx/Accordions.astro';
+export { default as AudioPlayer } from './mdx/AudioPlayer.astro';
 export { default as Badge } from './mdx/Badge.astro';
 export { default as Callout } from './mdx/Callout.astro';
 export { default as Card } from './mdx/Card.astro';
@@ -10,3 +11,4 @@ export { default as ImageGallery } from './mdx/ImageGallery.astro';
 export { default as Steps } from './mdx/Steps.astro';
 export { default as TabItem } from './mdx/TabItem.astro';
 export { default as Tabs } from './mdx/Tabs.astro';
+export { default as VideoPlayer } from './mdx/VideoPlayer.astro';

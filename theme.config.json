@@ -51,7 +51,8 @@
         "components/cards",
         "components/steps",
         "components/badge",
-        "components/icon"
+        "components/icon",
+        "components/media-players"
       ]
     }
   ],

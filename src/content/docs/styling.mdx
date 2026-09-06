@@ -3,7 +3,7 @@ title: Styling
 description: Match components to your site with Prosefly CSS tokens.
 ---
 
-import { Badge, Callout } from '@prosefly/astro-components';
+import { Badge, Callout } from "@prosefly/astro-components";
 
 The components ship with fallback styles, but production documentation should
 set shared tokens in the site shell. This keeps callouts, cards, tabs, badges,
@@ -58,60 +58,61 @@ overrides still win.
 
 ## Token Reference
 
-| Token | Used For |
-| --- | --- |
-| `--pf-text-strong` | Headings, card titles, active labels |
-| `--pf-text` | Body text |
-| `--pf-text-muted` | Supporting text, comments, inactive states |
-| `--pf-background` | Page or article background |
-| `--pf-surface` | Tabs, cards, and subtle grouped surfaces |
-| `--pf-accent` | Focus rings, active states, accent icons |
-| `--pf-accent-soft` | Soft accent backgrounds |
-| `--pf-accent-contrast` | Text placed on solid accent backgrounds |
-| `--pf-{info\|success\|warning\|danger}` | Shared semantic colors |
-| `--pf-{info\|success\|warning\|danger}-soft` | Shared semantic soft backgrounds |
-| `--pf-{info\|success\|warning\|danger}-ink` | Shared semantic icon and label text |
-| `--pf-{info\|success\|warning\|danger}-contrast` | Text placed on solid semantic backgrounds |
-| `--pf-callout-{note\|tip\|warning\|danger}-{color\|ink\|bg}` | Type-specific callout overrides |
-| `--pf-border-subtle` | Component borders |
-| `--pf-border-muted` | Active tabs and hover borders |
-| `--pf-font-sans` | Prose and UI labels |
-| `--pf-font-mono` | File trees and code-adjacent labels |
-| `--pf-radius-sm` | Small controls |
-| `--pf-radius-md` | Buttons, triggers, compact surfaces |
-| `--pf-radius-lg` | Cards, callouts, tabs, file trees |
-| `--pf-radius-full` | Pills and badges |
+| Token                                                        | Used For                                   |
+| ------------------------------------------------------------ | ------------------------------------------ |
+| `--pf-text-strong`                                           | Headings, card titles, active labels       |
+| `--pf-text`                                                  | Body text                                  |
+| `--pf-text-muted`                                            | Supporting text, comments, inactive states |
+| `--pf-background`                                            | Page or article background                 |
+| `--pf-surface`                                               | Tabs, cards, and subtle grouped surfaces   |
+| `--pf-accent`                                                | Focus rings, active states, accent icons   |
+| `--pf-accent-soft`                                           | Soft accent backgrounds                    |
+| `--pf-accent-contrast`                                       | Text placed on solid accent backgrounds    |
+| `--pf-{info\|success\|warning\|danger}`                      | Shared semantic colors                     |
+| `--pf-{info\|success\|warning\|danger}-soft`                 | Shared semantic soft backgrounds           |
+| `--pf-{info\|success\|warning\|danger}-ink`                  | Shared semantic icon and label text        |
+| `--pf-{info\|success\|warning\|danger}-contrast`             | Text placed on solid semantic backgrounds  |
+| `--pf-callout-{note\|tip\|warning\|danger}-{color\|ink\|bg}` | Type-specific callout overrides            |
+| `--pf-border-subtle`                                         | Component borders                          |
+| `--pf-border-muted`                                          | Active tabs and hover borders              |
+| `--pf-font-sans`                                             | Prose and UI labels                        |
+| `--pf-font-mono`                                             | File trees and code-adjacent labels        |
+| `--pf-radius-sm`                                             | Small controls                             |
+| `--pf-radius-md`                                             | Buttons, triggers, compact surfaces        |
+| `--pf-radius-lg`                                             | Cards, callouts, tabs, file trees          |
+| `--pf-radius-full`                                           | Pills and badges                           |
 
 ## Component Tokens
 
 Use component tokens when a site needs layout-level tuning beyond the shared
 palette.
 
-| Token | Used For |
-| --- | --- |
-| `--pf-badge-radius` | Badge corner radius |
-| `--pf-card-padding` | Card inner spacing |
-| `--pf-card-layout-gap` | Space between card icon and body |
-| `--pf-card-body-gap` | Space between card title and content |
-| `--pf-card-icon-size` | Card icon container size |
-| `--pf-card-icon-glyph-size` | Icon size inside card icon containers |
-| `--pf-card-title-size` | Card title font size |
-| `--pf-card-title-line-height` | Card title line height |
-| `--pf-card-content-size` | Card body font size |
-| `--pf-card-content-line-height` | Card body line height |
-| `--pf-card-content-gap` | Space between multiple body children |
-| `--pf-card-grid-gap` | Space between cards in a `CardGrid` |
-| `--pf-card-grid-margin` | Vertical margin around a `CardGrid` |
-| `--pf-file-tree-border` | File tree outer border |
-| `--pf-file-tree-line` | File tree connector lines |
-| `--pf-image-gallery-preview-width` | Visible preview width for the next gallery image |
-| `--pf-image-gallery-ratio` | Fallback gallery item aspect ratio before images are measured |
-| `--pf-steps-bullet-size` | Step marker size |
-| `--pf-steps-bullet-margin` | Gap below a step marker before the connector line starts |
-| `--pf-steps-line` | Step connector line color |
-| `--pf-steps-marker-background` | Step marker background |
-| `--pf-steps-marker-foreground` | Step marker text color |
-| `--pf-steps-start` | Counter starting offset for step numbering |
+| Token                                  | Used For                                                      |
+| -------------------------------------- | ------------------------------------------------------------- |
+| `--pf-badge-radius`                    | Badge corner radius                                           |
+| `--pf-card-padding`                    | Card inner spacing                                            |
+| `--pf-card-layout-gap`                 | Space between card icon and body                              |
+| `--pf-card-body-gap`                   | Space between card title and content                          |
+| `--pf-card-icon-size`                  | Card icon container size                                      |
+| `--pf-card-icon-glyph-size`            | Icon size inside card icon containers                         |
+| `--pf-card-title-size`                 | Card title font size                                          |
+| `--pf-card-title-line-height`          | Card title line height                                        |
+| `--pf-card-content-size`               | Card body font size                                           |
+| `--pf-card-content-line-height`        | Card body line height                                         |
+| `--pf-card-content-gap`                | Space between multiple body children                          |
+| `--pf-card-grid-gap`                   | Space between cards in a `CardGrid`                           |
+| `--pf-card-grid-margin`                | Vertical margin around a `CardGrid`                           |
+| `--pf-file-tree-border`                | File tree outer border                                        |
+| `--pf-file-tree-line`                  | File tree connector lines                                     |
+| `--pf-image-gallery-preview-width`     | Visible preview width for the next gallery image              |
+| `--pf-image-gallery-ratio`             | Fallback gallery item aspect ratio before images are measured |
+| `--pf-media-player-slider-thumb-color` | Media seek slider thumb color                                 |
+| `--pf-steps-bullet-size`               | Step marker size                                              |
+| `--pf-steps-bullet-margin`             | Gap below a step marker before the connector line starts      |
+| `--pf-steps-line`                      | Step connector line color                                     |
+| `--pf-steps-marker-background`         | Step marker background                                        |
+| `--pf-steps-marker-foreground`         | Step marker text color                                        |
+| `--pf-steps-start`                     | Counter starting offset for step numbering                    |
 
 <Callout type="tip" title="Scope tokens intentionally">
   Place overrides on `:root` for a site-wide theme, or on a docs layout wrapper

@@ -1,0 +1,167 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import mediaPlayerScriptUrl from '../client/media-player.js?url&no-inline';
+import '../theme-tokens.css';
+import Icon from './Icon.astro';
+import './media-player.css';
+import {
+  formatDuration,
+  resolveArtwork,
+  type MediaArtwork,
+  type MediaDuration,
+} from './media-player.js';
+
+interface Props
+  extends Omit<HTMLAttributes<'audio'>, 'controls' | 'preload' | 'title'> {
+  title?: string;
+  artist?: string;
+  album?: string;
+  artwork?: MediaArtwork;
+  duration?: MediaDuration;
+  preload?: 'none' | 'metadata' | 'auto';
+}
+
+const {
+  title,
+  artist,
+  album,
+  artwork,
+  duration,
+  preload = 'metadata',
+  class: className,
+  ...mediaAttributes
+} = Astro.props;
+const artworkSrc = resolveArtwork(artwork);
+const durationLabel = formatDuration(duration);
+const ariaLabel = mediaAttributes['aria-label'] ?? title ?? 'Audio player';
+---
+
+<figure
+  class:list={['pf-audio-player', className]}
+  data-pf-media-album={album}
+  data-pf-media-artist={artist}
+  data-pf-media-artwork={artworkSrc}
+  data-pf-media-duration={durationLabel}
+  data-pf-media-has-artwork={artworkSrc ? 'true' : undefined}
+  data-pf-media-player
+  data-pf-media-title={title}
+>
+  {
+    artworkSrc && (
+      <div class="pf-audio-player__artwork">
+        <img alt="" decoding="async" loading="lazy" src={artworkSrc} />
+      </div>
+    )
+  }
+
+  <div class="pf-audio-player__body">
+    {
+      (title || artist || album) && (
+        <div class="pf-media-player__metadata">
+          {title && (
+            <div class="pf-media-player__marquee" data-pf-media-marquee>
+              <span class="pf-media-player__title" data-pf-media-marquee-content>
+                {title}
+              </span>
+            </div>
+          )}
+          {(artist || album) && (
+            <div class="pf-media-player__marquee" data-pf-media-marquee>
+              <span class="pf-media-player__byline" data-pf-media-marquee-content>
+                {album}
+                {artist && album && <span aria-hidden="true"> - </span>}
+                {artist}
+              </span>
+            </div>
+          )}
+        </div>
+      )
+    }
+
+    <audio
+      {...mediaAttributes}
+      aria-label={ariaLabel}
+      class="pf-audio-player__media"
+      controls
+      preload={preload}
+    >
+      <slot />
+      Your browser does not support the audio element.
+    </audio>
+
+    <div class="pf-audio-player__progress">
+      <time class="pf-media-player__time" data-pf-media-current-time>00:00</time>
+      <input
+        aria-label="Seek"
+        class="pf-media-player__seek"
+        data-pf-media-seek
+        disabled
+        max="100"
+        min="0"
+        step="0.1"
+        type="range"
+        value="0"
+      />
+      <time class="pf-media-player__time" data-pf-media-duration>
+        {durationLabel}
+      </time>
+    </div>
+
+    <div
+      aria-label="Audio controls"
+      class="pf-audio-player__controls pf-media-player__controls"
+      role="group"
+    >
+      <button
+        aria-label="Change playback speed"
+        class="pf-audio-player__speed"
+        data-pf-media-rate
+        type="button"
+      >
+        1.0x
+      </button>
+
+      <div class="pf-audio-player__transport">
+        <button
+          aria-label="Replay 15 seconds"
+          class="pf-media-player__button"
+          data-pf-media-seek-by="-15"
+          type="button"
+        >
+          <Icon class="pf-media-icon" name="ri:replay-15-line" />
+        </button>
+
+        <button
+          aria-label="Play"
+          class="pf-media-player__button pf-media-player__play"
+          data-pf-media-play
+          type="button"
+        >
+          <Icon class="pf-media-icon" name="ri:play-fill" data-pf-media-icon="play" />
+          <Icon class="pf-media-icon" name="ri:pause-fill" data-pf-media-icon="pause" />
+        </button>
+
+        <button
+          aria-label="Forward 30 seconds"
+          class="pf-media-player__button"
+          data-pf-media-seek-by="30"
+          type="button"
+        >
+          <Icon class="pf-media-icon" name="ri:forward-30-line" />
+        </button>
+      </div>
+
+      <button
+        aria-label="Mute"
+        class="pf-audio-player__mute pf-media-player__button"
+        data-pf-media-mute
+        type="button"
+      >
+        <Icon class="pf-media-icon" name="ri:volume-up-fill" data-pf-media-icon="volume-up" />
+        <Icon class="pf-media-icon" name="ri:volume-mute-fill" data-pf-media-icon="volume-mute" />
+      </button>
+    </div>
+  </div>
+</figure>
+
+<script is:inline type="module" src={mediaPlayerScriptUrl}></script>

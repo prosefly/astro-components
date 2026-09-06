@@ -1,0 +1,107 @@
+---
+title: Media Players
+description: Present audio and video with metadata and accessible playback controls.
+---
+
+import { AudioPlayer, VideoPlayer } from '@prosefly/astro-components';
+
+`AudioPlayer` and `VideoPlayer` build a themed interface around native media
+elements. They preserve native playback as a fallback, then enhance it with
+consistent controls when JavaScript is available.
+
+## Audio
+
+<AudioPlayer
+  album="Prehistoric Sessions"
+  title="STS-133 FD11 Mission Status Briefing, STS-133 FD11 Mission Status Briefing"
+  artist="NASA"
+  duration="666"
+  src="https://shikwasa.js.org/assets/STS-133_FD11_Mission_Status_Briefing.mp3"
+  artwork="https://image-cdn-ak.spotifycdn.com/image/ab67706f00000002d7dcd71aa2f5fbbf6559ffb9"
+/>
+
+```mdx
+import { AudioPlayer } from '@prosefly/astro-components';
+
+<AudioPlayer
+  album="Prehistoric Sessions"
+  artist="MDN Audio Lab"
+  artwork="/images/cover.webp"
+  duration="00:02"
+  src="/audio/roar.mp3"
+  title="T-Rex roar"
+/>
+```
+
+Pass a number of seconds to `duration` when the value should be formatted by
+the component. A string is displayed as written until the browser discovers a
+finite duration from the media metadata.
+
+The enhanced controls include playback-speed cycling, 15-second replay,
+30-second forward, mute, and Media Session integration where supported.
+
+Use `source` children when an audio file is available in multiple formats.
+
+```mdx
+<AudioPlayer artist="Artist" title="Song title">
+  <source src="/audio/song.mp3" type="audio/mpeg" />
+  <source src="/audio/song.ogg" type="audio/ogg" />
+</AudioPlayer>
+```
+
+## Video
+
+<VideoPlayer
+  creator="MDN Video Lab"
+  title="Flowers in motion"
+>
+  <source
+    src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"
+    type="video/webm"
+  />
+  <source
+    src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+    type="video/mp4"
+  />
+</VideoPlayer>
+
+```mdx
+import { VideoPlayer } from '@prosefly/astro-components';
+
+<VideoPlayer
+  creator="Prosefly"
+  poster="/images/demo-poster.webp"
+  title="Product walkthrough"
+>
+  <source src="/video/demo.webm" type="video/webm" />
+  <source src="/video/demo.mp4" type="video/mp4" />
+  <track
+    default
+    kind="captions"
+    label="English"
+    src="/video/demo.en.vtt"
+    srclang="en"
+  />
+</VideoPlayer>
+```
+
+## Props
+
+Both components accept the native attributes for their underlying `audio` or
+`video` element, including `src`, `autoplay`, `loop`, `muted`, and
+`crossorigin`. The player owns the `controls` attribute so native controls
+remain available until enhancement succeeds.
+
+| Component | Prop | Type | Notes |
+| --- | --- | --- | --- |
+| `AudioPlayer` | `title` | `string` | Visible track or episode title. |
+| `AudioPlayer` | `artist` | `string` | Artist, speaker, or creator. |
+| `AudioPlayer` | `album` | `string` | Optional collection or album. |
+| `AudioPlayer` | `artwork` | `string \| ImageMetadata` | Artwork URL or imported Astro image. |
+| `VideoPlayer` | `title` | `string` | Visible video title. |
+| `VideoPlayer` | `creator` | `string` | Video creator or publisher. |
+| `VideoPlayer` | `poster` | `string \| ImageMetadata` | Poster URL or imported Astro image. |
+| Both | `duration` | `string \| number` | Initial label or duration in seconds. |
+| Both | `preload` | `'none' \| 'metadata' \| 'auto'` | Defaults to `metadata`. |
+| `VideoPlayer` | `aspectRatio` | `string` | Defaults to `16 / 9`. |
+| `VideoPlayer` | `objectFit` | `'contain' \| 'cover'` | Defaults to `contain`. |
