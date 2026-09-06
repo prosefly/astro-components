@@ -127,15 +127,24 @@ function initMediaPlayer(player: HTMLElement): void {
   const duration = durationNode;
   const initialDuration = player.dataset.pfMediaDuration || "--:--";
   let progressFrame: number | undefined;
+  let isScrubbing = false;
+
+  function setProgress(progress: number): void {
+    seek.value = String(progress);
+    seek.style.setProperty("--pf-media-progress", `${progress}%`);
+  }
 
   function updateProgress(): void {
+    if (isScrubbing) {
+      return;
+    }
+
     const hasDuration = Number.isFinite(media.duration) && media.duration > 0;
     const progress = hasDuration
       ? (media.currentTime / media.duration) * 100
       : 0;
 
-    seek.value = String(progress);
-    seek.style.setProperty("--pf-media-progress", `${progress}%`);
+    setProgress(progress);
     seek.disabled = !hasDuration;
   }
 
@@ -150,18 +159,56 @@ function initMediaPlayer(player: HTMLElement): void {
   }
 
   function startProgressSync(): void {
-    if (progressFrame === undefined) {
+    if (!isScrubbing && progressFrame === undefined) {
       syncProgress();
     }
   }
 
-  function stopProgressSync(): void {
+  function cancelProgressSync(): void {
     if (progressFrame !== undefined) {
       cancelAnimationFrame(progressFrame);
       progressFrame = undefined;
     }
+  }
+
+  function stopProgressSync(): void {
+    cancelProgressSync();
 
     updateProgress();
+  }
+
+  function beginScrubbing(): void {
+    isScrubbing = true;
+    cancelProgressSync();
+  }
+
+  function previewSeek(): void {
+    const hasDuration = Number.isFinite(media.duration) && media.duration > 0;
+
+    if (!hasDuration) {
+      return;
+    }
+
+    const progress = Number(seek.value);
+    const targetTime = (progress / 100) * media.duration;
+
+    setProgress(progress);
+    currentTime.textContent = formatTime(targetTime);
+    seek.ariaValueText = `${formatTime(targetTime)} of ${formatTime(media.duration)}`;
+    media.currentTime = targetTime;
+  }
+
+  function endScrubbing(): void {
+    if (!isScrubbing) {
+      return;
+    }
+
+    isScrubbing = false;
+    updateTime();
+
+    if (!media.paused && !media.ended) {
+      startProgressSync();
+    }
   }
 
   function updatePlayback(): void {
@@ -226,11 +273,18 @@ function initMediaPlayer(player: HTMLElement): void {
     }
   });
 
+  seek.addEventListener("pointerdown", beginScrubbing);
   seek.addEventListener("input", () => {
-    if (Number.isFinite(media.duration) && media.duration > 0) {
-      media.currentTime = (Number(seek.value) / 100) * media.duration;
-    }
+    beginScrubbing();
+    previewSeek();
   });
+  seek.addEventListener("change", () => {
+    previewSeek();
+    endScrubbing();
+  });
+  seek.addEventListener("pointerup", endScrubbing);
+  seek.addEventListener("pointercancel", endScrubbing);
+  seek.addEventListener("blur", endScrubbing);
 
   seekButtons.forEach((button) => {
     button.addEventListener("click", () => {

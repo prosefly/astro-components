@@ -75,10 +75,8 @@
   white-space: nowrap;
 }
 
-.pf-media-player__marquee[data-pf-media-marquee-active="true"]
-  > [data-pf-media-marquee-content] {
-  animation: pf-media-marquee var(--pf-media-marquee-duration) linear 1s
-    infinite;
+.pf-media-player__marquee[data-pf-media-marquee-active="true"] > [data-pf-media-marquee-content] {
+  animation: pf-media-marquee var(--pf-media-marquee-duration) linear 1s infinite;
   will-change: transform;
 }
 
@@ -555,8 +553,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pf-media-player__marquee[data-pf-media-marquee-active="true"]
-    > [data-pf-media-marquee-content] {
+  .pf-media-player__marquee[data-pf-media-marquee-active="true"] > [data-pf-media-marquee-content] {
     animation: none;
     max-width: 100%;
     overflow: hidden;
