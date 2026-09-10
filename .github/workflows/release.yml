@@ -32,14 +32,13 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 11.9.0
+          version: 11.25.0
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
-          registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -66,27 +65,6 @@ jobs:
         if: github.event_name != 'workflow_dispatch' || !inputs.dry_run
         working-directory: packages/astro-components
         run: npx npm@latest publish --access public
-
-      - name: Setup Node.js for GitHub Packages
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          registry-url: https://npm.pkg.github.com
-          scope: "@prosefly"
-
-      - name: Dry run publish to GitHub Packages
-        if: github.event_name == 'workflow_dispatch' && inputs.dry_run
-        working-directory: packages/astro-components
-        env:
-          NODE_AUTH_TOKEN: ${{ github.token }}
-        run: npx npm@latest publish --dry-run --registry https://npm.pkg.github.com
-
-      - name: Publish package to GitHub Packages
-        if: github.event_name != 'workflow_dispatch' || !inputs.dry_run
-        working-directory: packages/astro-components
-        env:
-          NODE_AUTH_TOKEN: ${{ github.token }}
-        run: npx npm@latest publish --registry https://npm.pkg.github.com
 
       - name: Create GitHub release
         if: github.event_name == 'push'
