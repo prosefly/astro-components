@@ -158,7 +158,7 @@ function initTabs(): void {
         }
 
         const currentIndex = triggers.indexOf(trigger);
-        let nextIndex = currentIndex;
+        let nextIndex: number;
 
         if (event.key === 'ArrowRight') nextIndex = currentIndex + 1;
         else if (event.key === 'ArrowLeft') nextIndex = currentIndex - 1;

@@ -167,7 +167,7 @@ function entityTypes(entity: Record<string, unknown>): string[] {
   const value = entity['@type'];
   return (Array.isArray(value) ? value : [value])
     .filter((type): type is string => typeof type === 'string')
-    .map((type) => type.split(/[\/#]/).pop() ?? type);
+    .map((type) => type.split(/[/#]/).pop() ?? type);
 }
 
 function kindForType(type: string | undefined): EmbedKind {
@@ -254,7 +254,7 @@ function urlsMatch(value: string | undefined, target: URL): boolean {
 }
 
 function schemaName(value: string | undefined): string | undefined {
-  return value?.split(/[\/#]/).pop();
+  return value?.split(/[/#]/).pop();
 }
 
 function stringValue(value: unknown): string | undefined {

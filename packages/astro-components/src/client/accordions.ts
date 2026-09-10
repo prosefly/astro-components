@@ -46,7 +46,7 @@ function initAccordions(): void {
 
     root.dataset.pfAccordionsReady = 'true';
 
-    let defaultValues: string[] = [];
+    let defaultValues: string[];
     try {
       defaultValues = JSON.parse(
         root.getAttribute('data-default-values') || '[]',

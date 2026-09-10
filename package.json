@@ -9,9 +9,11 @@
     "build": "pnpm run build:pkg && astro build",
     "build:pkg": "pnpm --dir packages/astro-components build",
     "preview": "astro preview",
-    "check": "pnpm run check:pkg && pnpm run build:pkg && pnpm run check:site",
+    "check": "pnpm run lint && pnpm run check:pkg && pnpm run build:pkg && pnpm run check:site",
     "check:pkg": "pnpm --dir packages/astro-components check",
     "check:site": "astro check",
+    "lint": "eslint \"**/*.{js,mjs,ts,astro}\"",
+    "lint:fix": "pnpm run lint --fix",
     "test": "pnpm --dir packages/astro-components test"
   },
   "dependencies": {
@@ -20,5 +22,12 @@
     "@prosefly/astro-theme-lotus": "^0.7.3",
     "astro": "^7.3.2",
     "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.10.0",
+    "eslint-plugin-astro": "^3.1.0",
+    "globals": "^17.12.0",
+    "typescript-eslint": "^8.70.0"
   }
 }
