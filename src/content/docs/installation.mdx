@@ -65,7 +65,7 @@ import { Callout, Steps } from '@prosefly/astro-components';
    });
    ```
 
-2. **Configure feature switches if you want to disable callout directives, automatic tabs, or galleries.**
+2. **Configure feature switches if you want to disable callout directives, automatic tabs, Mermaid diagrams, or galleries.**
 
    ```ts title="astro.config.ts"
    import { defineConfig } from 'astro/config';
@@ -92,7 +92,8 @@ import { Callout, Steps } from '@prosefly/astro-components';
 </Callout>
 
 For detailed setup, see [Callout](/components/callout/),
-[Package Manager Tabs](/package-manager-tabs/), and [Images](/images/).
+[Package Manager Tabs](/package-manager-tabs/), [Mermaid Diagrams](/mermaid/),
+and [Images](/images/).
 
 ## Configure Expressive Code
 
@@ -140,6 +141,7 @@ Use the standalone subpath entries only when configuring a feature separately:
 import {
   remarkImageGallery,
   remarkCalloutDirectives,
+  rehypeMermaid,
   unified,
 } from '@prosefly/astro-components/markdown';
 import { expressiveCodeHeaderIcons } from '@prosefly/astro-components/expressive-code';
@@ -147,7 +149,8 @@ import { expressiveCodeHeaderIcons } from '@prosefly/astro-components/expressive
 
 `remarkImageGallery` is an MDX-only transform. It generates the public
 `ImageGallery` component for image-only paragraphs; regular `.md` files are
-not transformed.
+not transformed. `rehypeMermaid` renders `mermaid` code blocks as SVG and must
+run with `mermaid` excluded from Astro syntax highlighting.
 
 ## Component Exports
 

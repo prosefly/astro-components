@@ -61,6 +61,7 @@ Astro integration and its `ComponentsIntegrationOptions` type.
 
 The markdown entry exports:
 
+- `rehypeMermaid`
 - `remarkImageGallery`
 - `remarkPackageManagerTabs`
 
@@ -98,11 +99,18 @@ MDX processor composition:
 
 ```ts
 import { defineConfig } from 'astro/config';
-import { remarkImageGallery, remarkPackageManagerTabs } from '@prosefly/astro-components/markdown';
+import { rehypeMermaid, remarkImageGallery, remarkPackageManagerTabs, unified } from '@prosefly/astro-components/markdown';
 
 export default defineConfig({
   markdown: {
-    remarkPlugins: [remarkImageGallery, remarkPackageManagerTabs],
+    syntaxHighlight: {
+      type: 'shiki',
+      excludeLangs: ['math', 'mermaid'],
+    },
+    processor: unified({
+      remarkPlugins: [remarkImageGallery, remarkPackageManagerTabs],
+      rehypePlugins: [rehypeMermaid],
+    }),
   },
 });
 ```
@@ -111,8 +119,10 @@ export default defineConfig({
 tabs for Node and Python package managers. `remarkImageGallery` is an MDX-only
 transform that preserves the original image nodes for Astro optimization and
 renders the `ImageGallery` component with page-owned CSS and runtime. No manual
-asset imports are required. Dahlia and Lotus enable both transforms through
-the shared integration by default.
+asset imports are required. `rehypeMermaid` renders `mermaid` code blocks as
+static SVG; direct use requires excluding `mermaid` from Astro syntax
+highlighting. Dahlia and Lotus enable these transforms through the shared
+integration by default.
 
 ## Independent Expressive Code plugin
 

@@ -34,6 +34,7 @@
         "overview",
         "installation",
         "package-manager-tabs",
+        "mermaid",
         "images",
         "expressive-code",
         "styling",
@@ -65,6 +66,7 @@
         "links": [
           { "label": "Installation", "href": "/installation/" },
           { "label": "Package manager tabs", "href": "/package-manager-tabs/" },
+          { "label": "Mermaid diagrams", "href": "/mermaid/" },
           { "label": "Images", "href": "/images/" },
           { "label": "Styling", "href": "/styling/" }
         ]

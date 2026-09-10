@@ -8,6 +8,7 @@ import {
 } from '../dist/expressive-code/header-icons.js';
 import * as markdownPublic from '../dist/markdown/index.js';
 import {
+  rehypeMermaid,
   remarkCalloutDirectives,
   remarkImageGallery,
   remarkPackageManagerTabs,
@@ -51,6 +52,124 @@ function getAttribute(node, name) {
 function getCodeText(tabItem) {
   return tabItem.children[0].value;
 }
+
+function findNode(node, predicate) {
+  if (predicate(node)) return node;
+  for (const child of node.children ?? []) {
+    const match = findNode(child, predicate);
+    if (match) return match;
+  }
+}
+
+function mermaidCode(source, meta) {
+  return {
+    type: 'element',
+    tagName: 'pre',
+    position: { start: { line: 4 } },
+    properties: {},
+    children: [
+      {
+        type: 'element',
+        tagName: 'code',
+        properties: {
+          className: ['language-mermaid'],
+          ...(meta ? { metastring: meta } : {}),
+        },
+        children: [{ type: 'text', value: `${source}\n` }],
+      },
+    ],
+  };
+}
+
+test('rehypeMermaid renders a Mermaid code block as a themed SVG', () => {
+  const root = {
+    type: 'root',
+    children: [
+      mermaidCode('flowchart LR\n  Author --> SVG', 'title="Publishing flow"'),
+    ],
+  };
+
+  runPlugin(rehypeMermaid, root, { path: '/docs/diagrams.md' });
+
+  const figure = root.children[0];
+  const svg = figure.children[0];
+  const title = svg.children[0];
+  const style = findNode(svg, (node) => node.tagName === 'style');
+  const marker = findNode(svg, (node) => node.tagName === 'marker');
+  const edge = findNode(svg, (node) => node.tagName === 'polyline');
+
+  assert.equal(figure.tagName, 'figure');
+  assert.deepEqual(figure.properties.className, ['pf-mermaid']);
+  assert.equal(svg.tagName, 'svg');
+  assert.equal(svg.properties.role, 'img');
+  assert.match(svg.properties.style, /--bg:var\(--pf-background, #ffffff\)/);
+  assert.match(svg.properties.style, /max-width:100%/);
+  assert.equal(title.children[0].value, 'Publishing flow');
+  assert.equal(svg.properties.ariaLabelledBy, title.properties.id);
+  assert.doesNotMatch(style.children[0].value, /fonts\.googleapis\.com/);
+  assert.match(style.children[0].value, /--pf-font-sans/);
+  assert.match(marker.properties.id, /^pf-mermaid-[a-f0-9]{8}-1-arrowhead$/);
+  assert.equal(edge.properties.markerEnd, `url(#${marker.properties.id})`);
+});
+
+test('rehypeMermaid gives repeated diagrams unique SVG ids', () => {
+  const source = 'flowchart LR\n  A --> B';
+  const root = {
+    type: 'root',
+    children: [mermaidCode(source), mermaidCode(source)],
+  };
+
+  runPlugin(rehypeMermaid, root);
+
+  const firstMarker = findNode(
+    root.children[0],
+    (node) => node.tagName === 'marker',
+  );
+  const secondMarker = findNode(
+    root.children[1],
+    (node) => node.tagName === 'marker',
+  );
+
+  assert.notEqual(firstMarker.properties.id, secondMarker.properties.id);
+});
+
+test('rehypeMermaid leaves other code blocks unchanged', () => {
+  const root = {
+    type: 'root',
+    children: [
+      {
+        type: 'element',
+        tagName: 'pre',
+        properties: {},
+        children: [
+          {
+            type: 'element',
+            tagName: 'code',
+            properties: { className: ['language-js'] },
+            children: [{ type: 'text', value: 'console.log(1)\n' }],
+          },
+        ],
+      },
+    ],
+  };
+  const original = structuredClone(root);
+
+  runPlugin(rehypeMermaid, root);
+
+  assert.deepEqual(root, original);
+});
+
+test('rehypeMermaid reports the source location for invalid diagrams', () => {
+  const root = {
+    type: 'root',
+    children: [mermaidCode('gantt\n  title Unsupported')],
+  };
+
+  assert.throws(
+    () => runPlugin(rehypeMermaid, root, { path: '/docs/diagrams.md' }),
+    /Failed to render Mermaid diagram in \/docs\/diagrams\.md:4/,
+  );
+});
 
 test('remarkCalloutDirectives converts container directives to Callout MDX nodes', () => {
   const root = {

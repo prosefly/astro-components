@@ -3,6 +3,7 @@ import type { AstroConfig } from 'astro';
 import type { RehypePlugins, RemarkPlugins } from '@astrojs/markdown-remark';
 import { remarkCalloutDirectives } from './callout-directives.js';
 import { remarkImageGallery } from './image-gallery.js';
+import { rehypeMermaid } from './mermaid.js';
 import { remarkPackageManagerTabs } from './package-manager-tabs.js';
 
 /** Options for the transforms owned by the components integration. */
@@ -10,6 +11,7 @@ export interface MarkdownOptions {
   calloutDirectives?: false;
   packageManagerTabs?: false;
   imageGallery?: false;
+  mermaid?: false;
   /** Theme remark plugins that run before the component transforms. */
   remarkPluginsBeforeTransforms?: RemarkPlugins;
   /** Theme remark plugins that run after the component transforms. */
@@ -79,6 +81,7 @@ export function resolveMarkdownConfig(
   const rehypePlugins: RehypePlugins = [
     ...(options.rehypePluginsBeforeTransforms ?? []),
     ...userRehypePlugins,
+    ...(options.mermaid === false ? [] : [rehypeMermaid]),
     ...(options.rehypePluginsAfterTransforms ?? []),
   ];
 
@@ -98,5 +101,31 @@ export function resolveMarkdownConfig(
   return {
     ...markdownConfig,
     processor,
+    ...(options.mermaid === false ? {} : {
+      syntaxHighlight: excludeMermaidFromHighlighting(markdownConfig.syntaxHighlight),
+    }),
+  };
+}
+
+function excludeMermaidFromHighlighting(
+  syntaxHighlight: AstroConfig['markdown']['syntaxHighlight'] | undefined,
+): AstroConfig['markdown']['syntaxHighlight'] | undefined {
+  if (syntaxHighlight === false) return false;
+
+  if (typeof syntaxHighlight === 'string') {
+    return {
+      type: syntaxHighlight,
+      excludeLangs: ['mermaid'],
+    };
+  }
+
+  const excludeLangs = syntaxHighlight?.excludeLangs ?? (
+    syntaxHighlight === undefined ? ['math'] : []
+  );
+
+  return {
+    ...syntaxHighlight,
+    type: syntaxHighlight?.type ?? 'shiki',
+    excludeLangs: [...new Set([...excludeLangs, 'mermaid'])],
   };
 }

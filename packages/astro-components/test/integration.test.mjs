@@ -3,6 +3,7 @@ import test from 'node:test';
 import proseflyComponents from '@prosefly/astro-components/integration';
 import icon from '../dist/icon/index.js';
 import {
+  rehypeMermaid,
   remarkCalloutDirectives,
   remarkImageGallery,
   remarkPackageManagerTabs,
@@ -28,12 +29,16 @@ const setup = async (options, markdown = {}) => {
   return { middlewares, scripts, updates };
 };
 
-test('components defaults enable shared remark transforms without global gallery assets', async () => {
+test('components defaults enable shared Markdown transforms without global assets', async () => {
   const result = await setup({ icons: false });
   const processor = result.updates[0].markdown.processor;
 
   assert.equal(processor.options.remarkPlugins.length, 3);
-  assert.equal(processor.options.rehypePlugins.length, 0);
+  assert.deepEqual(processor.options.rehypePlugins, [rehypeMermaid]);
+  assert.deepEqual(result.updates[0].markdown.syntaxHighlight, {
+    type: 'shiki',
+    excludeLangs: ['math', 'mermaid'],
+  });
   assert.equal(result.scripts.length, 0);
 });
 
@@ -44,6 +49,7 @@ test('disabled markdown features register no transforms or assets', async () => 
       calloutDirectives: false,
       packageManagerTabs: false,
       imageGallery: false,
+      mermaid: false,
     },
   });
   const processor = result.updates[0].markdown.processor;
@@ -88,8 +94,51 @@ test('preserves unified processor options and extension ordering', async () => {
   assert.deepEqual(processor.options.remarkRehype, { allowDangerousHtml: true });
   assert.deepEqual(processor.options.rehypePlugins, [
     userRehype,
+    rehypeMermaid,
     after,
   ]);
+});
+
+test('preserves syntax highlighting options while excluding Mermaid', async () => {
+  const result = await setup(
+    { icons: false },
+    {
+      syntaxHighlight: {
+        type: 'prism',
+        excludeLangs: ['math', 'diagram'],
+      },
+    },
+  );
+
+  assert.deepEqual(result.updates[0].markdown.syntaxHighlight, {
+    type: 'prism',
+    excludeLangs: ['math', 'diagram', 'mermaid'],
+  });
+});
+
+test('renders Mermaid fences in ordinary Markdown', async () => {
+  const result = await setup({ icons: false });
+  const markdown = result.updates[0].markdown;
+  const renderer = await markdown.processor.createRenderer(markdown);
+  const rendered = await renderer.render(
+    '```mermaid title="Request flow"\nflowchart LR\n  Request --> Response\n```',
+    { fileURL: new URL('file:///docs/diagram.md') },
+  );
+
+  assert.match(rendered.code, /<figure class="pf-mermaid"/);
+  assert.match(rendered.code, /<svg[^>]+role="img"/);
+  assert.match(rendered.code, /<title[^>]*>Request flow<\/title>/);
+  assert.doesNotMatch(rendered.code, /language-mermaid/);
+});
+
+test('leaves syntax highlighting unchanged when Mermaid is disabled', async () => {
+  const syntaxHighlight = { type: 'shiki', excludeLangs: ['math'] };
+  const result = await setup(
+    { icons: false, markdown: { mermaid: false } },
+    { syntaxHighlight },
+  );
+
+  assert.equal(result.updates[0].markdown.syntaxHighlight, syntaxHighlight);
 });
 
 test('preserves custom processors without injecting incompatible gallery assets', async () => {
