@@ -3,9 +3,9 @@ import test from 'node:test';
 import {
   formatDuration,
   resolveArtwork,
-} from '../dist/server/media-player.js';
+} from '../dist/server/audio-player.js';
 
-test('formats numeric media durations', () => {
+test('formats numeric audio durations', () => {
   assert.equal(formatDuration(0), '00:00');
   assert.equal(formatDuration(65), '01:05');
   assert.equal(formatDuration(3661), '01:01:01');

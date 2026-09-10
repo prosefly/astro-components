@@ -52,7 +52,7 @@
         "components/steps",
         "components/badge",
         "components/icon",
-        "components/media-players"
+        "components/audio-player"
       ]
     }
   ],

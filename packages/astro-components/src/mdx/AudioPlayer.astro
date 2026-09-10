@@ -1,23 +1,23 @@
 ---
 import '../styles/theme-tokens.css';
-import '../styles/media-player.css';
+import '../styles/audio-player.css';
 import type { HTMLAttributes } from 'astro/types';
-import mediaPlayerScriptUrl from '../client/media-player.js?url&no-inline';
+import audioPlayerScriptUrl from '../client/audio-player.js?url&no-inline';
 import Icon from './Icon.astro';
 import {
   formatDuration,
   resolveArtwork,
-  type MediaArtwork,
-  type MediaDuration,
-} from '../server/media-player.js';
+  type Artwork,
+  type Duration,
+} from '../server/audio-player.js';
 
 interface Props
   extends Omit<HTMLAttributes<'audio'>, 'controls' | 'preload' | 'title'> {
   title?: string;
   artist?: string;
   album?: string;
-  artwork?: MediaArtwork;
-  duration?: MediaDuration;
+  artwork?: Artwork;
+  duration?: Duration;
   preload?: 'none' | 'metadata' | 'auto';
 }
 
@@ -29,22 +29,21 @@ const {
   duration,
   preload = 'metadata',
   class: className,
-  ...mediaAttributes
+  ...audioAttributes
 } = Astro.props;
 const artworkSrc = resolveArtwork(artwork);
 const durationLabel = formatDuration(duration);
-const ariaLabel = mediaAttributes['aria-label'] ?? title ?? 'Audio player';
+const ariaLabel = audioAttributes['aria-label'] ?? title ?? 'Audio player';
 ---
 
 <figure
   class:list={['pf-audio-player', className]}
-  data-pf-media-album={album}
-  data-pf-media-artist={artist}
-  data-pf-media-artwork={artworkSrc}
-  data-pf-media-duration={durationLabel}
-  data-pf-media-has-artwork={artworkSrc ? 'true' : undefined}
-  data-pf-media-player
-  data-pf-media-title={title}
+  data-pf-audio-album={album}
+  data-pf-audio-artist={artist}
+  data-pf-audio-artwork={artworkSrc}
+  data-pf-audio-duration={durationLabel}
+  data-pf-audio-has-artwork={artworkSrc ? 'true' : undefined}
+  data-pf-audio-title={title}
 >
   {
     artworkSrc && (
@@ -57,17 +56,17 @@ const ariaLabel = mediaAttributes['aria-label'] ?? title ?? 'Audio player';
   <div class="pf-audio-player__body">
     {
       (title || artist || album) && (
-        <div class="pf-media-player__metadata">
+        <div class="pf-audio-player__metadata">
           {title && (
-            <div class="pf-media-player__marquee" data-pf-media-marquee>
-              <span class="pf-media-player__title" data-pf-media-marquee-content>
+            <div class="pf-audio-player__marquee" data-pf-audio-marquee>
+              <span class="pf-audio-player__title" data-pf-audio-marquee-content>
                 {title}
               </span>
             </div>
           )}
           {(artist || album) && (
-            <div class="pf-media-player__marquee" data-pf-media-marquee>
-              <span class="pf-media-player__byline" data-pf-media-marquee-content>
+            <div class="pf-audio-player__marquee" data-pf-audio-marquee>
+              <span class="pf-audio-player__byline" data-pf-audio-marquee-content>
                 {album}
                 {artist && album && <span aria-hidden="true"> - </span>}
                 {artist}
@@ -79,9 +78,9 @@ const ariaLabel = mediaAttributes['aria-label'] ?? title ?? 'Audio player';
     }
 
     <audio
-      {...mediaAttributes}
+      {...audioAttributes}
       aria-label={ariaLabel}
-      class="pf-audio-player__media"
+      class="pf-audio-player__audio"
       controls
       preload={preload}
     >
@@ -90,11 +89,11 @@ const ariaLabel = mediaAttributes['aria-label'] ?? title ?? 'Audio player';
     </audio>
 
     <div class="pf-audio-player__progress">
-      <time class="pf-media-player__time" data-pf-media-current-time>00:00</time>
+      <time class="pf-audio-player__time" data-pf-audio-current-time>00:00</time>
       <input
         aria-label="Seek"
-        class="pf-media-player__seek"
-        data-pf-media-seek
+        class="pf-audio-player__seek"
+        data-pf-audio-seek
         disabled
         max="100"
         min="0"
@@ -102,20 +101,20 @@ const ariaLabel = mediaAttributes['aria-label'] ?? title ?? 'Audio player';
         type="range"
         value="0"
       />
-      <time class="pf-media-player__time" data-pf-media-duration>
+      <time class="pf-audio-player__time" data-pf-audio-duration>
         {durationLabel}
       </time>
     </div>
 
     <div
       aria-label="Audio controls"
-      class="pf-audio-player__controls pf-media-player__controls"
+      class="pf-audio-player__controls"
       role="group"
     >
       <button
         aria-label="Change playback speed"
         class="pf-audio-player__speed"
-        data-pf-media-rate
+        data-pf-audio-rate
         type="button"
       >
         1.0x
@@ -124,44 +123,44 @@ const ariaLabel = mediaAttributes['aria-label'] ?? title ?? 'Audio player';
       <div class="pf-audio-player__transport">
         <button
           aria-label="Replay 15 seconds"
-          class="pf-media-player__button"
-          data-pf-media-seek-by="-15"
+          class="pf-audio-player__button"
+          data-pf-audio-seek-by="-15"
           type="button"
         >
-          <Icon class="pf-media-icon" name="ri:replay-15-line" />
+          <Icon class="pf-audio-player__icon" name="ri:replay-15-line" />
         </button>
 
         <button
           aria-label="Play"
-          class="pf-media-player__button pf-media-player__play"
-          data-pf-media-play
+          class="pf-audio-player__button pf-audio-player__play"
+          data-pf-audio-play
           type="button"
         >
-          <Icon class="pf-media-icon" name="ri:play-fill" data-pf-media-icon="play" />
-          <Icon class="pf-media-icon" name="ri:pause-fill" data-pf-media-icon="pause" />
+          <Icon class="pf-audio-player__icon" name="ri:play-fill" data-pf-audio-icon="play" />
+          <Icon class="pf-audio-player__icon" name="ri:pause-fill" data-pf-audio-icon="pause" />
         </button>
 
         <button
           aria-label="Forward 30 seconds"
-          class="pf-media-player__button"
-          data-pf-media-seek-by="30"
+          class="pf-audio-player__button"
+          data-pf-audio-seek-by="30"
           type="button"
         >
-          <Icon class="pf-media-icon" name="ri:forward-30-line" />
+          <Icon class="pf-audio-player__icon" name="ri:forward-30-line" />
         </button>
       </div>
 
       <button
         aria-label="Mute"
-        class="pf-audio-player__mute pf-media-player__button"
-        data-pf-media-mute
+        class="pf-audio-player__mute pf-audio-player__button"
+        data-pf-audio-mute
         type="button"
       >
-        <Icon class="pf-media-icon" name="ri:volume-up-fill" data-pf-media-icon="volume-up" />
-        <Icon class="pf-media-icon" name="ri:volume-mute-fill" data-pf-media-icon="volume-mute" />
+        <Icon class="pf-audio-player__icon" name="ri:volume-up-fill" data-pf-audio-icon="volume-up" />
+        <Icon class="pf-audio-player__icon" name="ri:volume-mute-fill" data-pf-audio-icon="volume-mute" />
       </button>
     </div>
   </div>
 </figure>
 
-<script is:inline type="module" src={mediaPlayerScriptUrl}></script>
+<script is:inline type="module" src={audioPlayerScriptUrl}></script>

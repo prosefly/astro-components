@@ -106,13 +106,44 @@ palette.
 | `--pf-file-tree-line`                  | File tree connector lines                                     |
 | `--pf-image-gallery-preview-width`     | Visible preview width for the next gallery image              |
 | `--pf-image-gallery-ratio`             | Fallback gallery item aspect ratio before images are measured |
-| `--pf-media-player-slider-thumb-color` | Media seek slider thumb color                                 |
 | `--pf-steps-bullet-size`               | Step marker size                                              |
 | `--pf-steps-bullet-margin`             | Gap below a step marker before the connector line starts      |
 | `--pf-steps-line`                      | Step connector line color                                     |
 | `--pf-steps-marker-background`         | Step marker background                                        |
 | `--pf-steps-marker-foreground`         | Step marker text color                                        |
 | `--pf-steps-start`                     | Counter starting offset for step numbering                    |
+
+### AudioPlayer
+
+AudioPlayer exposes semantic tokens for its main visual parts. Their defaults
+delegate to the shared theme tokens wherever an equivalent token exists.
+
+| Token                                          | Default                | Used For                    |
+| ---------------------------------------------- | ---------------------- | --------------------------- |
+| `--pf-audio-player-background`                 | `--pf-surface`         | Player background           |
+| `--pf-audio-player-border-color`               | `--pf-border-subtle`   | Player border               |
+| `--pf-audio-player-color`                      | `--pf-text`            | Player and control text     |
+| `--pf-audio-player-title-color`                | `--pf-text-strong`     | Title text                  |
+| `--pf-audio-player-meta-color`                 | `--pf-text-muted`      | Byline and playback time    |
+| `--pf-audio-player-accent`                     | `--pf-accent`          | Active thumb, pause, focus  |
+| `--pf-audio-player-font-family`                | `--pf-font-sans`       | Player font                 |
+| `--pf-audio-player-margin`                     | `1.5rem`               | Player block margin         |
+| `--pf-audio-player-radius`                     | `--pf-radius-lg`       | Player corner radius        |
+| `--pf-audio-player-padding`                    | `0.75rem`              | Player inner spacing        |
+| `--pf-audio-player-gap`                        | `0.875rem`             | Artwork-to-body gap         |
+| `--pf-audio-player-artwork-size`               | `7.5rem`               | Artwork width and height    |
+| `--pf-audio-player-artwork-radius`             | Player radius − padding ÷ 1.8 | Artwork corner radius       |
+| `--pf-audio-player-title-size`                 | `0.9375rem`            | Title font size             |
+| `--pf-audio-player-byline-size`                | `0.8125rem`            | Byline font size            |
+| `--pf-audio-player-progress-color`             | `--pf-border-muted`    | Played progress             |
+| `--pf-audio-player-progress-background`        | `--pf-border-subtle`   | Remaining progress          |
+| `--pf-audio-player-progress-height`            | `0.375rem`             | Progress track height       |
+| `--pf-audio-player-thumb-color`                | `--pf-text-muted`      | Slider thumb                |
+| `--pf-audio-player-thumb-size`                 | `0.75rem`              | Slider thumb size           |
+| `--pf-audio-player-control-color`              | `--pf-text`            | Control icons and speed     |
+| `--pf-audio-player-control-size`               | `2rem`                 | Control button dimensions   |
+| `--pf-audio-player-control-hover-background`   | `--pf-accent-soft`     | Control hover background    |
+| `--pf-audio-player-speed-background`           | `--pf-border-subtle`   | Playback-speed background   |
 
 <Callout type="tip" title="Scope tokens intentionally">
   Place overrides on `:root` for a site-wide theme, or on a docs layout wrapper

@@ -57,7 +57,6 @@ The main entry exports:
 - `ImageGallery`
 - `Steps`
 - `TabItem` and `Tabs`
-- `VideoPlayer`
 
 The `/integration` entry exports the `proseflyComponents()` Astro integration and its
 `ComponentsIntegrationOptions` type.

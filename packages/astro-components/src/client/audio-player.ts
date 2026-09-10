@@ -19,33 +19,33 @@ function formatPlaybackRate(rate: number): string {
   return Number.isInteger(rate) ? `${rate.toFixed(1)}x` : `${rate}x`;
 }
 
-function seekBy(media: HTMLMediaElement, offset: number): void {
-  const target = Math.max(media.currentTime + offset, 0);
+function seekBy(audio: HTMLAudioElement, offset: number): void {
+  const target = Math.max(audio.currentTime + offset, 0);
 
-  media.currentTime = Number.isFinite(media.duration)
-    ? Math.min(target, media.duration)
+  audio.currentTime = Number.isFinite(audio.duration)
+    ? Math.min(target, audio.duration)
     : target;
 }
 
-function setMediaSession(player: HTMLElement, media: HTMLAudioElement): void {
+function setMediaSession(player: HTMLElement, audio: HTMLAudioElement): void {
   if (!("mediaSession" in navigator) || typeof MediaMetadata !== "function") {
     return;
   }
 
-  const artwork = player.dataset.pfMediaArtwork;
+  const artwork = player.dataset.pfAudioArtwork;
 
   navigator.mediaSession.metadata = new MediaMetadata({
-    album: player.dataset.pfMediaAlbum,
-    artist: player.dataset.pfMediaArtist,
+    album: player.dataset.pfAudioAlbum,
+    artist: player.dataset.pfAudioArtist,
     artwork: artwork ? [{ src: artwork }] : undefined,
-    title: player.dataset.pfMediaTitle,
+    title: player.dataset.pfAudioTitle,
   });
 
   const actions: Array<[MediaSessionAction, MediaSessionActionHandler]> = [
-    ["play", () => void media.play().catch(() => undefined)],
-    ["pause", () => media.pause()],
-    ["seekbackward", (details) => seekBy(media, -(details.seekOffset ?? 15))],
-    ["seekforward", (details) => seekBy(media, details.seekOffset ?? 30)],
+    ["play", () => void audio.play().catch(() => undefined)],
+    ["pause", () => audio.pause()],
+    ["seekbackward", (details) => seekBy(audio, -(details.seekOffset ?? 15))],
+    ["seekforward", (details) => seekBy(audio, details.seekOffset ?? 30)],
   ];
 
   actions.forEach(([action, handler]) => {
@@ -58,8 +58,8 @@ function setMediaSession(player: HTMLElement, media: HTMLAudioElement): void {
 }
 
 function initMarquees(player: HTMLElement): void {
-  player.querySelectorAll("[data-pf-media-marquee]").forEach((marquee) => {
-    const content = marquee.querySelector("[data-pf-media-marquee-content]");
+  player.querySelectorAll("[data-pf-audio-marquee]").forEach((marquee) => {
+    const content = marquee.querySelector("[data-pf-audio-marquee-content]");
 
     if (
       !(marquee instanceof HTMLElement) ||
@@ -71,13 +71,13 @@ function initMarquees(player: HTMLElement): void {
     const measure = () => {
       const isOverflowing = content.scrollWidth > marquee.clientWidth;
 
-      marquee.dataset.pfMediaMarqueeActive = isOverflowing ? "true" : "false";
+      marquee.dataset.pfAudioMarqueeActive = isOverflowing ? "true" : "false";
       marquee.style.setProperty(
-        "--pf-media-marquee-distance",
+        "--pf-audio-player-marquee-distance",
         `${content.scrollWidth}px`,
       );
       marquee.style.setProperty(
-        "--pf-media-marquee-duration",
+        "--pf-audio-player-marquee-duration",
         `${Math.max(content.scrollWidth / 50, 2).toFixed(2)}s`,
       );
     };
@@ -87,29 +87,25 @@ function initMarquees(player: HTMLElement): void {
   });
 }
 
-function initMediaPlayer(player: HTMLElement): void {
-  if (player.dataset.pfMediaPlayerReady) {
+function initAudioPlayer(player: HTMLElement): void {
+  if (player.dataset.pfAudioPlayerReady) {
     return;
   }
 
-  const mediaNode = player.querySelector("audio, video");
-  const playButtonNode = player.querySelector("[data-pf-media-play]");
-  const muteButtonNode = player.querySelector("[data-pf-media-mute]");
-  const seekNode = player.querySelector("[data-pf-media-seek]");
-  const currentTimeNode = player.querySelector("[data-pf-media-current-time]");
-  const durationNode = player.querySelector("[data-pf-media-duration]");
+  const audioNode = player.querySelector("audio");
+  const playButtonNode = player.querySelector("[data-pf-audio-play]");
+  const muteButtonNode = player.querySelector("[data-pf-audio-mute]");
+  const seekNode = player.querySelector("[data-pf-audio-seek]");
+  const currentTimeNode = player.querySelector("[data-pf-audio-current-time]");
+  const durationNode = player.querySelector("[data-pf-audio-duration]");
   const rateButton = player.querySelector<HTMLButtonElement>(
-    "[data-pf-media-rate]",
+    "[data-pf-audio-rate]",
   );
   const seekButtons = player.querySelectorAll<HTMLButtonElement>(
-    "[data-pf-media-seek-by]",
+    "[data-pf-audio-seek-by]",
   );
-  const fullscreenButton = player.querySelector<HTMLButtonElement>(
-    "[data-pf-media-fullscreen]",
-  );
-
   if (
-    !(mediaNode instanceof HTMLMediaElement) ||
+    !(audioNode instanceof HTMLAudioElement) ||
     !(playButtonNode instanceof HTMLButtonElement) ||
     !(muteButtonNode instanceof HTMLButtonElement) ||
     !(seekNode instanceof HTMLInputElement) ||
@@ -119,19 +115,19 @@ function initMediaPlayer(player: HTMLElement): void {
     return;
   }
 
-  const media = mediaNode;
+  const audio = audioNode;
   const playButton = playButtonNode;
   const muteButton = muteButtonNode;
   const seek = seekNode;
   const currentTime = currentTimeNode;
   const duration = durationNode;
-  const initialDuration = player.dataset.pfMediaDuration || "--:--";
+  const initialDuration = player.dataset.pfAudioDuration || "--:--";
   let progressFrame: number | undefined;
   let isScrubbing = false;
 
   function setProgress(progress: number): void {
     seek.value = String(progress);
-    seek.style.setProperty("--pf-media-progress", `${progress}%`);
+    seek.style.setProperty("--pf-audio-player-progress", `${progress}%`);
   }
 
   function updateProgress(): void {
@@ -139,9 +135,9 @@ function initMediaPlayer(player: HTMLElement): void {
       return;
     }
 
-    const hasDuration = Number.isFinite(media.duration) && media.duration > 0;
+    const hasDuration = Number.isFinite(audio.duration) && audio.duration > 0;
     const progress = hasDuration
-      ? (media.currentTime / media.duration) * 100
+      ? (audio.currentTime / audio.duration) * 100
       : 0;
 
     setProgress(progress);
@@ -151,7 +147,7 @@ function initMediaPlayer(player: HTMLElement): void {
   function syncProgress(): void {
     updateProgress();
 
-    if (!media.paused && !media.ended && media.isConnected) {
+    if (!audio.paused && !audio.ended && audio.isConnected) {
       progressFrame = requestAnimationFrame(syncProgress);
     } else {
       progressFrame = undefined;
@@ -183,19 +179,19 @@ function initMediaPlayer(player: HTMLElement): void {
   }
 
   function previewSeek(): void {
-    const hasDuration = Number.isFinite(media.duration) && media.duration > 0;
+    const hasDuration = Number.isFinite(audio.duration) && audio.duration > 0;
 
     if (!hasDuration) {
       return;
     }
 
     const progress = Number(seek.value);
-    const targetTime = (progress / 100) * media.duration;
+    const targetTime = (progress / 100) * audio.duration;
 
     setProgress(progress);
     currentTime.textContent = formatTime(targetTime);
-    seek.ariaValueText = `${formatTime(targetTime)} of ${formatTime(media.duration)}`;
-    media.currentTime = targetTime;
+    seek.ariaValueText = `${formatTime(targetTime)} of ${formatTime(audio.duration)}`;
+    audio.currentTime = targetTime;
   }
 
   function endScrubbing(): void {
@@ -206,15 +202,15 @@ function initMediaPlayer(player: HTMLElement): void {
     isScrubbing = false;
     updateTime();
 
-    if (!media.paused && !media.ended) {
+    if (!audio.paused && !audio.ended) {
       startProgressSync();
     }
   }
 
   function updatePlayback(): void {
-    const isPlaying = !media.paused && !media.ended;
+    const isPlaying = !audio.paused && !audio.ended;
 
-    player.dataset.pfMediaPlaying = isPlaying ? "true" : "false";
+    player.dataset.pfAudioPlaying = isPlaying ? "true" : "false";
     playButton.ariaLabel = isPlaying ? "Pause" : "Play";
 
     if (isPlaying) {
@@ -225,9 +221,9 @@ function initMediaPlayer(player: HTMLElement): void {
   }
 
   function updateMuted(): void {
-    const isMuted = media.muted || media.volume === 0;
+    const isMuted = audio.muted || audio.volume === 0;
 
-    player.dataset.pfMediaMuted = isMuted ? "true" : "false";
+    player.dataset.pfAudioMuted = isMuted ? "true" : "false";
     muteButton.ariaLabel = isMuted ? "Unmute" : "Mute";
   }
 
@@ -236,40 +232,40 @@ function initMediaPlayer(player: HTMLElement): void {
       return;
     }
 
-    const label = formatPlaybackRate(media.playbackRate);
+    const label = formatPlaybackRate(audio.playbackRate);
 
     rateButton.textContent = label;
     rateButton.ariaLabel = `Change playback speed, current ${label}`;
   }
 
   function updateTime(): void {
-    const hasDuration = Number.isFinite(media.duration) && media.duration > 0;
+    const hasDuration = Number.isFinite(audio.duration) && audio.duration > 0;
 
     updateProgress();
-    currentTime.textContent = formatTime(media.currentTime);
+    currentTime.textContent = formatTime(audio.currentTime);
     duration.textContent = hasDuration
-      ? formatTime(media.duration)
+      ? formatTime(audio.duration)
       : initialDuration;
     seek.ariaValueText = hasDuration
-      ? `${formatTime(media.currentTime)} of ${formatTime(media.duration)}`
+      ? `${formatTime(audio.currentTime)} of ${formatTime(audio.duration)}`
       : null;
   }
 
   playButton.addEventListener("click", () => {
-    if (media.paused || media.ended) {
-      void media.play().catch(updatePlayback);
+    if (audio.paused || audio.ended) {
+      void audio.play().catch(updatePlayback);
     } else {
-      media.pause();
+      audio.pause();
     }
   });
 
   muteButton.addEventListener("click", () => {
-    if (media.muted) {
-      media.muted = false;
-    } else if (media.volume === 0) {
-      media.volume = 1;
+    if (audio.muted) {
+      audio.muted = false;
+    } else if (audio.volume === 0) {
+      audio.volume = 1;
     } else {
-      media.muted = true;
+      audio.muted = true;
     }
   });
 
@@ -288,78 +284,41 @@ function initMediaPlayer(player: HTMLElement): void {
 
   seekButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      seekBy(media, Number(button.dataset.pfMediaSeekBy) || 0);
+      seekBy(audio, Number(button.dataset.pfAudioSeekBy) || 0);
       updateTime();
     });
   });
 
   if (rateButton instanceof HTMLButtonElement) {
     rateButton.addEventListener("click", () => {
-      const index = playbackRates.indexOf(media.playbackRate);
+      const index = playbackRates.indexOf(audio.playbackRate);
       const nextIndex =
         index < 0 || index === playbackRates.length - 1 ? 0 : index + 1;
 
-      media.playbackRate = playbackRates[nextIndex];
+      audio.playbackRate = playbackRates[nextIndex];
     });
   }
 
-  media.addEventListener("play", () => {
+  audio.addEventListener("play", () => {
     updatePlayback();
-
-    if (media instanceof HTMLAudioElement) {
-      setMediaSession(player, media);
-    }
+    setMediaSession(player, audio);
   });
-  media.addEventListener("pause", () => {
+  audio.addEventListener("pause", () => {
     updatePlayback();
     updateTime();
   });
-  media.addEventListener("ended", () => {
+  audio.addEventListener("ended", () => {
     updatePlayback();
     updateTime();
   });
-  media.addEventListener("volumechange", updateMuted);
-  media.addEventListener("loadedmetadata", updateTime);
-  media.addEventListener("durationchange", updateTime);
-  media.addEventListener("timeupdate", updateTime);
-  media.addEventListener("ratechange", updatePlaybackRate);
+  audio.addEventListener("volumechange", updateMuted);
+  audio.addEventListener("loadedmetadata", updateTime);
+  audio.addEventListener("durationchange", updateTime);
+  audio.addEventListener("timeupdate", updateTime);
+  audio.addEventListener("ratechange", updatePlaybackRate);
 
-  if (media instanceof HTMLVideoElement) {
-    media.addEventListener("click", () => {
-      if (media.paused || media.ended) {
-        void media.play().catch(updatePlayback);
-      } else {
-        media.pause();
-      }
-    });
-  }
-
-  if (fullscreenButton instanceof HTMLButtonElement) {
-    if (typeof player.requestFullscreen !== "function") {
-      fullscreenButton.hidden = true;
-    }
-
-    fullscreenButton.addEventListener("click", () => {
-      const action =
-        document.fullscreenElement === player
-          ? document.exitFullscreen()
-          : player.requestFullscreen();
-
-      void action.catch(() => undefined);
-    });
-
-    player.addEventListener("fullscreenchange", () => {
-      const isFullscreen = document.fullscreenElement === player;
-
-      player.dataset.pfMediaFullscreen = isFullscreen ? "true" : "false";
-      fullscreenButton.ariaLabel = isFullscreen
-        ? "Exit fullscreen"
-        : "Enter fullscreen";
-    });
-  }
-
-  media.controls = false;
-  player.dataset.pfMediaPlayerReady = "true";
+  audio.controls = false;
+  player.dataset.pfAudioPlayerReady = "true";
   initMarquees(player);
   updatePlayback();
   updatePlaybackRate();
@@ -367,19 +326,19 @@ function initMediaPlayer(player: HTMLElement): void {
   updateTime();
 }
 
-function initMediaPlayers(): void {
-  document.querySelectorAll("[data-pf-media-player]").forEach((player) => {
+function initAudioPlayers(): void {
+  document.querySelectorAll(".pf-audio-player").forEach((player) => {
     if (player instanceof HTMLElement) {
-      initMediaPlayer(player);
+      initAudioPlayer(player);
     }
   });
 }
 
-if (!prosefly.initMediaPlayers) {
-  prosefly.initMediaPlayers = initMediaPlayers;
-  document.addEventListener("astro:page-load", prosefly.initMediaPlayers);
+if (!prosefly.initAudioPlayers) {
+  prosefly.initAudioPlayers = initAudioPlayers;
+  document.addEventListener("astro:page-load", prosefly.initAudioPlayers);
 }
 
-prosefly.initMediaPlayers();
+prosefly.initAudioPlayers();
 
 export {};

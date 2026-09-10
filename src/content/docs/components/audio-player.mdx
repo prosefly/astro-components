@@ -1,0 +1,61 @@
+---
+title: AudioPlayer
+description: Present audio with metadata and accessible playback controls.
+---
+
+import { AudioPlayer } from '@prosefly/astro-components';
+
+`AudioPlayer` builds a themed control surface around the native audio element.
+
+<AudioPlayer
+  album="Prehistoric Sessions"
+  title="STS-133 FD11 Mission Status Briefing, STS-133 FD11 Mission Status Briefing"
+  artist="NASA"
+  duration="666"
+  src="https://shikwasa.js.org/assets/STS-133_FD11_Mission_Status_Briefing.mp3"
+  artwork="https://image-cdn-ak.spotifycdn.com/image/ab67706f00000002d7dcd71aa2f5fbbf6559ffb9"
+/>
+
+```mdx
+import { AudioPlayer } from '@prosefly/astro-components';
+
+<AudioPlayer
+  album="Prehistoric Sessions"
+  artist="MDN Audio Lab"
+  artwork="/images/cover.webp"
+  duration="00:02"
+  src="/audio/roar.mp3"
+  title="T-Rex roar"
+/>
+```
+
+Pass a number of seconds to `duration` when the value should be formatted by
+the component. A string is displayed as written until the browser discovers a
+finite duration from the audio metadata.
+
+The enhanced controls include playback-speed cycling, 15-second replay,
+30-second forward, mute, and Media Session integration where supported.
+
+Use `source` children when an audio file is available in multiple formats.
+
+```mdx
+<AudioPlayer artist="Artist" title="Song title">
+  <source src="/audio/song.mp3" type="audio/mpeg" />
+  <source src="/audio/song.ogg" type="audio/ogg" />
+</AudioPlayer>
+```
+
+## Props
+
+The component accepts native `audio` attributes, including `src`, `autoplay`,
+`loop`, `muted`, and `crossorigin`. It uses native controls as its
+no-JavaScript fallback.
+
+| Component | Prop | Type | Notes |
+| --- | --- | --- | --- |
+| `AudioPlayer` | `title` | `string` | Visible track or episode title. |
+| `AudioPlayer` | `artist` | `string` | Artist, speaker, or creator. |
+| `AudioPlayer` | `album` | `string` | Optional collection or album. |
+| `AudioPlayer` | `artwork` | `string \| ImageMetadata` | Artwork URL or imported Astro image. |
+| `AudioPlayer` | `duration` | `string \| number` | Initial label or duration in seconds. |
+| `AudioPlayer` | `preload` | `'none' \| 'metadata' \| 'auto'` | Defaults to `metadata`. |

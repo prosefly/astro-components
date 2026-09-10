@@ -1,7 +1,7 @@
-export type MediaArtwork = string | { src: string };
-export type MediaDuration = string | number;
+export type Artwork = string | { src: string };
+export type Duration = string | number;
 
-export function formatDuration(duration?: MediaDuration): string {
+export function formatDuration(duration?: Duration): string {
   if (typeof duration === 'string') {
     return duration;
   }
@@ -19,6 +19,6 @@ export function formatDuration(duration?: MediaDuration): string {
     : `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
-export function resolveArtwork(artwork?: MediaArtwork): string | undefined {
+export function resolveArtwork(artwork?: Artwork): string | undefined {
   return typeof artwork === 'string' ? artwork : artwork?.src;
 }

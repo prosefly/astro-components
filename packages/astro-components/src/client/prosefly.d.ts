@@ -2,7 +2,7 @@ interface ProseflyNamespace {
   initAccordions?: () => void;
   initTabs?: () => void;
   initImageGalleries?: () => void;
-  initMediaPlayers?: () => void;
+  initAudioPlayers?: () => void;
 }
 
 interface Window {
