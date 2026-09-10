@@ -18,7 +18,7 @@
     "@astrojs/check": "latest",
     "@prosefly/astro-components": "workspace:*",
     "@prosefly/astro-theme-lotus": "^0.7.3",
-    "astro": "^7.2.10",
+    "astro": "^7.3.2",
     "typescript": "^6.0.3"
   }
 }
