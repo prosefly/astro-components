@@ -11,11 +11,27 @@ and documentation.
 
 ## Unreleased
 
+## 0.7.0
+
+<Badge color="accent" variant="subtle">September 10, 2026</Badge>
+
+- Added `AudioPlayer`, a themed audio surface with artwork and metadata,
+  playback-speed controls, seeking, mute, native-audio fallback, and Media
+  Session integration.
+- Added `Embed` for explicit metadata and URL-based embeds. URL resolution
+  supports selected oEmbed and Schema.org providers before falling back to
+  OpenGraph, with normalized provider HTML and persistent metadata caching.
+- Added build-time Mermaid rendering through `rehypeMermaid`. Fenced `mermaid`
+  code blocks now become responsive, themed SVG diagrams in Markdown and MDX
+  without a browser Mermaid runtime.
 - Image-only paragraphs are now transformed by the `remarkImageGallery` MDX-only
   plugin into the public `ImageGallery` component. Gallery CSS and runtime are
   bundled only on pages that use the component; ordinary `.md` pages are not
-  transformed. The former `rehypeImageGallery` entry and manual gallery asset
-  setup are no longer supported.
+  transformed.
+- **Breaking:** Removed the former `rehypeImageGallery` export and the
+  `markdown/image-gallery.css` and `markdown/image-gallery.js` subpaths. Use
+  `remarkImageGallery` or the public `ImageGallery` component instead; both own
+  their required styles and runtime.
 
 ## 0.6.2
 
