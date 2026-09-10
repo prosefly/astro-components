@@ -1,0 +1,107 @@
+---
+import '../styles/theme-tokens.css';
+import '../styles/embed.css';
+import type { HTMLAttributes } from 'astro/types';
+import {
+  formatPrice,
+  formatRating,
+  formatRatingCount,
+  ratingLabel,
+  resolveEmbed,
+  type EmbedInput,
+} from '../server/embed/index.js';
+
+interface Props
+  extends EmbedInput,
+    Omit<HTMLAttributes<'figure'>, 'title'> {
+  external?: boolean;
+}
+
+const {
+  url,
+  kind = 'auto',
+  title,
+  description,
+  image,
+  siteName,
+  author,
+  rating,
+  price,
+  fetch: shouldFetch = true,
+  external = true,
+  class: className,
+  ...attributes
+} = Astro.props;
+
+const data = await resolveEmbed({
+  url,
+  kind,
+  title,
+  description,
+  image,
+  siteName,
+  author,
+  rating,
+  price,
+  fetch: shouldFetch,
+});
+const priceLabel = data.price ? formatPrice(data.price) : undefined;
+const score = data.rating ? formatRating(data.rating) : undefined;
+const scoreLabel = data.rating ? ratingLabel(data.rating) : undefined;
+---
+
+<figure
+  {...attributes}
+  class:list={['pf-embed', className]}
+  data-pf-embed-kind={data.kind}
+  data-pf-embed-provider={data.provider}
+  data-pf-embed-source={data.source}
+  data-pf-embed-type={data.embedType}
+>
+  {
+    data.html ? (
+      <div class="pf-embed__media" set:html={data.html} />
+    ) : (
+      <a
+        class="pf-embed__card"
+        href={data.url}
+        rel={external ? 'noreferrer' : undefined}
+        target={external ? '_blank' : undefined}
+      >
+        {data.image && (
+          <div class="pf-embed__image">
+            <img alt="" decoding="async" loading="lazy" src={data.image} />
+          </div>
+        )}
+        <div class="pf-embed__body">
+          {(data.siteName || data.author) && (
+            <div class="pf-embed__eyebrow">
+              {data.siteName}
+              {data.siteName && data.author && <span aria-hidden="true"> · </span>}
+              {data.author}
+            </div>
+          )}
+          {data.title && <p class="pf-embed__title">{data.title}</p>}
+          {data.description && <p class="pf-embed__description">{data.description}</p>}
+          {(score || priceLabel) && (
+            <div class="pf-embed__facts">
+              {score && (
+                <span aria-label={scoreLabel} class="pf-embed__rating">
+                  <span aria-hidden="true" class="pf-embed__star">★</span>
+                  {score}
+                  {data.rating?.count !== undefined && (
+                    <span class="pf-embed__count">
+                      ({formatRatingCount(data.rating.count)})
+                    </span>
+                  )}
+                </span>
+              )}
+              {priceLabel && <span class="pf-embed__price">{priceLabel}</span>}
+            </div>
+          )}
+          {!data.title && <span class="pf-embed__url">{data.url}</span>}
+        </div>
+      </a>
+    )
+  }
+</figure>

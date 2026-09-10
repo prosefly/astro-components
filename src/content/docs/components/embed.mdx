@@ -1,0 +1,264 @@
+---
+title: Embed
+description: Render rich provider embeds or metadata cards from a URL.
+---
+
+import { Embed } from '@prosefly/astro-components';
+
+`Embed` renders supplied metadata immediately. When metadata is incomplete, it
+tries a supported oEmbed provider, selected Schema.org websites, and finally
+OpenGraph.
+
+## Import
+
+```mdx
+import { Embed } from '@prosefly/astro-components';
+```
+
+## Full props
+
+When all display metadata is supplied, `Embed` renders it directly without a
+remote request. Explicit props always take precedence over resolved metadata.
+
+<Embed
+  kind="link"
+  url="https://astro-theme-lotus.prosefly.dev/"
+  title="Astro Theme Lotus"
+  description="A documentation theme for Astro, built for expressive content."
+  image="https://astro-theme-lotus.prosefly.dev/images/og.png"
+  siteName="Prosefly"
+/>
+
+```mdx
+<Embed
+  kind="link"
+  url="https://astro-theme-lotus.prosefly.dev/"
+  title="Astro Theme Lotus"
+  description="A documentation theme for Astro, built for expressive content."
+  image="https://astro-theme-lotus.prosefly.dev/images/og.png"
+  siteName="Prosefly"
+/>
+```
+
+## oEmbed providers
+
+With only a URL, supported providers are resolved through their official
+oEmbed endpoint. Resolution happens while Astro renders the component and the
+result is cached.
+
+### YouTube
+
+YouTube watch pages, short URLs, Shorts, playlists, live pages, and embed URLs
+are recognized.
+
+<Embed url="https://www.youtube.com/watch?v=-a0ecQMq-rM" />
+
+```mdx
+<Embed url="https://www.youtube.com/watch?v=-a0ecQMq-rM" />
+```
+
+### Vimeo
+
+<Embed url="https://vimeo.com/863362136" />
+
+```mdx
+<Embed url="https://vimeo.com/863362136" />
+```
+
+### Spotify
+
+Spotify supports tracks, albums, playlists, artists, podcast shows, and
+episodes.
+
+<Embed url="https://open.spotify.com/track/4cOEzug87glLzWjM0jYwlH" />
+
+```mdx
+<Embed url="https://open.spotify.com/track/4cOEzug87glLzWjM0jYwlH" />
+```
+
+### SoundCloud
+
+<Embed url="https://soundcloud.com/forss/flickermood" />
+
+```mdx
+<Embed url="https://soundcloud.com/forss/flickermood" />
+```
+
+### Apple Music
+
+<Embed url="https://music.apple.com/us/album/alan-wake/1466178819?i=1466178821" />
+
+```mdx
+<Embed url="https://music.apple.com/us/album/alan-wake/1466178819?i=1466178821" />
+```
+
+### Apple Podcasts
+
+<Embed url="https://podcasts.apple.com/us/podcast/how-bullying-spreads-and-how-social-bravery-stops-it/id160904630?i=1000788701823" />
+
+```mdx
+<Embed url="https://podcasts.apple.com/us/podcast/how-bullying-spreads-and-how-social-bravery-stops-it/id160904630?i=1000788701823" />
+```
+
+### X
+
+Both `x.com` and legacy `twitter.com` status URLs are recognized. Legacy URLs
+are normalized before calling the X oEmbed endpoint. Script elements are
+removed from the returned HTML before it is cached and rendered.
+
+<Embed url="https://x.com/astrodotbuild/status/2034318549532000277" />
+
+```mdx
+<Embed url="https://x.com/astrodotbuild/status/2034318549532000277" />
+```
+
+### Bluesky
+
+<Embed url="https://bsky.app/profile/lepture.com/post/3mqjcd6ggkc2i" />
+
+```mdx
+<Embed url="https://bsky.app/profile/lepture.com/post/3mqjcd6ggkc2i" />
+```
+
+### Flickr
+
+Flickr photo pages and short URLs are resolved without retaining its provider
+script.
+
+<Embed url="https://www.flickr.com/photos/30081478@N08/54195026854/" />
+
+```mdx
+<Embed url="https://www.flickr.com/photos/30081478@N08/54195026854/" />
+```
+
+## Schema.org providers
+
+Schema.org parsing is intentionally restricted to selected websites. Each
+provider selects the relevant JSON-LD entity and normalizes it into the same
+card data used by explicit props.
+
+### Apple App Store
+
+Application, offer, developer, and aggregate rating data are used. The full
+storefront URL remains part of the cache key so regional prices stay separate.
+
+<Embed url="https://apps.apple.com/us/app/miraa-ai-transcribe-shadow/id6462883096" />
+
+```mdx
+<Embed url="https://apps.apple.com/us/app/miraa-ai-transcribe-shadow/id6462883096" />
+```
+
+### Google Play
+
+<Embed url="https://play.google.com/store/apps/details?id=com.google.android.apps.maps" />
+
+```mdx
+<Embed url="https://play.google.com/store/apps/details?id=com.google.android.apps.maps" />
+```
+
+### Product Hunt
+
+Product pages use application metadata, maker names, and aggregate ratings.
+
+<Embed url="https://www.producthunt.com/products/notion" />
+
+```mdx
+<Embed url="https://www.producthunt.com/products/notion" />
+```
+
+### Letterboxd
+
+Film pages use poster, description, director, and aggregate rating data.
+
+<Embed url="https://letterboxd.com/film/spirited-away/" />
+
+```mdx
+<Embed url="https://letterboxd.com/film/spirited-away/" />
+```
+
+### Rotten Tomatoes
+
+Movie and TV pages use artwork, description, director, and aggregate rating
+data.
+
+<Embed url="https://www.rottentomatoes.com/m/spirited_away" />
+
+```mdx
+<Embed url="https://www.rottentomatoes.com/m/spirited_away" />
+```
+
+## OpenGraph
+
+URLs that do not match an oEmbed or Schema.org provider use OpenGraph metadata.
+
+<Embed url="https://astro-theme-lotus.prosefly.dev/" />
+
+```mdx
+<Embed url="https://astro-theme-lotus.prosefly.dev/" />
+```
+
+## Resolution and overrides
+
+Metadata is resolved in this order:
+
+1. Return complete explicit props without fetching.
+2. Try a supported oEmbed provider.
+3. Try Schema.org on a selected website.
+4. Parse OpenGraph metadata.
+5. Fall back to an ordinary linked card.
+
+Explicit props override individual resolved fields. For example, this keeps
+the YouTube player while replacing its resolved title:
+
+```mdx
+<Embed
+  url="https://www.youtube.com/watch?v=-a0ecQMq-rM"
+  title="A title chosen by the author"
+/>
+```
+
+## Persistent cache
+
+Resolved pages and oEmbed responses are cached in memory and persisted under
+`.astro/prosefly/embed`. Valid entries are reused across Astro dev sessions and
+builds until their TTL expires. Page metadata is cached for one hour; oEmbed
+providers may supply their own TTL, limited to between one minute and 24 hours.
+
+Set `PROSEFLY_EMBED_CACHE_DIR` to store these cache files in another directory.
+If the directory is unavailable or read-only, `Embed` continues with its
+in-memory cache.
+
+## Disable fetching
+
+Set `fetch={false}` when intentionally rendering incomplete metadata without a
+remote request.
+
+<Embed
+  url="https://example.com/article"
+  title="A deliberately minimal card"
+  fetch={false}
+/>
+
+```mdx
+<Embed
+  url="https://example.com/article"
+  title="A deliberately minimal card"
+  fetch={false}
+/>
+```
+
+## Props
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `url` | `string` | Required HTTP or HTTPS URL. |
+| `kind` | `'auto' \| 'link' \| 'application' \| 'product' \| 'movie' \| 'book' \| 'review'` | Defaults to `auto`; explicit values select the card presentation. |
+| `title` | `string` | Explicit title; overrides resolved metadata. |
+| `description` | `string` | Explicit summary. |
+| `image` | `string` | Preview image or application icon. |
+| `siteName` | `string` | Provider or website name. |
+| `author` | `string` | Author, creator, or developer. |
+| `rating` | `{ value, best?, worst?, count? }` | Rating information. |
+| `price` | `{ amount, currency?, availability? } \| { low, high, currency?, availability? }` | Exact price or range. An amount of zero renders as `Free`. |
+| `fetch` | `boolean` | Set to `false` to disable metadata resolution. |
+| `external` | `boolean` | Opens card links in a new tab. Defaults to `true`. |
