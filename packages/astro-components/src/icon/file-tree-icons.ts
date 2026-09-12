@@ -2,6 +2,7 @@ export type FileTreeIconSet = 'lucide' | 'vscode-icons';
 
 interface FileTreeIconEntry {
   isDirectory: boolean;
+  kind: 'directory' | 'code' | 'config' | 'file' | 'image' | 'style' | 'text';
   nameText: string;
 }
 
@@ -21,6 +22,21 @@ const lucideIcons = {
   },
   file: {
     name: 'lucide:file',
+  },
+  code: {
+    name: 'lucide:file-code',
+  },
+  config: {
+    name: 'lucide:file-cog',
+  },
+  image: {
+    name: 'lucide:file-image',
+  },
+  style: {
+    name: 'lucide:file-type',
+  },
+  text: {
+    name: 'lucide:file-text',
   },
 } satisfies Record<string, FileTreeIcon>;
 
@@ -158,9 +174,7 @@ const languageIconFileNames: Record<string, string> = {
 
 export const fileTreeComponentIconNames = [
   'lucide:chevron-right',
-  lucideIcons.directory.name,
-  lucideIcons.directory.open,
-  lucideIcons.file.name,
+  ...Object.values(lucideIcons).flatMap((icon) => getFileIconNames(icon)),
   vscodeFileIcon.name,
   ...vscodeExactFileIcons.flatMap(([, icon]) => getFileIconNames(icon)),
   ...vscodeExtensionIcons.flatMap(([, icon]) => getFileIconNames(icon)),
@@ -177,7 +191,7 @@ export function getFileTreeIcon(
   iconSet: FileTreeIconSet,
 ): FileTreeIcon {
   if (iconSet === 'lucide') {
-    return entry.isDirectory ? lucideIcons.directory : lucideIcons.file;
+    return entry.isDirectory ? lucideIcons.directory : lucideIcons[entry.kind];
   }
 
   if (entry.isDirectory) {
