@@ -41,6 +41,57 @@ function getItemLeft(track: HTMLElement, item: HTMLElement): number {
   );
 }
 
+function getGalleryItems(track: HTMLElement): HTMLElement[] {
+  return [...track.querySelectorAll('.pf-image-gallery__item')].filter(
+    (item): item is HTMLElement => item instanceof HTMLElement,
+  );
+}
+
+function updateIndicators(gallery: HTMLElement, track: HTMLElement): void {
+  const items = getGalleryItems(track);
+  const indicatorGroup = gallery.querySelector<HTMLElement>(
+    '[data-pf-image-gallery-indicators]',
+  );
+
+  if (!(indicatorGroup instanceof HTMLElement) || track.clientWidth <= 0) {
+    return;
+  }
+
+  const indicators = [
+    ...indicatorGroup.querySelectorAll('[data-pf-image-gallery-indicator]'),
+  ].filter((indicator): indicator is HTMLElement =>
+    indicator instanceof HTMLElement,
+  );
+
+  if (items.length === 0 || indicators.length !== items.length) {
+    return;
+  }
+
+  const maximumScrollLeft = Math.max(track.scrollWidth - track.clientWidth, 0);
+  let currentIndex = 0;
+  let currentDistance = Number.POSITIVE_INFINITY;
+
+  if (maximumScrollLeft > 0) {
+    items.forEach((item, index) => {
+      const itemLeft = Math.min(getItemLeft(track, item), maximumScrollLeft);
+      const distance = Math.abs(itemLeft - track.scrollLeft);
+
+      if (distance <= currentDistance) {
+        currentIndex = index;
+        currentDistance = distance;
+      }
+    });
+  }
+
+  indicators.forEach((indicator, index) => {
+    if (index === currentIndex) {
+      indicator.dataset.current = 'true';
+    } else {
+      delete indicator.dataset.current;
+    }
+  });
+}
+
 function scrollToAdjacentItem(
   track: HTMLElement,
   direction: GalleryDirection,
@@ -64,9 +115,7 @@ function scrollToAdjacentItem(
 }
 
 function measureGallery(gallery: HTMLElement, track: HTMLElement): void {
-  const items = [...track.querySelectorAll('.pf-image-gallery__item')].filter(
-    (item): item is HTMLElement => item instanceof HTMLElement,
-  );
+  const items = getGalleryItems(track);
   const images = items
     .map((item) => item.querySelector('img'))
     .filter(
@@ -139,13 +188,19 @@ function initImageGalleries(): void {
     }
 
     gallery.dataset.pfImageGalleryReady = 'true';
-    const measure = () => measureGallery(gallery, track);
+    const update = () => updateIndicators(gallery, track);
+    const measure = () => {
+      measureGallery(gallery, track);
+      update();
+    };
     const images = [...track.querySelectorAll('img')].filter(
       (image): image is HTMLImageElement => image instanceof HTMLImageElement,
     );
 
     Promise.all(images.map(imageReady)).then(measure);
     new ResizeObserver(measure).observe(track);
+    track.addEventListener('scroll', update, { passive: true });
+    update();
 
     gallery
       .querySelectorAll('[data-pf-image-gallery-button]')
