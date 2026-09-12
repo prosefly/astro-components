@@ -272,6 +272,77 @@ test('remarkPackageManagerTabs converts supported npm commands to package manage
   });
 });
 
+test('remarkPackageManagerTabs converts commands nested in Steps', () => {
+  const root = {
+    type: 'root',
+    children: [
+      {
+        type: 'mdxJsxFlowElement',
+        name: 'Steps',
+        attributes: [],
+        children: [
+          {
+            type: 'list',
+            children: [
+              {
+                type: 'listItem',
+                children: [
+                  {
+                    type: 'code',
+                    lang: 'sh',
+                    value: 'npm install @prosefly/astro-components',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };
+
+  runPlugin(remarkPackageManagerTabs, root);
+
+  const tabs = findNode(
+    root,
+    (node) => node.name === 'ProseflyPackageManagerTabs',
+  );
+  assert.ok(tabs);
+  assert.equal(root.children[0].type, 'mdxjsEsm');
+  assert.equal(getAttribute(tabs, 'syncKey'), 'package-manager');
+});
+
+test('remarkPackageManagerTabs does not create nested tabs', () => {
+  const code = {
+    type: 'code',
+    lang: 'sh',
+    value: 'npm install @prosefly/astro-components',
+  };
+  const root = {
+    type: 'root',
+    children: [
+      {
+        type: 'mdxJsxFlowElement',
+        name: 'Tabs',
+        attributes: [],
+        children: [
+          {
+            type: 'mdxJsxFlowElement',
+            name: 'TabItem',
+            attributes: [],
+            children: [code],
+          },
+        ],
+      },
+    ],
+  };
+
+  runPlugin(remarkPackageManagerTabs, root);
+
+  assert.equal(root.children.length, 1);
+  assert.equal(root.children[0].children[0].children[0], code);
+});
+
 for (const file of [{ path: '/docs/images.mdx' }, { path: '/docs/images.md' }, {}]) {
   test(`remarkImageGallery converts image-only paragraphs (${file.path ?? 'no file metadata'})`, () => {
     const root = {

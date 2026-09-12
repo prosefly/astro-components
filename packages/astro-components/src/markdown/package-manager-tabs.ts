@@ -17,6 +17,13 @@ const shellLanguages = new Set([
   'zsh',
 ]);
 
+const tabsComponentNames = new Set([
+  'ProseflyPackageManagerTabs',
+  'ProseflyPackageManagerTabItem',
+  'Tabs',
+  'TabItem',
+]);
+
 const nodePackageManagers = [
   { icon: 'simple-icons:pnpm', label: 'pnpm' },
   { icon: 'simple-icons:npm', label: 'npm' },
@@ -63,7 +70,7 @@ export const remarkPackageManagerTabs: RemarkPlugin = () => {
         return;
       }
 
-      if ((ancestors ?? []).some(isMdxComponentNode)) {
+      if ((ancestors ?? []).some(isTabsComponentNode)) {
         return;
       }
 
@@ -94,6 +101,14 @@ export const remarkPackageManagerTabs: RemarkPlugin = () => {
 
 function isCodeNode(node: MarkdownNode): node is CodeNode {
   return node.type === 'code' && typeof node.value === 'string';
+}
+
+function isTabsComponentNode(node: MarkdownNode): boolean {
+  return (
+    isMdxComponentNode(node) &&
+    typeof node.name === 'string' &&
+    tabsComponentNames.has(node.name)
+  );
 }
 
 function getPackageManagerVariants(

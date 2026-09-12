@@ -98,7 +98,9 @@ export default defineConfig({
 
 The integration configures `remarkPackageManagerTabs`, which injects the
 required `Tabs` and `TabItem` imports when it transforms a code block. Authors
-do not need to import those components manually.
+do not need to import those components manually. Supported commands are also
+transformed when nested in components such as `Steps`; commands inside manual
+`Tabs` and `TabItem` components are left unchanged to avoid nested tabs.
 
 To keep the other integration features but disable this transform, set
 `markdown.packageManagerTabs` to `false`.
