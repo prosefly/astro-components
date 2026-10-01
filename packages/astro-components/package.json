@@ -78,7 +78,7 @@
   "devDependencies": {
     "@expressive-code/core": "^0.44.2",
     "@types/node": "latest",
-    "astro": "^7.3.2",
+    "astro": "^7.3.5",
     "typescript": "^6.0.3",
     "vite": "latest"
   }

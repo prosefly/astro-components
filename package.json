@@ -20,14 +20,14 @@
     "@astrojs/check": "latest",
     "@prosefly/astro-components": "workspace:*",
     "@prosefly/astro-theme-lotus": "^0.7.3",
-    "astro": "^7.3.2",
+    "astro": "^7.3.5",
     "typescript": "^6.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "eslint": "^10.10.0",
-    "eslint-plugin-astro": "^3.1.0",
-    "globals": "^17.12.0",
-    "typescript-eslint": "^8.70.0"
+    "eslint": "^10.11.0",
+    "eslint-plugin-astro": "^3.2.1",
+    "globals": "^17.13.0",
+    "typescript-eslint": "^8.71.0"
   }
 }
