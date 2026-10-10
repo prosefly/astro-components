@@ -11,6 +11,9 @@ and documentation.
 
 ## Unreleased
 
+- Fixed multiline `Badge` labels in MDX to render like inline labels, without
+  inheriting paragraph margins or typography.
+
 - Refactored multi-image galleries to a light-DOM custom element that manages
   navigation, indicators, and sizing without global page-load handlers. Removal
   cleans up listeners and observers, including pending image loads; single-image
