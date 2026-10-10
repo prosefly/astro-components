@@ -68,6 +68,25 @@ because the scanner only sees literal strings.
 Set `scan: false` when a site should preload only the icons listed in
 `preload`, or set `apiBase` to use an internal Iconify-compatible endpoint.
 
+### Caching
+
+Preloading and on-demand rendering share a per-icon cache. Overlapping requests
+reuse in-flight work, and preload batches fetch only icons that are not already
+cached. The cache separates API endpoints and icon sets.
+
+Successful responses are also persisted in `.astro/prosefly/icons` under the
+working directory for **7 days**, so restarting development or rebuilding does
+not download those icons again until they expire. Set `PROSEFLY_ICON_CACHE_DIR`
+to use a different directory. For fresh data before expiry, stop the process,
+remove that cache directory, and restart.
+
+Corrupt or expired cache files are ignored. If disk caching is unavailable,
+in-memory caching still works. Failed requests are not cached; the next render
+or preload attempt retries them.
+
+An integration-level `apiBase` is also used by on-demand icons, unless an `Icon`
+explicitly supplies its own `apiBase`.
+
 <Callout type="note" title="Prosefly theme defaults">
   [Dahlia](https://astro-theme-dahlia.prosefly.dev/) and
   [Lotus](https://astro-theme-lotus.prosefly.dev/) already register the shared
@@ -84,4 +103,4 @@ Set `scan: false` when a site should preload only the icons listed in
 | `size` | `number \| string` | none |
 | `width` | `number \| string` | `size ?? '1em'` |
 | `height` | `number \| string` | `size ?? '1em'` |
-| `apiBase` | `string` | `https://api.iconify.design` |
+| `apiBase` | `string` | Integration's `apiBase`, or `https://api.iconify.design` |

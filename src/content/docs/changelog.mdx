@@ -9,6 +9,16 @@ This changelog covers user-facing changes to `@prosefly/astro-components`,
 including components, markdown transforms, integration behavior, styling tokens,
 and documentation.
 
+## 0.8.1
+
+<Badge color="accent" variant="subtle">October 10, 2026</Badge>
+
+- Fix indicator style for image gallery.
+- Unified icon preloading and on-demand rendering caches, including overlapping
+  requests. Successful icon data persists for 7 days across restarts and builds;
+  failed requests are evicted for retry. Dynamic icons inherit the integration's
+  API endpoint unless explicitly overridden.
+
 ## 0.8.0
 
 <Badge color="accent" variant="subtle">October 10, 2026</Badge>
