@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import proseflyComponents from '@prosefly/astro-components/integration';
+import proseflyComponents from '../dist/integration.js';
 import icon from '../dist/icon/index.js';
 import {
   rehypeMermaid,

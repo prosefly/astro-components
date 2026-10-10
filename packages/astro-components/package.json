@@ -14,7 +14,7 @@
     "markdown",
     "mdx"
   ],
-  "types": "./dist/index.d.ts",
+  "types": "./src/index.ts",
   "scripts": {
     "build": "node ./scripts/build.mjs",
     "check": "tsc -p ./tsconfig.build.json --noEmit",
@@ -29,28 +29,51 @@
   },
   "homepage": "https://prosefly.dev/docs/astro-components/",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./integration": {
+        "types": "./dist/integration.d.ts",
+        "default": "./dist/integration.js"
+      },
+      "./icon": {
+        "types": "./dist/icon/index.d.ts",
+        "default": "./dist/icon/index.js"
+      },
+      "./markdown": {
+        "types": "./dist/markdown/index.d.ts",
+        "default": "./dist/markdown/index.js"
+      },
+      "./expressive-code": {
+        "types": "./dist/expressive-code/index.d.ts",
+        "default": "./dist/expressive-code/index.js"
+      }
+    }
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
     },
     "./integration": {
-      "types": "./dist/integration.d.ts",
-      "default": "./dist/integration.js"
+      "types": "./src/integration.ts",
+      "default": "./src/integration.ts"
     },
     "./icon": {
-      "types": "./dist/icon/index.d.ts",
-      "default": "./dist/icon/index.js"
+      "types": "./src/icon/index.ts",
+      "default": "./src/icon/index.ts"
     },
     "./markdown": {
-      "types": "./dist/markdown/index.d.ts",
-      "default": "./dist/markdown/index.js"
+      "types": "./src/markdown/index.ts",
+      "default": "./src/markdown/index.ts"
     },
     "./expressive-code": {
-      "types": "./dist/expressive-code/index.d.ts",
-      "default": "./dist/expressive-code/index.js"
+      "types": "./src/expressive-code/index.ts",
+      "default": "./src/expressive-code/index.ts"
     }
   },
   "files": [

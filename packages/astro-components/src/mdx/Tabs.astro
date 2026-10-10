@@ -1,5 +1,4 @@
 ---
-import tabsScriptUrl from '../client/tabs.js?url&no-inline';
 import '../styles/theme-tokens.css';
 import Icon from './Icon.astro';
 import { processPanels } from '../server/tabs';
@@ -89,7 +88,9 @@ const activePanel = panels[activeIndex] ?? panels[0];
   <div class="pf-tabs__panels" set:html={html} />
 </section>
 
-<script is:inline type="module" src={tabsScriptUrl}></script>
+<script>
+  import '../client/tabs';
+</script>
 
 <style is:global>
   .pf-tabs {

@@ -1,7 +1,6 @@
 ---
 import '../styles/theme-tokens.css';
 import type { HTMLAttributes } from 'astro/types';
-import audioPlayerScriptUrl from '../client/audio-player.js?url&no-inline';
 import Icon from './Icon.astro';
 import {
   formatDuration,
@@ -164,7 +163,9 @@ const ariaLabel = audioAttributes['aria-label'] ?? title ?? 'Audio player';
   </div>
 </pf-audio-player>
 
-<script is:inline type="module" src={audioPlayerScriptUrl}></script>
+<script>
+  import '../client/audio-player';
+</script>
 
 <style is:global>
   .pf-audio-player {

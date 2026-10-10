@@ -173,6 +173,23 @@ The `/expressive-code` entry publicly exports only
 `expressiveCodeHeaderIcons` and the `ExpressiveCodeHeaderIconsOptions` type.
 The icon and language-label helpers used by the plugin are internal.
 
+## Local Development And Publishing
+
+Workspace exports point to `src`, so `pnpm dev` runs the documentation site
+directly against the components and TypeScript source with hot reload. It does
+not require a package build first. Local site builds also consume source.
+
+`pnpm test` builds and tests `dist`, then packs the package and verifies its
+published entry points. `pnpm pack` and `pnpm publish` override `exports` and
+`types` using `publishConfig`; only `dist`, the README, and license are shipped.
+The `prepack` hook builds the package automatically.
+
+Use pnpm to pack or publish from the source checkout. If publishing with npm
+(for example, for trusted publishing), first create a tarball with `pnpm pack`,
+then run `npm publish ./prosefly-astro-components-<version>.tgz`. Do not run
+`npm publish` directly against the source directory: npm does not apply these
+manifest overrides.
+
 ## Styling
 
 Consumers can theme the components with `--pf-*` custom properties:

@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: Run npm publish with --dry-run
+        description: Pack with pnpm and run npm publish with --dry-run
         required: true
         default: false
         type: boolean
@@ -56,15 +56,22 @@ jobs:
       - name: Build package
         run: pnpm build
 
+      - name: Test package and packed exports
+        run: pnpm test
+
+      - name: Pack release with dist exports
+        working-directory: packages/astro-components
+        run: pnpm pack --out release.tgz
+
       - name: Dry run publish to npm
         if: github.event_name == 'workflow_dispatch' && inputs.dry_run
         working-directory: packages/astro-components
-        run: npx npm@latest publish --access public --dry-run
+        run: npx npm@latest publish ./release.tgz --access public --dry-run
 
       - name: Publish package to npm
         if: github.event_name != 'workflow_dispatch' || !inputs.dry_run
         working-directory: packages/astro-components
-        run: npx npm@latest publish --access public
+        run: npx npm@latest publish ./release.tgz --access public
 
       - name: Create GitHub release
         if: github.event_name == 'push'

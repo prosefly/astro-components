@@ -13,7 +13,9 @@ and documentation.
 
 <Badge color="accent" variant="subtle">October 10, 2026</Badge>
 
-- Fix indicator style for image gallery.
+- Workspace entry points now use source files for hot reload; pnpm packing and
+  publishing switch exports and types to `dist`. Client scripts use Astro's
+  compiler, and package tests verify the packed manifest and entry points.
 - Unified icon preloading and on-demand rendering caches, including overlapping
   requests. Successful icon data persists for 7 days across restarts and builds;
   failed requests are evicted for retry. Dynamic icons inherit the integration's

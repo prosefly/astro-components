@@ -1,7 +1,6 @@
 ---
 import '../styles/theme-tokens.css';
 import type { HTMLAttributes } from 'astro/types';
-import videoPlayerScriptUrl from '../client/video-player.js?url&no-inline';
 import { formatDuration } from '../server/audio-player.js';
 import { resolveVideoPlayerOptions, type VideoPlayerOptions } from '../server/video-player.js';
 import Icon from './Icon.astro';
@@ -83,7 +82,9 @@ const hasCaptionSlot = Astro.slots.has('caption');
   }
 </figure>
 
-<script is:inline type="module" src={videoPlayerScriptUrl}></script>
+<script>
+  import '../client/video-player';
+</script>
 
 <style>
   .pf-video-player {

@@ -1,5 +1,4 @@
 ---
-import imageGalleryScriptUrl from '../client/image-gallery.js?url&no-inline';
 import '../styles/theme-tokens.css';
 import Icon from './Icon.astro';
 import { extractImages } from '../server/image-gallery.js';
@@ -63,7 +62,9 @@ const hasMultipleImages = images !== undefined && images.length > 1;
   )
 }
 
-<script is:inline type="module" src={imageGalleryScriptUrl}></script>
+<script>
+  import '../client/image-gallery';
+</script>
 
 <style>
   pf-image-gallery {
