@@ -5,6 +5,7 @@ import { remarkCalloutDirectives } from './callout-directives.js';
 import { remarkImageGallery } from './image-gallery.js';
 import { rehypeMermaid } from './mermaid.js';
 import { remarkPackageManagerTabs } from './package-manager-tabs.js';
+import { rehypeVideoPlayer, type VideoPlayerOptions } from './video-player.js';
 
 /** Options for the transforms owned by the components integration. */
 export interface MarkdownOptions {
@@ -12,6 +13,8 @@ export interface MarkdownOptions {
   packageManagerTabs?: false;
   imageGallery?: false;
   mermaid?: false;
+  /** Opt-in conversion of video-only figures in MDX. Disabled by default. */
+  videoPlayer?: boolean | VideoPlayerOptions;
   /** Theme remark plugins that run before the component transforms. */
   remarkPluginsBeforeTransforms?: RemarkPlugins;
   /** Theme remark plugins that run after the component transforms. */
@@ -78,10 +81,14 @@ export function resolveMarkdownConfig(
     ...(options.imageGallery === false ? [] : [remarkImageGallery]),
     ...(options.remarkPluginsAfterTransforms ?? []),
   ];
+  const videoPlugins: RehypePlugins = options.videoPlayer
+    ? [[rehypeVideoPlayer, options.videoPlayer === true ? {} : options.videoPlayer]]
+    : [];
   const rehypePlugins: RehypePlugins = [
     ...(options.rehypePluginsBeforeTransforms ?? []),
     ...userRehypePlugins,
     ...(options.mermaid === false ? [] : [rehypeMermaid]),
+    ...videoPlugins,
     ...(options.rehypePluginsAfterTransforms ?? []),
   ];
 

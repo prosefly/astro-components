@@ -54,6 +54,7 @@
         "components/badge",
         "components/icon",
         "components/audio-player",
+        "components/video-player",
         "components/embed"
       ]
     }

@@ -12,6 +12,8 @@ export { default as ImageGallery } from './mdx/ImageGallery.astro';
 export { default as Steps } from './mdx/Steps.astro';
 export { default as TabItem } from './mdx/TabItem.astro';
 export { default as Tabs } from './mdx/Tabs.astro';
+export { default as VideoPlayer } from './mdx/VideoPlayer.astro';
+export type { VideoPlayerLabels, VideoPlayerOptions } from './server/video-player.js';
 export type {
   EmbedInput,
   EmbedKind,

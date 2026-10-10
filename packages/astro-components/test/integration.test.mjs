@@ -4,6 +4,7 @@ import proseflyComponents from '@prosefly/astro-components/integration';
 import icon from '../dist/icon/index.js';
 import {
   rehypeMermaid,
+  rehypeVideoPlayer,
   remarkCalloutDirectives,
   remarkImageGallery,
   remarkPackageManagerTabs,
@@ -57,6 +58,18 @@ test('disabled markdown features register no transforms or assets', async () => 
   assert.deepEqual(processor.options.remarkPlugins, []);
   assert.deepEqual(processor.options.rehypePlugins, []);
   assert.deepEqual(result.scripts, []);
+});
+
+test('video figures are explicitly opt-in and forward player options', async () => {
+  const defaults = await setup({ icons: false });
+  assert.ok(!defaults.updates[0].markdown.processor.options.rehypePlugins.includes(rehypeVideoPlayer));
+  const enabled = await setup({ icons: false, markdown: { videoPlayer: true } });
+  assert.deepEqual(enabled.updates[0].markdown.processor.options.rehypePlugins, [rehypeMermaid, [rehypeVideoPlayer, {}]]);
+  const options = { shortVideoSeconds: 15, labels: { play: '再生' } };
+  const configured = await setup({ icons: false, markdown: { videoPlayer: options } });
+  assert.deepEqual(configured.updates[0].markdown.processor.options.rehypePlugins.at(-1), [rehypeVideoPlayer, options]);
+  const disabled = await setup({ icons: false, markdown: { videoPlayer: false } });
+  assert.deepEqual(disabled.updates[0].markdown.processor.options.rehypePlugins, [rehypeMermaid]);
 });
 
 test('preserves unified processor options and extension ordering', async () => {

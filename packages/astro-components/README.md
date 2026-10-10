@@ -57,6 +57,7 @@ The main entry exports:
 - `ImageGallery`
 - `Steps`
 - `TabItem` and `Tabs`
+- `VideoPlayer`
 
 The `/integration` entry exports the `proseflyComponents()` Astro integration and its
 `ComponentsIntegrationOptions` type.
@@ -64,6 +65,7 @@ The `/integration` entry exports the `proseflyComponents()` Astro integration an
 The markdown entry exports:
 
 - `rehypeMermaid`
+- `rehypeVideoPlayer` (opt-in)
 - `remarkImageGallery`
 - `remarkPackageManagerTabs`
 
@@ -129,6 +131,15 @@ asset imports are required. `rehypeMermaid` renders `mermaid` code blocks as
 static SVG; direct use requires excluding `mermaid` from Astro syntax
 highlighting. Dahlia and Lotus enable these transforms through the shared
 integration by default.
+
+`VideoPlayer` loops short clips silently while visible and uses native controls
+for long videos. Enable automatic MDX video-figure conversion explicitly with
+`proseflyComponents({ markdown: { videoPlayer: true } })`, or register
+`rehypeVideoPlayer` in an existing unified processor. Both accept
+`{ shortVideoSeconds: 30, labels: { play: 'Play' } }` configuration (via
+`markdown.videoPlayer` for the integration). HTML attributes, sources, tracks,
+and rich captions are preserved, and no media is fetched at build time.
+Ordinary Markdown, audio, and mixed-content figures are unchanged.
 
 ## Independent Expressive Code plugin
 

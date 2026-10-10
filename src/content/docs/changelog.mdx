@@ -11,6 +11,25 @@ and documentation.
 
 ## Unreleased
 
+## 0.8.0
+
+<Badge color="accent" variant="subtle">October 10, 2026</Badge>
+
+- Added `VideoPlayer` for visibility-aware, muted looping of short clips, with
+  white circular Lucide play/pause and sound controls. Long videos retain native
+  controls; reduced motion requires manual playback and manual pauses persist.
+- Added opt-in `rehypeVideoPlayer` and the integration's `markdown.videoPlayer`
+  option for HTML video figures in MDX. Original attributes, sources, tracks,
+  and rich captions are preserved; ordinary Markdown and mixed figures stay
+  unchanged. Duration thresholds and action labels are configurable.
+- Audio tracks are detected at runtime without build-time media fetching.
+  Confirmed silent clips hide sound controls, while unknown audio and captioned
+  videos retain native controls.
+- Added real MDX compilation and playback-behavior tests, VideoPlayer examples,
+  plugin setup instructions, and styling-token documentation.
+- Refreshed locked dependencies and updated the development toolchain to Astro
+  7.3.5.
+
 ## 0.7.1
 
 <Badge color="accent" variant="subtle">September 12, 2026</Badge>

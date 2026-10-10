@@ -1,0 +1,168 @@
+---
+import '../styles/theme-tokens.css';
+import type { HTMLAttributes } from 'astro/types';
+import videoPlayerScriptUrl from '../client/video-player.js?url&no-inline';
+import { formatDuration } from '../server/audio-player.js';
+import { resolveVideoPlayerOptions, type VideoPlayerOptions } from '../server/video-player.js';
+import Icon from './Icon.astro';
+
+interface Props extends Omit<HTMLAttributes<'video'>, 'controls' | 'autoplay' | 'loop'>, VideoPlayerOptions {
+  caption?: string;
+  /** Initial duration hint in seconds; browser metadata takes precedence. */
+  duration?: number | string;
+  /** Internal figure-transform attributes, separate from native video props. */
+  figureAttributes?: HTMLAttributes<'figure'>;
+}
+
+const {
+  caption,
+  duration: suppliedDuration,
+  shortVideoSeconds,
+  labels: suppliedLabels,
+  figureAttributes = {},
+  class: className,
+  preload = 'metadata',
+  ...videoAttributes
+} = Astro.props;
+const options = resolveVideoPlayerOptions({ shortVideoSeconds, labels: suppliedLabels });
+const parsedDuration = Number(suppliedDuration);
+const duration = Number.isFinite(parsedDuration) && parsedDuration > 0 ? parsedDuration : undefined;
+const hasCaptionSlot = Astro.slots.has('caption');
+---
+
+<figure {...figureAttributes} class:list={['pf-video-player', className, figureAttributes.class]}>
+  <pf-video-player data-duration={duration} data-short-video-seconds={options.shortVideoSeconds}>
+    <slot name="media">
+      <video
+        {...videoAttributes}
+        controls
+        playsinline
+        preload={preload}
+        aria-label={videoAttributes['aria-label'] ?? caption}
+      >
+        <slot />
+        {videoAttributes.src && <a href={videoAttributes.src}>{options.labels.download}</a>}
+      </video>
+    </slot>
+    <div class="pf-video-player__actions" data-pf-video-actions hidden>
+      <button
+        type="button"
+        class="pf-video-player__button"
+        data-pf-video-playback
+        data-play-label={options.labels.play}
+        data-pause-label={options.labels.pause}
+        aria-label={options.labels.play}
+        title={options.labels.play}
+      >
+        <Icon name="lucide:play" data-pf-video-icon="play" />
+        <Icon name="lucide:pause" data-pf-video-icon="pause" data-pf-video-hidden="true" />
+      </button>
+      <button
+        type="button"
+        class="pf-video-player__button"
+        data-pf-video-sound
+        data-mute-label={options.labels.mute}
+        data-unmute-label={options.labels.unmute}
+        aria-label={options.labels.unmute}
+        title={options.labels.unmute}
+        hidden
+      >
+        <Icon name="lucide:volume-x" data-pf-video-icon="muted" />
+        <Icon name="lucide:volume-2" data-pf-video-icon="audible" data-pf-video-hidden="true" />
+      </button>
+    </div>
+  </pf-video-player>
+  {
+    hasCaptionSlot ? <slot name="caption" /> : (caption || duration !== undefined) && (
+      <figcaption>
+        {caption}
+        {caption && duration !== undefined && <span aria-hidden="true"> · </span>}
+        {duration !== undefined && <span>{formatDuration(duration)}</span>}
+      </figcaption>
+    )
+  }
+</figure>
+
+<script is:inline type="module" src={videoPlayerScriptUrl}></script>
+
+<style>
+  .pf-video-player {
+    margin-block: 2rem;
+    font-family: var(--pf-font-sans);
+  }
+  pf-video-player {
+    position: relative;
+    display: block;
+  }
+  .pf-video-player :global(video) {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    border: 1px solid var(--pf-video-player-border-color, var(--pf-border-subtle));
+    border-radius: var(--pf-video-player-radius, var(--pf-radius-md));
+  }
+  .pf-video-player__actions {
+    position: absolute;
+    inset-inline-end: 1rem;
+    inset-block-end: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    opacity: 0;
+    transition: opacity 160ms ease;
+  }
+  .pf-video-player__actions[hidden],
+  .pf-video-player__button[hidden],
+  .pf-video-player__button :global([data-pf-video-hidden='true']) {
+    display: none;
+  }
+  pf-video-player:hover .pf-video-player__actions,
+  pf-video-player:focus-within .pf-video-player__actions,
+  pf-video-player[data-paused] .pf-video-player__actions {
+    opacity: 1;
+  }
+  .pf-video-player__button {
+    display: flex;
+    width: var(--pf-video-player-button-size, 2.5rem);
+    height: var(--pf-video-player-button-size, 2.5rem);
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: var(--pf-radius-full);
+    /* Media overlays stay light in both themes; consumers can override these. */
+    background: var(--pf-video-player-button-background, #fff);
+    color: var(--pf-video-player-button-color, #182230);
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+  }
+  .pf-video-player__button:hover {
+    background: var(--pf-video-player-button-hover-background, #f4f6f8);
+  }
+  .pf-video-player__button:focus-visible {
+    outline: 2px solid var(--pf-accent);
+    outline-offset: 2px;
+  }
+  .pf-video-player__button :global(svg) {
+    width: 1rem;
+    height: 1rem;
+  }
+  .pf-video-player :global(figcaption) {
+    margin-block-start: 0.75rem;
+    color: var(--pf-video-player-caption-color, var(--pf-text-muted));
+    font-size: 0.75rem;
+    line-height: 1.6;
+    text-align: start;
+  }
+  @media (hover: none) {
+    .pf-video-player__actions {
+      opacity: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pf-video-player__actions {
+      transition: none;
+    }
+  }
+</style>

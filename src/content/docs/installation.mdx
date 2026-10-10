@@ -93,7 +93,8 @@ import { Callout, Steps } from '@prosefly/astro-components';
 
 For detailed setup, see [Callout](/components/callout/),
 [Package Manager Tabs](/package-manager-tabs/), [Mermaid Diagrams](/mermaid/),
-and [Images](/images/).
+and [Images](/images/). [VideoPlayer](/components/video-player/) figure conversion
+is opt-in via `markdown: { videoPlayer: true }` in the shared integration.
 
 ## Configure Expressive Code
 
@@ -142,6 +143,7 @@ import {
   remarkImageGallery,
   remarkCalloutDirectives,
   rehypeMermaid,
+  rehypeVideoPlayer,
   unified,
 } from '@prosefly/astro-components/markdown';
 import { expressiveCodeHeaderIcons } from '@prosefly/astro-components/expressive-code';
@@ -151,13 +153,17 @@ import { expressiveCodeHeaderIcons } from '@prosefly/astro-components/expressive
 `ImageGallery` component for image-only paragraphs; regular `.md` files are
 not transformed. `rehypeMermaid` renders `mermaid` code blocks as SVG and must
 run with `mermaid` excluded from Astro syntax highlighting.
+`rehypeVideoPlayer` optionally converts video-only HTML figures in MDX; it is
+not enabled by default.
 
 ## Component Exports
 
 - `AccordionItem` and `Accordions`
+- `AudioPlayer`
 - `Badge`
 - `Callout`
 - `Card` and `CardGrid`
+- `VideoPlayer`
 - `FileTree`
 - `Icon`
 - `Steps`

@@ -1,0 +1,195 @@
+---
+title: VideoPlayer
+description: Loop short clips while keeping native controls for longer videos.
+---
+
+import { VideoPlayer } from '@prosefly/astro-components';
+
+`VideoPlayer` enhances the native `video` element without replacing its full
+control bar. By default, clips up to **30 seconds** loop silently while visible;
+longer videos stay manual and use the browser's playback controls.
+
+## Short Clip
+
+<VideoPlayer
+  src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+  width={960}
+  height={540}
+  caption="A bee visiting flowers (MDN's CC0 sample)."
+/>
+
+```mdx
+import { VideoPlayer } from '@prosefly/astro-components';
+
+<VideoPlayer
+  src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+  width={960}
+  height={540}
+  caption="A bee visiting flowers."
+/>
+```
+
+Short clips have white circular Lucide play/pause and sound buttons when the
+browser can determine whether an audio track exists. The buttons appear on
+hover, keyboard focus, or pause, and stay visible on touch devices.
+Confirmed silent clips omit the sound button. Unknown audio falls back to
+native controls; zero decoded audio bytes alone never counts as proof of silence.
+
+Looping pauses when a clip leaves the viewport or the tab becomes hidden, and
+resumes silently when it becomes visible again. A manual pause stays paused.
+With reduced motion enabled, playback requires an explicit user action.
+If autoplay is blocked, the play control remains available.
+
+## Native Controls
+
+Set `shortVideoSeconds={0}` to disable automatic looping, even for short clips:
+
+<VideoPlayer
+  src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+  shortVideoSeconds={0}
+  caption="The same clip with native controls and manual playback."
+/>
+
+```mdx
+<VideoPlayer src="/videos/tutorial.mp4" shortVideoSeconds={0} />
+```
+
+Videos longer than the threshold, streams, and videos with unknown duration
+also use native controls. They do not autoplay. Videos containing `track`
+children retain native controls so captions can still be selected. Without
+JavaScript, the original video and native controls remain usable.
+
+## Automatic MDX Figures
+
+Figure conversion is **opt-in**. Register the shared integration once in a
+standalone Astro project:
+
+```ts title="astro.config.ts"
+import mdx from '@astrojs/mdx';
+import { defineConfig } from 'astro/config';
+import proseflyComponents from '@prosefly/astro-components/integration';
+
+export default defineConfig({
+  integrations: [
+    proseflyComponents({
+      markdown: { videoPlayer: true },
+    }),
+    mdx(),
+  ],
+});
+```
+
+Authors can then write ordinary HTML in `.mdx` files without importing a component:
+
+<figure id="flower-figure" class="video-example">
+  <video
+    src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+    width="960"
+    height="540"
+    aria-label="A bee visiting flowers"
+  />
+  <figcaption>A <strong>short</strong> clip, authored as an HTML figure.</figcaption>
+</figure>
+
+```mdx
+<figure id="demo" class="wide">
+  <video poster="/videos/poster.webp" width="1280" height="720" data-duration="15">
+    <source src="/videos/demo.webm" type="video/webm" />
+    <source src="/videos/demo.mp4" type="video/mp4" />
+    <track kind="captions" src="/videos/demo.en.vtt" srcLang="en" />
+  </video>
+  <figcaption>A <strong>short</strong> demo with a <a href="/guide/">guide</a>.</figcaption>
+</figure>
+```
+
+`rehypeVideoPlayer` imports `VideoPlayer` automatically. It preserves figure
+and video attributes (including MDX expressions and spreads), multiple sources,
+tracks, and the original rich `figcaption`. Image figures, audio figures,
+figures with additional content, multiple videos, or no source are left alone.
+Ordinary `.md` files and standalone `video` elements are not transformed.
+
+`data-duration` is an optional hint in seconds; actual browser metadata takes
+precedence. No videos are fetched during compilation, and no URL-specific
+audio lookup is used. At runtime the component manages `controls`, `loop`,
+`autoplay`, and mute state according to its playback policy.
+
+For custom thresholds or translations, pass an options object:
+
+```ts
+proseflyComponents({
+  markdown: {
+    videoPlayer: {
+      shortVideoSeconds: 15,
+      labels: { play: '再生', pause: '一時停止', mute: '消音', unmute: '音声をオン' },
+    },
+  },
+});
+```
+
+### Independent Plugin And Themes
+
+Lotus and Dahlia already register the shared integration; do not add it again.
+Use the standalone rehype plugin in the existing Markdown processor instead:
+
+```ts title="astro.config.ts"
+import { defineConfig } from 'astro/config';
+import lotus from '@prosefly/astro-theme-lotus';
+import { rehypeVideoPlayer, unified } from '@prosefly/astro-components/markdown';
+
+export default defineConfig({
+  markdown: {
+    processor: unified({
+      rehypePlugins: [[rehypeVideoPlayer, { shortVideoSeconds: 15 }]],
+    }),
+  },
+  integrations: [lotus()],
+});
+```
+
+The `/markdown` entry exports `rehypeVideoPlayer` and `VideoPlayerOptions`.
+
+## Sources And Captions
+
+For direct component use, put `source` children inside `VideoPlayer` and use the
+`caption` prop for plain text:
+
+```mdx
+<VideoPlayer caption="Tutorial">
+  <source src="/videos/tutorial.webm" type="video/webm" />
+  <source src="/videos/tutorial.mp4" type="video/mp4" />
+</VideoPlayer>
+```
+
+For tracks, custom fallback content, figure attributes, or rich captions, write
+an ordinary `<figure>` with a `<video>` and `<figcaption>` as shown above. The
+opt-in plugin preserves the complete authored markup; there is no need to wrap
+that figure in `VideoPlayer` yourself.
+
+## Props
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `src`, `poster`, `width`, `height`, `preload`, etc. | Native video attributes | Applied to the generated video; preload defaults to `metadata`. |
+| `caption` | `string` | Plain-text caption and default video label. |
+| `duration` | `number \| string` | Positive duration hint in seconds; browser metadata takes precedence. |
+| `shortVideoSeconds` | `number` | Defaults to `30`; `0` disables looping. |
+| `labels` | `Partial<VideoPlayerLabels>` | Override play, pause, mute, unmute, and download labels. |
+| `class` | `string` | Additional class on the outer figure. |
+
+Set a localized `caption` or `aria-label` as well as localized action labels.
+
+## Styling
+
+Media borders, radius, caption color, typography, and focus rings use shared
+theme tokens. Overlay buttons intentionally stay white with dark icons in both
+themes. Override these component tokens in your layout:
+
+| Token | Default |
+| --- | --- |
+| `--pf-video-player-radius` | `var(--pf-radius-md)` |
+| `--pf-video-player-border-color` | `var(--pf-border-subtle)` |
+| `--pf-video-player-caption-color` | `var(--pf-text-muted)` |
+| `--pf-video-player-button-size` | `2.5rem` |
+| `--pf-video-player-button-background` | `#fff` |
+| `--pf-video-player-button-color` | `#182230` |
+| `--pf-video-player-button-hover-background` | `#f4f6f8` |

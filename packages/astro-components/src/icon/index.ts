@@ -27,6 +27,10 @@ const componentIconNames = [
   'lucide:copy',
   'lucide:info',
   'lucide:lightbulb',
+  'lucide:play',
+  'lucide:pause',
+  'lucide:volume-x',
+  'lucide:volume-2',
   'lucide:triangle-alert',
   ...fileTreeComponentIconNames,
 ] as const;
