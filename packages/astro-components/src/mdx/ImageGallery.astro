@@ -14,10 +14,9 @@ const hasMultipleImages = images !== undefined && images.length > 1;
     <figure
       class="pf-image-gallery"
       data-image-count={images.length}
-      data-pf-image-gallery={hasMultipleImages ? '' : undefined}
     >
       {hasMultipleImages ? (
-        <>
+        <pf-image-gallery>
           <span
             aria-hidden="true"
             class="pf-image-gallery__indicators"
@@ -54,7 +53,7 @@ const hasMultipleImages = images !== undefined && images.length > 1;
           >
             <Icon name="lucide:chevron-right" />
           </button>
-        </>
+        </pf-image-gallery>
       ) : (
         <Fragment set:html={images[0]} />
       )}
@@ -67,6 +66,10 @@ const hasMultipleImages = images !== undefined && images.length > 1;
 <script is:inline type="module" src={imageGalleryScriptUrl}></script>
 
 <style>
+  pf-image-gallery {
+    display: block;
+  }
+
   .pf-image-gallery {
     --pf-image-gallery-indicator-color: var(--pf-border-muted);
     --pf-image-gallery-indicator-current-color: var(--pf-accent);

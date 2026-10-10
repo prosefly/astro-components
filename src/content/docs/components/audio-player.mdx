@@ -36,6 +36,13 @@ finite duration from the audio metadata.
 The enhanced controls include playback-speed cycling, 15-second replay,
 30-second forward, mute, and Media Session integration where supported.
 
+The controls are managed by a light-DOM `<pf-audio-player>` custom element.
+Players initialize when added to the page, including after Astro page transitions,
+and release event listeners, animation frames, and observers when removed.
+Removing a player pauses its audio; reinserting it preserves the playback position.
+No JavaScript framework or Shadow DOM is required, so theme tokens and CSS overrides
+continue to work normally.
+
 Use `source` children when an audio file is available in multiple formats.
 
 ```mdx

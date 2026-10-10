@@ -35,7 +35,9 @@ const durationLabel = formatDuration(duration);
 const ariaLabel = audioAttributes['aria-label'] ?? title ?? 'Audio player';
 ---
 
-<figure
+<pf-audio-player
+  role="group"
+  aria-label={ariaLabel}
   class:list={['pf-audio-player', className]}
   data-pf-audio-album={album}
   data-pf-audio-artist={artist}
@@ -160,7 +162,7 @@ const ariaLabel = audioAttributes['aria-label'] ?? title ?? 'Audio player';
       </button>
     </div>
   </div>
-</figure>
+</pf-audio-player>
 
 <script is:inline type="module" src={audioPlayerScriptUrl}></script>
 

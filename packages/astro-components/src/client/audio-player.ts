@@ -1,5 +1,6 @@
-const prosefly = (window.__prosefly ??= {});
 const playbackRates = [0.5, 1, 1.25, 1.5, 2];
+const mediaSessionActions = ["play", "pause", "seekbackward", "seekforward"] as const;
+let mediaSessionOwner: HTMLAudioElement | undefined;
 
 function formatTime(value: number): string {
   if (!Number.isFinite(value) || value < 0) {
@@ -40,6 +41,7 @@ function setMediaSession(player: HTMLElement, audio: HTMLAudioElement): void {
     artwork: artwork ? [{ src: artwork }] : undefined,
     title: player.dataset.pfAudioTitle,
   });
+  mediaSessionOwner = audio;
 
   const actions: Array<[MediaSessionAction, MediaSessionActionHandler]> = [
     ["play", () => void audio.play().catch(() => undefined)],
@@ -57,7 +59,25 @@ function setMediaSession(player: HTMLElement, audio: HTMLAudioElement): void {
   });
 }
 
-function initMarquees(player: HTMLElement): void {
+function clearMediaSession(audio: HTMLAudioElement): void {
+  if (mediaSessionOwner !== audio) {
+    return;
+  }
+
+  mediaSessionOwner = undefined;
+  navigator.mediaSession.metadata = null;
+  mediaSessionActions.forEach((action) => {
+    try {
+      navigator.mediaSession.setActionHandler(action, null);
+    } catch {
+      // Unsupported actions also reject removing a handler.
+    }
+  });
+}
+
+function observeMarquees(player: HTMLElement): () => void {
+  const observers: ResizeObserver[] = [];
+
   player.querySelectorAll("[data-pf-audio-marquee]").forEach((marquee) => {
     const content = marquee.querySelector("[data-pf-audio-marquee-content]");
 
@@ -83,15 +103,15 @@ function initMarquees(player: HTMLElement): void {
     };
 
     measure();
-    new ResizeObserver(measure).observe(marquee);
+    const observer = new ResizeObserver(measure);
+    observer.observe(marquee);
+    observers.push(observer);
   });
+
+  return () => observers.forEach((observer) => observer.disconnect());
 }
 
-function initAudioPlayer(player: HTMLElement): void {
-  if (player.dataset.pfAudioPlayerReady) {
-    return;
-  }
-
+function connectAudioPlayer(player: HTMLElement, signal: AbortSignal): (() => void) | undefined {
   const audioNode = player.querySelector("audio");
   const playButtonNode = player.querySelector("[data-pf-audio-play]");
   const muteButtonNode = player.querySelector("[data-pf-audio-mute]");
@@ -147,7 +167,7 @@ function initAudioPlayer(player: HTMLElement): void {
   function syncProgress(): void {
     updateProgress();
 
-    if (!audio.paused && !audio.ended && audio.isConnected) {
+    if (!signal.aborted && !audio.paused && !audio.ended && audio.isConnected) {
       progressFrame = requestAnimationFrame(syncProgress);
     } else {
       progressFrame = undefined;
@@ -242,10 +262,14 @@ function initAudioPlayer(player: HTMLElement): void {
     const hasDuration = Number.isFinite(audio.duration) && audio.duration > 0;
 
     updateProgress();
-    currentTime.textContent = formatTime(audio.currentTime);
     duration.textContent = hasDuration
       ? formatTime(audio.duration)
       : initialDuration;
+    if (isScrubbing) {
+      return;
+    }
+
+    currentTime.textContent = formatTime(audio.currentTime);
     seek.ariaValueText = hasDuration
       ? `${formatTime(audio.currentTime)} of ${formatTime(audio.duration)}`
       : null;
@@ -253,11 +277,15 @@ function initAudioPlayer(player: HTMLElement): void {
 
   playButton.addEventListener("click", () => {
     if (audio.paused || audio.ended) {
-      void audio.play().catch(updatePlayback);
+      void audio.play().catch(() => {
+        if (!signal.aborted) {
+          updatePlayback();
+        }
+      });
     } else {
       audio.pause();
     }
-  });
+  }, { signal });
 
   muteButton.addEventListener("click", () => {
     if (audio.muted) {
@@ -267,26 +295,26 @@ function initAudioPlayer(player: HTMLElement): void {
     } else {
       audio.muted = true;
     }
-  });
+  }, { signal });
 
-  seek.addEventListener("pointerdown", beginScrubbing);
+  seek.addEventListener("pointerdown", beginScrubbing, { signal });
   seek.addEventListener("input", () => {
     beginScrubbing();
     previewSeek();
-  });
+  }, { signal });
   seek.addEventListener("change", () => {
     previewSeek();
     endScrubbing();
-  });
-  seek.addEventListener("pointerup", endScrubbing);
-  seek.addEventListener("pointercancel", endScrubbing);
-  seek.addEventListener("blur", endScrubbing);
+  }, { signal });
+  seek.addEventListener("pointerup", endScrubbing, { signal });
+  seek.addEventListener("pointercancel", endScrubbing, { signal });
+  seek.addEventListener("blur", endScrubbing, { signal });
 
   seekButtons.forEach((button) => {
     button.addEventListener("click", () => {
       seekBy(audio, Number(button.dataset.pfAudioSeekBy) || 0);
       updateTime();
-    });
+    }, { signal });
   });
 
   if (rateButton instanceof HTMLButtonElement) {
@@ -296,49 +324,71 @@ function initAudioPlayer(player: HTMLElement): void {
         index < 0 || index === playbackRates.length - 1 ? 0 : index + 1;
 
       audio.playbackRate = playbackRates[nextIndex];
-    });
+    }, { signal });
   }
 
   audio.addEventListener("play", () => {
     updatePlayback();
     setMediaSession(player, audio);
-  });
+  }, { signal });
   audio.addEventListener("pause", () => {
     updatePlayback();
     updateTime();
-  });
+  }, { signal });
   audio.addEventListener("ended", () => {
     updatePlayback();
     updateTime();
-  });
-  audio.addEventListener("volumechange", updateMuted);
-  audio.addEventListener("loadedmetadata", updateTime);
-  audio.addEventListener("durationchange", updateTime);
-  audio.addEventListener("timeupdate", updateTime);
-  audio.addEventListener("ratechange", updatePlaybackRate);
+  }, { signal });
+  audio.addEventListener("volumechange", updateMuted, { signal });
+  audio.addEventListener("loadedmetadata", updateTime, { signal });
+  audio.addEventListener("durationchange", updateTime, { signal });
+  audio.addEventListener("timeupdate", updateTime, { signal });
+  audio.addEventListener("ratechange", updatePlaybackRate, { signal });
 
   audio.controls = false;
   player.dataset.pfAudioPlayerReady = "true";
-  initMarquees(player);
+  const stopObservingMarquees = observeMarquees(player);
   updatePlayback();
   updatePlaybackRate();
   updateMuted();
   updateTime();
+
+  return () => {
+    cancelProgressSync();
+    stopObservingMarquees();
+    clearMediaSession(audio);
+    audio.pause();
+    audio.controls = true;
+    player.dataset.pfAudioPlaying = "false";
+    delete player.dataset.pfAudioPlayerReady;
+  };
 }
 
-function initAudioPlayers(): void {
-  document.querySelectorAll(".pf-audio-player").forEach((player) => {
-    if (player instanceof HTMLElement) {
-      initAudioPlayer(player);
+export class AudioPlayerElement extends HTMLElement {
+  private events?: AbortController;
+  private cleanup?: () => void;
+
+  connectedCallback(): void {
+    if (this.events) {
+      return;
     }
-  });
+
+    this.events = new AbortController();
+    this.cleanup = connectAudioPlayer(this, this.events.signal);
+    if (!this.cleanup) {
+      this.events.abort();
+      this.events = undefined;
+    }
+  }
+
+  disconnectedCallback(): void {
+    this.events?.abort();
+    this.cleanup?.();
+    this.events = undefined;
+    this.cleanup = undefined;
+  }
 }
 
-if (!prosefly.initAudioPlayers) {
-  prosefly.initAudioPlayers = initAudioPlayers;
-  document.addEventListener("astro:page-load", prosefly.initAudioPlayers);
+if (!customElements.get("pf-audio-player")) {
+  customElements.define("pf-audio-player", AudioPlayerElement);
 }
-
-prosefly.initAudioPlayers();
-
-export {};

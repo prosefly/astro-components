@@ -1,15 +1,21 @@
-const prosefly = (window.__prosefly ??= {});
-
 type GalleryDirection = 'previous' | 'next';
 
-function imageReady(image: HTMLImageElement): Promise<void> {
-  if (image.complete && image.naturalWidth > 0 && image.naturalHeight > 0) {
+function imageReady(image: HTMLImageElement, signal: AbortSignal): Promise<void> {
+  if (image.complete || signal.aborted) {
     return Promise.resolve();
   }
 
   return new Promise((resolve) => {
-    image.addEventListener('load', () => resolve(), { once: true });
-    image.addEventListener('error', () => resolve(), { once: true });
+    const finish = () => {
+      image.removeEventListener('load', finish);
+      image.removeEventListener('error', finish);
+      signal.removeEventListener('abort', finish);
+      resolve();
+    };
+
+    image.addEventListener('load', finish, { once: true });
+    image.addEventListener('error', finish, { once: true });
+    signal.addEventListener('abort', finish, { once: true });
   });
 }
 
@@ -170,16 +176,16 @@ function measureGallery(gallery: HTMLElement, track: HTMLElement): void {
   });
 }
 
-function initImageGalleries(): void {
-  document.querySelectorAll('[data-pf-image-gallery]').forEach((gallery) => {
-    if (
-      !(gallery instanceof HTMLElement) ||
-      gallery.dataset.pfImageGalleryReady
-    ) {
+export class ImageGalleryElement extends HTMLElement {
+  private events?: AbortController;
+  private observer?: ResizeObserver;
+
+  connectedCallback(): void {
+    if (this.events) {
       return;
     }
 
-    const track = gallery.querySelector<HTMLElement>(
+    const track = this.querySelector<HTMLElement>(
       '[data-pf-image-gallery-track]',
     );
 
@@ -187,22 +193,30 @@ function initImageGalleries(): void {
       return;
     }
 
-    gallery.dataset.pfImageGalleryReady = 'true';
-    const update = () => updateIndicators(gallery, track);
+    this.events = new AbortController();
+    const { signal } = this.events;
+    this.dataset.pfImageGalleryReady = 'true';
+    const update = () => updateIndicators(this, track);
     const measure = () => {
-      measureGallery(gallery, track);
+      // Image promises from an earlier connection can settle after removal.
+      if (signal.aborted) {
+        return;
+      }
+
+      measureGallery(this, track);
       update();
     };
     const images = [...track.querySelectorAll('img')].filter(
       (image): image is HTMLImageElement => image instanceof HTMLImageElement,
     );
 
-    Promise.all(images.map(imageReady)).then(measure);
-    new ResizeObserver(measure).observe(track);
-    track.addEventListener('scroll', update, { passive: true });
+    void Promise.all(images.map((image) => imageReady(image, signal))).then(measure);
+    this.observer = new ResizeObserver(measure);
+    this.observer.observe(track);
+    track.addEventListener('scroll', update, { passive: true, signal });
     update();
 
-    gallery
+    this
       .querySelectorAll('[data-pf-image-gallery-button]')
       .forEach((button) => {
         if (!(button instanceof HTMLButtonElement)) {
@@ -216,16 +230,19 @@ function initImageGalleries(): void {
             track,
             direction === 'previous' ? 'previous' : 'next',
           );
-        });
+        }, { signal });
       });
-  });
+  }
+
+  disconnectedCallback(): void {
+    this.events?.abort();
+    this.observer?.disconnect();
+    this.events = undefined;
+    this.observer = undefined;
+    delete this.dataset.pfImageGalleryReady;
+  }
 }
 
-if (!prosefly.initImageGalleries) {
-  prosefly.initImageGalleries = initImageGalleries;
-  document.addEventListener('astro:page-load', prosefly.initImageGalleries);
+if (!customElements.get('pf-image-gallery')) {
+  customElements.define('pf-image-gallery', ImageGalleryElement);
 }
-
-prosefly.initImageGalleries();
-
-export {};

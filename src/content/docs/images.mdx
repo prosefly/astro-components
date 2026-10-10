@@ -58,6 +58,13 @@ generates an `ImageGallery` component while preserving the original image nodes
 for Astro's image handling. The component loads its own CSS and runtime only on
 pages that use a gallery; no layout imports are required.
 
+Multi-image figures use a light-DOM `<pf-image-gallery>` custom element. Each
+gallery initializes when inserted, including after Astro page transitions, and
+releases scroll/button listeners, image-loading listeners, and its resize
+observer when removed. Reinserting a gallery preserves its scroll position.
+Single images remain ordinary figures, and galleries remain horizontally
+scrollable without JavaScript.
+
 To keep the other integration features but disable galleries and their assets,
 set `markdown.imageGallery` to `false`.
 

@@ -11,10 +11,14 @@ and documentation.
 
 ## Unreleased
 
-## 0.8.0
-
-<Badge color="accent" variant="subtle">October 10, 2026</Badge>
-
+- Refactored multi-image galleries to a light-DOM custom element that manages
+  navigation, indicators, and sizing without global page-load handlers. Removal
+  cleans up listeners and observers, including pending image loads; single-image
+  figures and no-JavaScript scrolling remain unchanged.
+- Refactored `AudioPlayer` to a light-DOM custom element, with automatic setup
+  and cleanup on insertion, removal, and Astro page transitions. Existing props,
+  styles, and native audio fallback remain unchanged; scrubbing previews stay
+  responsive while browser seek events catch up.
 - Added `VideoPlayer` for visibility-aware, muted looping of short clips, with
   white circular Lucide play/pause and sound controls. Long videos retain native
   controls; reduced motion requires manual playback and manual pauses persist.
