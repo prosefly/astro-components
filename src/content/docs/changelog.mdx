@@ -9,12 +9,18 @@ This changelog covers user-facing changes to `@prosefly/astro-components`,
 including components, markdown transforms, integration behavior, styling tokens,
 and documentation.
 
-## Unreleased
+## 0.8.2
 
-- Image galleries now show the current image's alt text below the image strip,
-  alongside always-visible left/right arrow controls. Removed overlay controls
-  and position indicators without changing image sizing or scrolling. Navigation
-  buttons are smaller and disabled when no further scrolling is possible.
+<Badge color="accent" variant="subtle">October 12, 2026</Badge>
+
+- Image galleries now show the current image's alt text at the bottom left,
+  updating during navigation and scrolling. Empty alt text clears the description;
+  image sizing, horizontal previews, and single-image figures are unchanged.
+- Moved navigation to the bottom right with smaller left/right arrow buttons.
+  Buttons use a theme-aware disabled color and cannot be clicked at scroll
+  boundaries; their states also update after manual scrolling and resizing.
+- Removed position indicators and the `--pf-image-gallery-indicator-color` and
+  `--pf-image-gallery-indicator-current-color` custom properties.
 
 ## 0.8.1
 
