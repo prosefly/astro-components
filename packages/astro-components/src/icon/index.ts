@@ -22,6 +22,8 @@ interface IconPreloadConfig {
 }
 
 const componentIconNames = [
+  'lucide:arrow-left',
+  'lucide:arrow-right',
   'lucide:badge-alert',
   'lucide:check',
   'lucide:copy',

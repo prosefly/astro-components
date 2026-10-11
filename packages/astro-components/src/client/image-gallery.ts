@@ -53,23 +53,17 @@ function getGalleryItems(track: HTMLElement): HTMLElement[] {
   );
 }
 
-function updateIndicators(gallery: HTMLElement, track: HTMLElement): void {
+function updateCaption(gallery: HTMLElement, track: HTMLElement): void {
   const items = getGalleryItems(track);
-  const indicatorGroup = gallery.querySelector<HTMLElement>(
-    '[data-pf-image-gallery-indicators]',
+  const caption = gallery.querySelector<HTMLElement>(
+    '[data-pf-image-gallery-caption]',
   );
 
-  if (!(indicatorGroup instanceof HTMLElement) || track.clientWidth <= 0) {
-    return;
-  }
-
-  const indicators = [
-    ...indicatorGroup.querySelectorAll('[data-pf-image-gallery-indicator]'),
-  ].filter((indicator): indicator is HTMLElement =>
-    indicator instanceof HTMLElement,
-  );
-
-  if (items.length === 0 || indicators.length !== items.length) {
+  if (
+    !(caption instanceof HTMLElement) ||
+    track.clientWidth <= 0 ||
+    items.length === 0
+  ) {
     return;
   }
 
@@ -89,12 +83,26 @@ function updateIndicators(gallery: HTMLElement, track: HTMLElement): void {
     });
   }
 
-  indicators.forEach((indicator, index) => {
-    if (index === currentIndex) {
-      indicator.dataset.current = 'true';
-    } else {
-      delete indicator.dataset.current;
+  const image = items[currentIndex].querySelector('img');
+  const alt = image instanceof HTMLImageElement ? image.alt : '';
+  if (caption.textContent !== alt) {
+    caption.textContent = alt;
+  }
+}
+
+function updateNavigation(gallery: HTMLElement, track: HTMLElement): void {
+  const maximumScrollLeft = Math.max(track.scrollWidth - track.clientWidth, 0);
+  const canScroll = track.clientWidth > 0 && maximumScrollLeft > 1;
+
+  gallery.querySelectorAll('[data-pf-image-gallery-button]').forEach((button) => {
+    if (!(button instanceof HTMLButtonElement)) {
+      return;
     }
+
+    const direction = button.getAttribute('data-pf-image-gallery-button');
+    button.disabled = direction === 'previous'
+      ? !canScroll || track.scrollLeft <= 1
+      : !canScroll || track.scrollLeft >= maximumScrollLeft - 1;
   });
 }
 
@@ -196,7 +204,10 @@ export class ImageGalleryElement extends HTMLElement {
     this.events = new AbortController();
     const { signal } = this.events;
     this.dataset.pfImageGalleryReady = 'true';
-    const update = () => updateIndicators(this, track);
+    const update = () => {
+      updateCaption(this, track);
+      updateNavigation(this, track);
+    };
     const measure = () => {
       // Image promises from an earlier connection can settle after removal.
       if (signal.aborted) {
@@ -224,6 +235,10 @@ export class ImageGalleryElement extends HTMLElement {
         }
 
         button.addEventListener('click', () => {
+          if (button.disabled) {
+            return;
+          }
+
           const direction = button.getAttribute('data-pf-image-gallery-button');
 
           scrollToAdjacentItem(

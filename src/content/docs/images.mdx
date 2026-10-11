@@ -38,6 +38,13 @@ A paragraph that contains multiple images becomes a gallery.
 ![A square waterfall in a green canyon](https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=900&h=900&q=80)
 ![A panoramic tropical coastline](https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1300&h=560&q=80)
 
+The image strip keeps its horizontal layout and next-image preview. Below it,
+the current image's alt text appears on the left, with left/right arrow buttons
+on the right. The description follows both arrow navigation and manual
+scrolling. Images with empty alt text have no visible description.
+Arrows use a disabled color and cannot be clicked when no further scrolling is
+possible in that direction.
+
 ## Standalone Astro Setup
 
 If you are not using a Prosefly theme, register the shared integration in
@@ -101,7 +108,8 @@ import { ImageGallery } from '@prosefly/astro-components';
 2. **Use helpful alt text.**
 
    The transform preserves each image element. The `alt` text is still the main
-   accessibility description for the image.
+   accessibility description for the image, and also appears below multi-image
+   galleries as the current image's description.
 
 3. **Group images intentionally.**
 

@@ -4,14 +4,19 @@ type Root = ReturnType<ReturnType<typeof rehype>['parse']>;
 type HastNode = Root | Root['children'][number];
 type ElementNode = Extract<HastNode, { type: 'element' }>;
 
-/** Extract image HTML while preserving Astro's rendered image attributes. */
-export function extractImages(html: string | undefined): string[] | undefined {
+interface GalleryImage {
+  html: string;
+  alt: string;
+}
+
+/** Extract image HTML and alt text without losing Astro's rendered attributes. */
+export function extractImages(html: string | undefined): GalleryImage[] | undefined {
   const processor = rehype().data('settings', { fragment: true });
   const images = getSlotImages(processor.parse(html ?? ''));
 
-  return images?.map((image) => processor.stringify({
-    type: 'root',
-    children: [image],
+  return images?.map((image) => ({
+    html: processor.stringify({ type: 'root', children: [image] }),
+    alt: typeof image.properties.alt === 'string' ? image.properties.alt : '',
   }));
 }
 
