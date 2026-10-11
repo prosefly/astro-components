@@ -4,52 +4,66 @@ on:
   push:
     branches:
       - main
-  pull_request:
+    paths-ignore:
+      - '.github/**'
+      - 'README.md'
+      - '*.lock'
   workflow_dispatch:
 
 concurrency:
-  group: site-${{ github.workflow }}-${{ github.ref }}
+  group: pages
   cancel-in-progress: true
 
 jobs:
   build:
-    name: Check and build site
+    name: Build site
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: read
 
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11.25
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          cache: npm
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
 
       - name: Setup Pages
-        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v6
 
       - name: Install dependencies
-        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
+        run: pnpm install
+
+      - name: Test package
+        run: pnpm test
 
       - name: Check site
-        run: npm run check
+        run: pnpm check
 
       - name: Build site
-        run: npm run build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: pnpm build
 
       - name: Upload site artifact
-        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
   deploy:
     name: Publish site
-    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     permissions:
