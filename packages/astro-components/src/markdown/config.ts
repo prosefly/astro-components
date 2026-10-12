@@ -13,7 +13,7 @@ export interface MarkdownOptions {
   packageManagerTabs?: false;
   imageGallery?: false;
   mermaid?: false;
-  /** Opt-in conversion of video-only figures in MDX. Disabled by default. */
+  /** Convert video-only figures in MDX by default; pass false to disable. */
   videoPlayer?: boolean | VideoPlayerOptions;
   /** Theme remark plugins that run before the component transforms. */
   remarkPluginsBeforeTransforms?: RemarkPlugins;
@@ -81,9 +81,9 @@ export function resolveMarkdownConfig(
     ...(options.imageGallery === false ? [] : [remarkImageGallery]),
     ...(options.remarkPluginsAfterTransforms ?? []),
   ];
-  const videoPlugins: RehypePlugins = options.videoPlayer
-    ? [[rehypeVideoPlayer, options.videoPlayer === true ? {} : options.videoPlayer]]
-    : [];
+  const videoPlugins: RehypePlugins = options.videoPlayer === false
+    ? []
+    : [[rehypeVideoPlayer, options.videoPlayer === true ? {} : options.videoPlayer ?? {}]];
   const rehypePlugins: RehypePlugins = [
     ...(options.rehypePluginsBeforeTransforms ?? []),
     ...userRehypePlugins,

@@ -65,7 +65,7 @@ import { Callout, Steps } from '@prosefly/astro-components';
    });
    ```
 
-2. **Configure feature switches if you want to disable callout directives, automatic tabs, Mermaid diagrams, or galleries.**
+2. **Configure feature switches if you want to disable callout directives, automatic tabs, Mermaid diagrams, galleries, or video figures.**
 
    ```ts title="astro.config.ts"
    import { defineConfig } from 'astro/config';
@@ -94,7 +94,8 @@ import { Callout, Steps } from '@prosefly/astro-components';
 For detailed setup, see [Callout](/components/callout/),
 [Package Manager Tabs](/package-manager-tabs/), [Mermaid Diagrams](/mermaid/),
 and [Images](/images/). [VideoPlayer](/components/video-player/) figure conversion
-is opt-in via `markdown: { videoPlayer: true }` in the shared integration.
+is enabled by default; set `markdown: { videoPlayer: false }` in the shared
+integration to disable it.
 
 ## Configure Expressive Code
 

@@ -61,8 +61,8 @@ JavaScript, the original video and native controls remain usable.
 
 ## Automatic MDX Figures
 
-Figure conversion is **opt-in**. Register the shared integration once in a
-standalone Astro project:
+Figure conversion is enabled by default. Register the shared integration once
+in a standalone Astro project:
 
 ```ts title="astro.config.ts"
 import mdx from '@astrojs/mdx';
@@ -71,9 +71,7 @@ import proseflyComponents from '@prosefly/astro-components/integration';
 
 export default defineConfig({
   integrations: [
-    proseflyComponents({
-      markdown: { videoPlayer: true },
-    }),
+    proseflyComponents(),
     mdx(),
   ],
 });
@@ -113,6 +111,8 @@ precedence. No videos are fetched during compilation, and no URL-specific
 audio lookup is used. At runtime the component manages `controls`, `loop`,
 `autoplay`, and mute state according to its playback policy.
 
+To disable figure conversion, use
+`proseflyComponents({ markdown: { videoPlayer: false } })`.
 For custom thresholds or translations, pass an options object:
 
 ```ts
@@ -128,25 +128,28 @@ proseflyComponents({
 
 ### Independent Plugin And Themes
 
-Lotus and Dahlia already register the shared integration; do not add it again.
-Use the standalone rehype plugin in the existing Markdown processor instead:
+Lotus and Dahlia already register the shared integration and enable figure
+conversion; no additional plugin is needed. For custom thresholds, translations,
+or disabling conversion, register your configured integration before the theme.
+The theme will reuse it instead of registering another instance:
 
 ```ts title="astro.config.ts"
 import { defineConfig } from 'astro/config';
 import lotus from '@prosefly/astro-theme-lotus';
-import { rehypeVideoPlayer, unified } from '@prosefly/astro-components/markdown';
+import proseflyComponents from '@prosefly/astro-components/integration';
 
 export default defineConfig({
-  markdown: {
-    processor: unified({
-      rehypePlugins: [[rehypeVideoPlayer, { shortVideoSeconds: 15 }]],
+  integrations: [
+    proseflyComponents({
+      markdown: { videoPlayer: { shortVideoSeconds: 15 } },
     }),
-  },
-  integrations: [lotus()],
+    lotus(),
+  ],
 });
 ```
 
-The `/markdown` entry exports `rehypeVideoPlayer` and `VideoPlayerOptions`.
+For projects without the shared integration, the `/markdown` entry exports
+`rehypeVideoPlayer` and `VideoPlayerOptions` for use in a unified processor.
 
 ## Sources And Captions
 
@@ -162,7 +165,7 @@ For direct component use, put `source` children inside `VideoPlayer` and use the
 
 For tracks, custom fallback content, figure attributes, or rich captions, write
 an ordinary `<figure>` with a `<video>` and `<figcaption>` as shown above. The
-opt-in plugin preserves the complete authored markup; there is no need to wrap
+plugin preserves the complete authored markup; there is no need to wrap
 that figure in `VideoPlayer` yourself.
 
 ## Props

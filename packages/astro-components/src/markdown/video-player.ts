@@ -125,7 +125,7 @@ function figureAttributes(attributes: MdxAttribute[]): MdxAttribute {
   return expressionAttribute('figureAttributes', `({${source.join(',')}})`, { type: 'ObjectExpression', properties });
 }
 
-/** Opt-in, MDX-only conversion of video-only HTML figures. Never fetches media. */
+/** MDX-only conversion of video-only HTML figures. Never fetches media. */
 export const rehypeVideoPlayer: RehypePlugin = (options: VideoPlayerOptions = {}) => {
   const resolved = resolveVideoPlayerOptions(options);
   return (tree, file) => {

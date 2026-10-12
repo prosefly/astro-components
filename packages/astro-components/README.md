@@ -65,7 +65,7 @@ The `/integration` entry exports the `proseflyComponents()` Astro integration an
 The markdown entry exports:
 
 - `rehypeMermaid`
-- `rehypeVideoPlayer` (opt-in)
+- `rehypeVideoPlayer`
 - `remarkImageGallery`
 - `remarkPackageManagerTabs`
 
@@ -133,9 +133,10 @@ highlighting. Dahlia and Lotus enable these transforms through the shared
 integration by default.
 
 `VideoPlayer` loops short clips silently while visible and uses native controls
-for long videos. Enable automatic MDX video-figure conversion explicitly with
-`proseflyComponents({ markdown: { videoPlayer: true } })`, or register
-`rehypeVideoPlayer` in an existing unified processor. Both accept
+for long videos. `proseflyComponents()` enables automatic MDX video-figure
+conversion by default, including when registered by Dahlia or Lotus. Disable it
+with `proseflyComponents({ markdown: { videoPlayer: false } })`, or register
+`rehypeVideoPlayer` directly when not using the integration. Both accept
 `{ shortVideoSeconds: 30, labels: { play: 'Play' } }` configuration (via
 `markdown.videoPlayer` for the integration). HTML attributes, sources, tracks,
 and rich captions are preserved, and no media is fetched at build time.

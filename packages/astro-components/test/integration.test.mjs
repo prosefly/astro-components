@@ -35,7 +35,7 @@ test('components defaults enable shared Markdown transforms without global asset
   const processor = result.updates[0].markdown.processor;
 
   assert.equal(processor.options.remarkPlugins.length, 3);
-  assert.deepEqual(processor.options.rehypePlugins, [rehypeMermaid]);
+  assert.deepEqual(processor.options.rehypePlugins, [rehypeMermaid, [rehypeVideoPlayer, {}]]);
   assert.deepEqual(result.updates[0].markdown.syntaxHighlight, {
     type: 'shiki',
     excludeLangs: ['math', 'mermaid'],
@@ -51,6 +51,7 @@ test('disabled markdown features register no transforms or assets', async () => 
       packageManagerTabs: false,
       imageGallery: false,
       mermaid: false,
+      videoPlayer: false,
     },
   });
   const processor = result.updates[0].markdown.processor;
@@ -60,9 +61,9 @@ test('disabled markdown features register no transforms or assets', async () => 
   assert.deepEqual(result.scripts, []);
 });
 
-test('video figures are explicitly opt-in and forward player options', async () => {
+test('video figures are enabled by default and forward player options', async () => {
   const defaults = await setup({ icons: false });
-  assert.ok(!defaults.updates[0].markdown.processor.options.rehypePlugins.includes(rehypeVideoPlayer));
+  assert.deepEqual(defaults.updates[0].markdown.processor.options.rehypePlugins, [rehypeMermaid, [rehypeVideoPlayer, {}]]);
   const enabled = await setup({ icons: false, markdown: { videoPlayer: true } });
   assert.deepEqual(enabled.updates[0].markdown.processor.options.rehypePlugins, [rehypeMermaid, [rehypeVideoPlayer, {}]]);
   const options = { shortVideoSeconds: 15, labels: { play: '再生' } };
@@ -70,6 +71,38 @@ test('video figures are explicitly opt-in and forward player options', async () 
   assert.deepEqual(configured.updates[0].markdown.processor.options.rehypePlugins.at(-1), [rehypeVideoPlayer, options]);
   const disabled = await setup({ icons: false, markdown: { videoPlayer: false } });
   assert.deepEqual(disabled.updates[0].markdown.processor.options.rehypePlugins, [rehypeMermaid]);
+});
+
+test('default integration converts multiline MDX video figures unless disabled', async () => {
+  const source = `<figure>
+  <video src="https://media.prosefly.com/lepture/0b908530761a489bb3e17f2116775092.mp4" controls />
+
+  <figcaption>
+    Prosefly 的可视化编辑器
+  </figcaption>
+</figure>`;
+  for (const videoPlayer of [undefined, false]) {
+    const result = await setup({ icons: false, markdown: { videoPlayer } });
+    const markdown = result.updates[0].markdown;
+    const renderer = await markdown.processor.createMdxRenderer(
+      { ...markdown, syntaxHighlight: false },
+      { optimize: true },
+    );
+    const { code } = await renderer.process(source, '/blog/building-prosefly.mdx', {});
+    if (videoPlayer === false) {
+      assert.doesNotMatch(code, /VideoPlayer as ProseflyVideoPlayer/);
+    } else {
+      assert.match(code, /VideoPlayer as ProseflyVideoPlayer/);
+      assert.match(code, /slot: "media"/);
+      assert.match(code, /slot: "caption"/);
+      assert.match(code, /"aria-label": "Prosefly 的可视化编辑器"/);
+    }
+  }
+});
+
+test('disabling Markdown skips all shared transforms', async () => {
+  const result = await setup({ icons: false, markdown: false });
+  assert.deepEqual(result.updates, []);
 });
 
 test('preserves unified processor options and extension ordering', async () => {
@@ -108,6 +141,7 @@ test('preserves unified processor options and extension ordering', async () => {
   assert.deepEqual(processor.options.rehypePlugins, [
     userRehype,
     rehypeMermaid,
+    [rehypeVideoPlayer, {}],
     after,
   ]);
 });
