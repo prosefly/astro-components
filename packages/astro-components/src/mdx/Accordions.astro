@@ -15,14 +15,14 @@ const defaultValues =
       : [];
 ---
 
-<div
+<pf-accordions
   class="pf-accordions"
   data-default-values={JSON.stringify(defaultValues)}
   data-multiple={multiple ? 'true' : undefined}
   data-pf-accordions
 >
   <slot />
-</div>
+</pf-accordions>
 
 <script>
   import '../client/accordions';
@@ -30,6 +30,7 @@ const defaultValues =
 
 <style is:global>
   .pf-accordions {
+    display: block;
     border-bottom: 1px solid
       color-mix(in oklab, var(--pf-text-muted, #667085) 18%, transparent);
     border-top: 1px solid

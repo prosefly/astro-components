@@ -9,6 +9,11 @@ Use `Tabs` when each panel solves the same task for a different audience:
 package manager, framework, language, operating system, or output format. Do
 not use tabs for unrelated content; readers may miss hidden information.
 
+`Tabs` uses a light-DOM custom element. Each group initializes when inserted
+and cleans up listeners and copy-feedback timers when removed, including during
+Astro page transitions. Nested groups keep their controls and selection separate;
+groups with the same `syncKey` still synchronize matching labels.
+
 ## Import
 
 ```mdx

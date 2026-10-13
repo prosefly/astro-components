@@ -22,7 +22,7 @@ const hasIcons = panels.some((panel) => panel.icon);
 const activePanel = panels[activeIndex] ?? panels[0];
 ---
 
-<section class:list={['pf-tabs', className]} data-pf-tabs data-sync-key={syncKey}>
+<pf-tabs class:list={['pf-tabs', className]} data-pf-tabs data-sync-key={syncKey}>
   <div class="pf-tabs__header">
     {
       hasIcons && (
@@ -86,7 +86,7 @@ const activePanel = panels[activeIndex] ?? panels[0];
     }
   </div>
   <div class="pf-tabs__panels" set:html={html} />
-</section>
+</pf-tabs>
 
 <script>
   import '../client/tabs';
@@ -94,6 +94,7 @@ const activePanel = panels[activeIndex] ?? panels[0];
 
 <style is:global>
   .pf-tabs {
+    display: block;
     background: var(--pf-surface, #f4f6f8);
     border: 1px solid var(--pf-border-subtle, #e5e7eb);
     border-radius: min(var(--pf-radius-lg, 0.75rem), 1rem);

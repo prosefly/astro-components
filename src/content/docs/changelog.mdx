@@ -9,6 +9,17 @@ This changelog covers user-facing changes to `@prosefly/astro-components`,
 including components, markdown transforms, integration behavior, styling tokens,
 and documentation.
 
+## Unreleased
+
+- Refactored `Tabs` and `Accordions` to light-DOM custom elements with instance
+  setup and cleanup on insertion, removal, and Astro page transitions. Removed
+  global page-load initialization; existing props and native accordion markup
+  remain unchanged.
+- Nested tabs and accordions now isolate their controls. Tabs retain keyboard
+  navigation, persisted selection, synchronized groups, and code copying, while
+  removal clears copy timers and ignores stale clipboard promises. Accordion
+  reconnection preserves open state and cleans up hash listeners.
+
 ## 0.8.3
 
 <Badge color="accent" variant="subtle">October 12, 2026</Badge>

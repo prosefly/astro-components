@@ -1,9 +1,13 @@
-const prosefly = (window.__prosefly ??= {});
-
 type ActivateOptions = {
   focus?: boolean;
   persist?: boolean;
 };
+
+interface Selection {
+  source: TabsElement;
+  syncKey: string;
+  label: string;
+}
 
 function getStoredLabel(syncKey: string | null): string | undefined {
   if (!syncKey) return undefined;
@@ -23,185 +27,133 @@ function storeLabel(syncKey: string | null, label: string | null): void {
   }
 }
 
-async function writeClipboard(text: string): Promise<void> {
-  if (navigator.clipboard?.writeText) {
-    await navigator.clipboard.writeText(text);
-    return;
-  }
-
-  throw new Error('Clipboard API is not available.');
-}
-
 function setCopyState(button: HTMLButtonElement, copied: boolean): void {
   const copyIcon = button.querySelector('[data-pf-tabs-copy-icon="copy"]');
   const checkIcon = button.querySelector('[data-pf-tabs-copy-icon="check"]');
-
   copyIcon?.toggleAttribute('hidden', copied);
   checkIcon?.toggleAttribute('hidden', !copied);
   button.setAttribute('aria-label', copied ? 'Copied' : 'Copy code');
   button.setAttribute('title', copied ? 'Copied' : 'Copy code');
 }
 
-function getActiveCode(root: Element): string {
-  const activePanel = root.querySelector('.pf-tabs__panel:not([hidden])');
-  const code = activePanel?.querySelector('pre code');
+export class TabsElement extends HTMLElement {
+  private events?: AbortController;
+  private copyTimers = new Map<HTMLButtonElement, number>();
 
-  return code?.textContent ?? '';
-}
-
-function setActiveIcon(root: Element, panelId: string | null): void {
-  const iconContainer = root.querySelector<HTMLElement>(
-    '.pf-tabs__active-icons',
-  );
-  const icons = [...root.querySelectorAll('[data-pf-tabs-icon-for]')];
-
-  if (!(iconContainer instanceof HTMLElement)) return;
-
-  let hasActiveIcon = false;
-  icons.forEach((icon) => {
-    const isActive = icon.getAttribute('data-pf-tabs-icon-for') === panelId;
-    icon.toggleAttribute('hidden', !isActive);
-    hasActiveIcon ||= isActive;
-  });
-  iconContainer.toggleAttribute('hidden', !hasActiveIcon);
-}
-
-function activate(
-  root: Element,
-  trigger: Element,
-  options: ActivateOptions = {},
-): void {
-  const panelId = trigger.getAttribute('data-tab-panel');
-  const label = trigger.getAttribute('data-tab-label');
-  const syncKey = root.getAttribute('data-sync-key');
-  const triggers = [...root.querySelectorAll('[data-pf-tabs-trigger]')];
-  const panels = [...root.querySelectorAll('.pf-tabs__panel')];
-
-  triggers.forEach((button) => {
-    const isActive = button === trigger;
-    button.setAttribute('aria-selected', isActive ? 'true' : 'false');
-    button.setAttribute('tabindex', isActive ? '0' : '-1');
-  });
-
-  panels.forEach((panel) => {
-    panel.toggleAttribute('hidden', panel.id !== panelId);
-  });
-
-  setActiveIcon(root, panelId);
-
-  if (options.focus && trigger instanceof HTMLElement) {
-    trigger.focus();
+  /** Nested groups own their controls, panels, icons, and code blocks. */
+  private owned<T extends Element = HTMLElement>(selector: string): T[] {
+    return [...this.querySelectorAll<T>(selector)].filter(
+      (element) => element.closest('pf-tabs') === this,
+    );
   }
 
-  if (options.persist === false) {
-    return;
+  private activate(trigger: HTMLElement, options: ActivateOptions = {}): void {
+    const panelId = trigger.getAttribute('data-tab-panel');
+    const label = trigger.getAttribute('data-tab-label');
+    const syncKey = this.getAttribute('data-sync-key');
+
+    for (const button of this.owned('[data-pf-tabs-trigger]')) {
+      const isActive = button === trigger;
+      button.setAttribute('aria-selected', String(isActive));
+      button.setAttribute('tabindex', isActive ? '0' : '-1');
+    }
+    for (const panel of this.owned('.pf-tabs__panel')) {
+      panel.toggleAttribute('hidden', panel.id !== panelId);
+    }
+    let hasActiveIcon = false;
+    for (const icon of this.owned('[data-pf-tabs-icon-for]')) {
+      const isActive = icon.getAttribute('data-pf-tabs-icon-for') === panelId;
+      icon.toggleAttribute('hidden', !isActive);
+      hasActiveIcon ||= isActive;
+    }
+    this.owned('.pf-tabs__active-icons')[0]?.toggleAttribute('hidden', !hasActiveIcon);
+    if (options.focus) trigger.focus();
+    if (options.persist === false) return;
+
+    storeLabel(syncKey, label);
+    if (syncKey && label) {
+      document.dispatchEvent(new CustomEvent<Selection>('pf-tabs:select', {
+        detail: { source: this, syncKey, label },
+      }));
+    }
   }
 
-  storeLabel(syncKey, label);
+  connectedCallback(): void {
+    if (this.events) return;
+    const triggers = this.owned('[data-pf-tabs-trigger]');
+    if (triggers.length === 0) return;
 
-  if (!syncKey || !label) {
-    return;
-  }
+    this.events = new AbortController();
+    const { signal } = this.events;
+    const storedLabel = getStoredLabel(this.getAttribute('data-sync-key'));
+    const selected = triggers.find((trigger) =>
+      storedLabel !== undefined && trigger.getAttribute('data-tab-label') === storedLabel,
+    ) ?? triggers.find((trigger) => trigger.getAttribute('aria-selected') === 'true') ?? triggers[0];
+    this.activate(selected, { persist: false });
 
-  document.querySelectorAll('[data-pf-tabs]').forEach((otherRoot) => {
-    if (
-      otherRoot === root ||
-      otherRoot.getAttribute('data-sync-key') !== syncKey
-    ) {
-      return;
-    }
-
-    const matchingTrigger = [
-      ...otherRoot.querySelectorAll('[data-pf-tabs-trigger]'),
-    ].find((button) => button.getAttribute('data-tab-label') === label);
-
-    if (matchingTrigger) {
-      activate(otherRoot, matchingTrigger, { persist: false });
-    }
-  });
-}
-
-function initTabs(): void {
-  document.querySelectorAll('[data-pf-tabs]').forEach((root) => {
-    if (root instanceof HTMLElement && root.dataset.pfTabsReady === 'true') {
-      return;
-    }
-
-    const triggers = [...root.querySelectorAll('[data-pf-tabs-trigger]')];
-    const syncKey = root.getAttribute('data-sync-key');
-    const storedLabel = getStoredLabel(syncKey);
-    const storedTrigger = storedLabel
-      ? triggers.find(
-          (button) => button.getAttribute('data-tab-label') === storedLabel,
-        )
-      : undefined;
-    const selectedTrigger =
-      storedTrigger ??
-      triggers.find(
-        (button) => button.getAttribute('aria-selected') === 'true',
-      ) ??
-      triggers[0];
-
-    if (root instanceof HTMLElement) {
-      root.dataset.pfTabsReady = 'true';
-    }
-
-    if (selectedTrigger) {
-      activate(root, selectedTrigger, { persist: false });
-    }
-
-    triggers.forEach((trigger) => {
-      trigger.addEventListener('click', () => activate(root, trigger));
+    for (const trigger of triggers) {
+      trigger.addEventListener('click', () => this.activate(trigger), { signal });
       trigger.addEventListener('keydown', (event) => {
-        if (!(event instanceof KeyboardEvent)) {
-          return;
-        }
-
         const currentIndex = triggers.indexOf(trigger);
         let nextIndex: number;
-
         if (event.key === 'ArrowRight') nextIndex = currentIndex + 1;
         else if (event.key === 'ArrowLeft') nextIndex = currentIndex - 1;
         else if (event.key === 'Home') nextIndex = 0;
         else if (event.key === 'End') nextIndex = triggers.length - 1;
         else return;
-
         event.preventDefault();
-        const nextTrigger =
-          triggers[(nextIndex + triggers.length) % triggers.length];
-        activate(root, nextTrigger, { focus: true });
-      });
-    });
+        this.activate(triggers[(nextIndex + triggers.length) % triggers.length], { focus: true });
+      }, { signal });
+    }
 
-    root.querySelectorAll('[data-pf-tabs-copy]').forEach((button) => {
-      if (!(button instanceof HTMLButtonElement)) {
-        return;
-      }
+    document.addEventListener('pf-tabs:select', (event) => {
+      if (!(event instanceof CustomEvent)) return;
+      const selection = event.detail as Selection;
+      if (selection.source === this || selection.syncKey !== this.getAttribute('data-sync-key')) return;
+      const matching = triggers.find((trigger) => trigger.getAttribute('data-tab-label') === selection.label);
+      if (matching) this.activate(matching, { persist: false });
+    }, { signal });
 
+    for (const button of this.owned<HTMLButtonElement>('[data-pf-tabs-copy]')) {
+      let request = 0;
       button.addEventListener('click', async () => {
-        const text = getActiveCode(root);
-
-        if (!text) {
-          return;
-        }
-
+        const panel = this.owned('.pf-tabs__panel').find((panel) => !panel.hidden);
+        const code = panel && this.owned('pre code').find((code) => panel.contains(code));
+        const text = code?.textContent;
+        if (!text) return;
+        const currentRequest = ++request;
         try {
-          await writeClipboard(text);
+          if (!navigator.clipboard?.writeText) throw new Error('Clipboard API is not available.');
+          await navigator.clipboard.writeText(text);
+          // A clipboard promise can resolve after removal, reconnection, or another click.
+          if (signal.aborted || currentRequest !== request) return;
+          window.clearTimeout(this.copyTimers.get(button));
           setCopyState(button, true);
-          window.setTimeout(() => setCopyState(button, false), 1600);
+          this.copyTimers.set(button, window.setTimeout(() => {
+            setCopyState(button, false);
+            this.copyTimers.delete(button);
+          }, 1600));
         } catch {
+          if (signal.aborted || currentRequest !== request) return;
+          window.clearTimeout(this.copyTimers.get(button));
+          this.copyTimers.delete(button);
           setCopyState(button, false);
         }
-      });
-    });
-  });
+      }, { signal });
+    }
+  }
+
+  disconnectedCallback(): void {
+    this.events?.abort();
+    this.events = undefined;
+    for (const timer of this.copyTimers.values()) window.clearTimeout(timer);
+    this.copyTimers.clear();
+    for (const button of this.owned<HTMLButtonElement>('[data-pf-tabs-copy]')) {
+      setCopyState(button, false);
+    }
+  }
 }
 
-if (!prosefly.initTabs) {
-  prosefly.initTabs = initTabs;
-  document.addEventListener('astro:page-load', prosefly.initTabs);
+if (!customElements.get('pf-tabs')) {
+  customElements.define('pf-tabs', TabsElement);
 }
-
-prosefly.initTabs();
-
-export {};

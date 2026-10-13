@@ -9,6 +9,11 @@ Use accordions for supporting details, troubleshooting notes, FAQs, or advanced
 options. Do not hide required steps in an accordion; readers should be able to
 complete the main task by scanning the visible page.
 
+`Accordions` uses a light-DOM custom element around native `details` and
+`summary` elements. Groups initialize when inserted and release listeners when
+removed, including during Astro page transitions. Reconnecting a group preserves
+its open state, and nested groups manage their own items independently.
+
 ## Import
 
 ```mdx

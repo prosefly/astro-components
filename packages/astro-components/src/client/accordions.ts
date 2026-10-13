@@ -1,98 +1,85 @@
-const prosefly = (window.__prosefly ??= {});
+export class AccordionsElement extends HTMLElement {
+  private events?: AbortController;
+  private initialized = false;
 
-function getItems(root: Element): HTMLDetailsElement[] {
-  return [...root.querySelectorAll(':scope > [data-pf-accordion]')].filter(
-    (item): item is HTMLDetailsElement => item instanceof HTMLDetailsElement,
-  );
-}
-
-function closeSiblings(root: Element, activeItem: HTMLDetailsElement): void {
-  if (root.hasAttribute('data-multiple')) return;
-
-  for (const item of getItems(root)) {
-    if (item !== activeItem) item.open = false;
+  private items(): HTMLDetailsElement[] {
+    return [...this.querySelectorAll(':scope > [data-pf-accordion]')].filter(
+      (item): item is HTMLDetailsElement => item instanceof HTMLDetailsElement,
+    );
   }
-}
 
-function openItem(item: HTMLDetailsElement): void {
-  const root = item.closest('[data-pf-accordions]');
-
-  item.open = true;
-  if (root) closeSiblings(root, item);
-}
-
-function openHashTarget(): void {
-  if (!location.hash) return;
-
-  const id = decodeURIComponent(location.hash.slice(1));
-  const item = document.getElementById(id);
-
-  if (
-    item instanceof HTMLDetailsElement &&
-    item.matches('[data-pf-accordion]')
-  ) {
-    openItem(item);
+  private closeSiblings(activeItem: HTMLDetailsElement): void {
+    if (this.hasAttribute('data-multiple')) return;
+    for (const item of this.items()) {
+      if (item !== activeItem) item.open = false;
+    }
   }
-}
 
-function initAccordions(): void {
-  document.querySelectorAll('[data-pf-accordions]').forEach((root) => {
-    if (
-      !(root instanceof HTMLElement) ||
-      root.dataset.pfAccordionsReady === 'true'
-    ) {
+  private openHashTarget(): void {
+    if (!location.hash) return;
+    let id: string;
+    try {
+      id = decodeURIComponent(location.hash.slice(1));
+    } catch {
       return;
     }
+    const item = this.items().find((item) => item.id === id);
+    if (item) {
+      item.open = true;
+      this.closeSiblings(item);
+    }
+  }
 
-    root.dataset.pfAccordionsReady = 'true';
+  connectedCallback(): void {
+    if (this.events) return;
+    const items = this.items();
+    if (items.length === 0) return;
+    this.events = new AbortController();
+    const { signal } = this.events;
 
-    let defaultValues: string[];
-    try {
-      defaultValues = JSON.parse(
-        root.getAttribute('data-default-values') || '[]',
-      );
-    } catch {
-      defaultValues = [];
+    // Apply defaults once, preserving the reader's open state after reconnection.
+    if (!this.initialized) {
+      let defaults: unknown;
+      try {
+        defaults = JSON.parse(this.getAttribute('data-default-values') ?? '[]');
+      } catch {
+        defaults = [];
+      }
+      for (const item of items) {
+        if (Array.isArray(defaults) && defaults.includes(item.getAttribute('data-value'))) {
+          item.open = true;
+        }
+        if (item.open) this.closeSiblings(item);
+      }
+      this.initialized = true;
     }
 
-    for (const item of getItems(root)) {
-      if (defaultValues.includes(item.getAttribute('data-value') ?? '')) {
-        openItem(item);
-      }
-
+    for (const item of items) {
       item.addEventListener('click', (event) => {
-        if (
-          !(event.target instanceof Element) ||
-          !event.target.closest('[data-pf-accordion-trigger]')
-        ) {
-          return;
-        }
-
+        if (!(event.target instanceof Element)) return;
+        const trigger = event.target.closest('[data-pf-accordion-trigger]');
+        // Clicks in nested accordions must not toggle or disable the outer item.
+        if (trigger?.closest('[data-pf-accordion]') !== item) return;
         if (item.getAttribute('data-disabled') === 'true') {
           event.preventDefault();
           return;
         }
-
-        if (!item.open) {
-          closeSiblings(root, item);
-        }
-      });
-
+        if (!item.open) this.closeSiblings(item);
+      }, { signal });
       item.addEventListener('toggle', () => {
-        if (item.open) closeSiblings(root, item);
-      });
+        if (item.open) this.closeSiblings(item);
+      }, { signal });
     }
-  });
+    window.addEventListener('hashchange', () => this.openHashTarget(), { signal });
+    this.openHashTarget();
+  }
 
-  openHashTarget();
+  disconnectedCallback(): void {
+    this.events?.abort();
+    this.events = undefined;
+  }
 }
 
-if (!prosefly.initAccordions) {
-  prosefly.initAccordions = initAccordions;
-  document.addEventListener('astro:page-load', prosefly.initAccordions);
-  window.addEventListener('hashchange', openHashTarget);
+if (!customElements.get('pf-accordions')) {
+  customElements.define('pf-accordions', AccordionsElement);
 }
-
-prosefly.initAccordions();
-
-export {};
