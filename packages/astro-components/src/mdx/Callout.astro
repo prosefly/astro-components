@@ -18,11 +18,11 @@ const hasTitle = Boolean(title);
 ---
 
 <div class="pf-callout" data-has-title={hasTitle ? 'true' : 'false'} data-type={type} role="note">
-  <span class="pf-callout__icon" aria-hidden="true">
+  <span class="pf-callout__icon not-prose" aria-hidden="true">
     <Icon name={iconNames[type]} />
   </span>
   <div class="pf-callout__content">
-    {hasTitle && <p class="pf-callout__title">{title}</p>}
+    {hasTitle && <p class="pf-callout__title not-prose">{title}</p>}
     <div class="pf-callout__slot">
       <slot />
     </div>

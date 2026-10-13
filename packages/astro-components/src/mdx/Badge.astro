@@ -22,7 +22,7 @@ const content = normalizeBadgeContent(await Astro.slots.render('default'));
 ---
 
 <span
-  class:list={['pf-badge', className]}
+  class:list={['pf-badge', 'not-prose', className]}
   data-color={color}
   data-variant={variant}
   {...attrs}

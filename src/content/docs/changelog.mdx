@@ -11,6 +11,9 @@ and documentation.
 
 ## Unreleased
 
+- Added `not-prose` boundaries to component-owned UI while retaining Markdown
+  typography in content slots, captions, and single-image figures. Multi-image
+  galleries now scope their image styles to injected markup explicitly.
 - Refactored `Tabs` and `Accordions` to light-DOM custom elements with instance
   setup and cleanup on insertion, removal, and Astro page transitions. Removed
   global page-load initialization; existing props and native accordion markup

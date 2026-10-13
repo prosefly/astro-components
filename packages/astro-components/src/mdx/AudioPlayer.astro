@@ -37,7 +37,7 @@ const ariaLabel = audioAttributes['aria-label'] ?? title ?? 'Audio player';
 <pf-audio-player
   role="group"
   aria-label={ariaLabel}
-  class:list={['pf-audio-player', className]}
+  class:list={['pf-audio-player', 'not-prose', className]}
   data-pf-audio-album={album}
   data-pf-audio-artist={artist}
   data-pf-audio-artwork={artworkSrc}

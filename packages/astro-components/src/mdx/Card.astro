@@ -37,13 +37,13 @@ const linkAttrs = href
   <div class="pf-card__layout">
     {
       icon && (
-        <span aria-hidden="true" class="pf-card__icon">
+        <span aria-hidden="true" class="pf-card__icon not-prose">
           <Icon name={icon} />
         </span>
       )
     }
     <div class="pf-card__body">
-      {title && <p class="pf-card__title">{title}</p>}
+      {title && <p class="pf-card__title not-prose">{title}</p>}
       <div class="pf-card__content">
         <slot />
       </div>

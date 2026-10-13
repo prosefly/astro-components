@@ -14,7 +14,7 @@ const fileTreeHtml = await Astro.slots.render('default');
 const entries = parseFileTree(fileTreeHtml);
 ---
 
-<ul class="pf-file-tree" data-icon-set={iconSet} role="list">
+<ul class="pf-file-tree not-prose" data-icon-set={iconSet} role="list">
   {entries.map((entry) => <FileTreeItem entry={entry} iconSet={iconSet} />)}
 </ul>
 

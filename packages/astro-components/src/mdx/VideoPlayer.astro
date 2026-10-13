@@ -30,7 +30,7 @@ const hasCaptionSlot = Astro.slots.has('caption');
 ---
 
 <figure {...figureAttributes} class:list={['pf-video-player', className, figureAttributes.class]}>
-  <pf-video-player data-duration={duration} data-short-video-seconds={options.shortVideoSeconds}>
+  <pf-video-player class="not-prose" data-duration={duration} data-short-video-seconds={options.shortVideoSeconds}>
     <slot name="media">
       <video
         {...videoAttributes}
